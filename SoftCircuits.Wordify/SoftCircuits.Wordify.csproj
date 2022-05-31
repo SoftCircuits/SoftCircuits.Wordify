@@ -1,0 +1,12 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net6.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <Copyright>Copyright © 2022 Jonathan Wood</Copyright>
+    <RepositoryType>git</RepositoryType>
+    <PackageTags>stringify; wordify; to string; strings; convert; format</PackageTags>
+  </PropertyGroup>
+
+</Project>
