@@ -207,14 +207,14 @@ namespace SoftCircuits.Wordify
         /// </summary>
         public char this[int index]
         {
-            get => (InternalArray != null) ? InternalArray[index] : Original[index];
-            set => Array[index] = value;
+            get => GetAt(index);
+            set => SetAt(index, value);
         }
 
         public char this[Index index]
         {
-            get => (InternalArray != null) ? InternalArray[index.GetOffset(Length)] : Original[index.GetOffset(Length)];
-            set => Array[index.GetOffset(Length)] = value;
+            get => GetAt(index.GetOffset(Length));
+            set => SetAt(index.GetOffset(Length), value);
         }
 
         public string this[Range range]
@@ -222,12 +222,15 @@ namespace SoftCircuits.Wordify
             get
             {
                 int start = range.Start.GetOffset(Length);
-                int end = range.End.GetOffset(Length);
                 return (InternalArray != null) ?
-                    new(InternalArray, start, end - start) :
+                    new(InternalArray, start, range.End.GetOffset(Length) - start) :
                     Original[range];
             }
         }
+
+        private char GetAt(int index) => (InternalArray != null) ? InternalArray[index] : Original[index];
+
+        private void SetAt(int index, char c) => Array[index] = c;
 
         #endregion
 
