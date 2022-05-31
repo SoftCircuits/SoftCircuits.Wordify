@@ -183,18 +183,18 @@ namespace WordifyTests
 
 
 
-            decimal d = .1m;
-            Assert.AreEqual(null, Wordify.FormatFraction(ref d, FractionFormat.Round));
-            d = .1m;
-            Assert.AreEqual(null, Wordify.FormatFraction(ref d, FractionFormat.Truncate));
-            d = .1m;
-            Assert.AreEqual("one tenth", Wordify.FormatFraction(ref d, FractionFormat.Words));
-            d = .1m;
-            Assert.AreEqual(".1", Wordify.FormatFraction(ref d, FractionFormat.Decimal));
-            d = .1m;
-            Assert.AreEqual("1/10", Wordify.FormatFraction(ref d, FractionFormat.Fraction));
-            d = .1m;
-            Assert.AreEqual("10/100", Wordify.FormatFraction(ref d, FractionFormat.Check));
+            //decimal d = .1m;
+            //Assert.AreEqual(null, Wordify.FormatFraction(ref d, FractionFormat.Round));
+            //d = .1m;
+            //Assert.AreEqual(null, Wordify.FormatFraction(ref d, FractionFormat.Truncate));
+            //d = .1m;
+            //Assert.AreEqual("one tenth", Wordify.FormatFraction(ref d, FractionFormat.Words));
+            //d = .1m;
+            //Assert.AreEqual(".1", Wordify.FormatFraction(ref d, FractionFormat.Decimal));
+            //d = .1m;
+            //Assert.AreEqual("1/10", Wordify.FormatFraction(ref d, FractionFormat.Fraction));
+            //d = .1m;
+            //Assert.AreEqual("10/100", Wordify.FormatFraction(ref d, FractionFormat.Check));
         }
     }
 }
