@@ -11,28 +11,28 @@ namespace SoftCircuits.Wordify
         /// </summary>
         /// <param name="value">The value to convert.</param>
         /// <returns>The converted string.</returns>
-        public static string Transform(int value) => WordifyNumber(value.ToString());
+        public static string Transform(int value) => FormatNumber(value.ToString());
 
         /// <summary>
         /// Converts the given value to words.
         /// </summary>
         /// <param name="value">The value to convert.</param>
         /// <returns>The converted string.</returns>
-        public static string Transform(long value) => WordifyNumber(value.ToString());
+        public static string Transform(long value) => FormatNumber(value.ToString());
 
         /// <summary>
         /// Converts the given value to words.
         /// </summary>
         /// <param name="value">The value to convert.</param>
         /// <returns>The converted string.</returns>
-        public static string Transform(uint value) => WordifyNumber(value.ToString());
+        public static string Transform(uint value) => FormatNumber(value.ToString());
 
         /// <summary>
         /// Converts the given value to words.
         /// </summary>
         /// <param name="value">The value to convert.</param>
         /// <returns>The converted string.</returns>
-        public static string Transform(ulong value) => WordifyNumber(value.ToString());
+        public static string Transform(ulong value) => FormatNumber(value.ToString());
 
         /// <summary>
         /// Converts the given value to words.
@@ -49,7 +49,7 @@ namespace SoftCircuits.Wordify
         public static string Transform(decimal value, FractionFormat format)
         {
             string? fraction = FormatFraction(ref value, format);
-            string s = WordifyNumber(Math.Floor(value).ToString());
+            string s = FormatNumber(Math.Floor(value).ToString());
             if (fraction != null)
                 s = $"{s} and {fraction}";
 
@@ -76,199 +76,119 @@ namespace SoftCircuits.Wordify
             return s;
         }
 
-
-
-        //private static string NumberToWords(string number)
-        //{
-        //    Debug.Assert(number != null);
-        //    Debug.Assert(!number.Contains('.'));
-        //    Debug.Assert(!number.Contains(' '));
-
-        //    int i = 0;
-        //    int length = number.Length;
-        //    StringBuilder builder = new();
-
-        //    // Handle negative numbers
-        //    if (number[0] == '-')
-        //    {
-        //        builder.Append("negative ");
-        //        i++;
-        //    }
-
-        //    int prevDigitValue = 0;
-
-        //    for (; i < length; i++)
-        //    {
-        //        Debug.Assert(char.IsDigit(number[i]));
-        //        int digitValue = number[i] - '0';
-        //        int remaining = length - (i + 1);
-
-        //        switch (remaining % 3)
-        //        {
-        //            case 0: // One's column
-
-        //                bool showThousands = true;
-        //                if (i == 0)
-        //                {
-        //                    // First digit in number (last in loop)
-        //                    temp = $"{StringHelper.Ones[digitValue]} ";
-        //                }
-        //                else if (digits[i - 1] == '1')
-        //                {
-        //                    // This digit is part of "teen" value
-        //                    temp = $"{StringHelper.Teens[digitValue]} ";
-        //                    // Skip tens position
-        //                    i--;
-        //                }
-        //                else if (digitValue != 0)
-        //                {
-        //                    // Any non-zero digit
-        //                    temp = $"{StringHelper.Ones[digitValue]} ";
-        //                }
-        //                else
-        //                {
-        //                    // This digit is zero. If digit in tens and hundreds
-        //                    // column are also zero, don't show "thousands"
-        //                    temp = string.Empty;
-        //                    // Test for non-zero digit in this grouping
-        //                    if (digits[i - 1] != '0' || i > 1 && digits[i - 2] != '0')
-        //                        showThousands = true;
-        //                    else
-        //                        showThousands = false;
-        //                }
-
-        //                // Show "thousands" if non-zero in grouping
-        //                if (showThousands)
-        //                {
-        //                    if (column > 0)
-        //                        temp = $"{temp}{StringHelper.Thousands[column / 3]}{(allZeros ? " " : ", ")}";
-        //                    // Indicate non-zero digit encountered
-        //                    allZeros = false;
-        //                }
-        //                builder.Insert(0, temp);
-        //                //break;
-
-
-        //                if (prevDigitValue != 0)
-        //                   builder.Append('-');
-
-        //                builder.Append(StringHelper.Ones[digitValue]);
-        //                break;
-
-        //            case 1: // Ten's column
-        //                if (digitValue > 0)
-        //                {
-        //                    builder.Append(StringHelper.Tens[digitValue]);
-        //                    //builder.Append(number[i + 1]  $"(digits[i + 1] != '0' ? "-" : " ")}");
-        //                }
-        //                break;
-
-        //            case 2: // Hundred's column
-        //                if (digitValue > 0)
-        //                {
-        //                    builder.Append(StringHelper.Ones[digitValue]);
-        //                    builder.Append(" hundred");
-        //                }
-        //                break;
-        //        }
-        //        prevDigitValue = digitValue;
-        //    }
-
-        //    return builder.ToString();
-        //}
+        [Flags]
+        private enum ColumnState
+        {
+            None = 0x00,
+            SetOnes = 0x01,
+            SetTens = 0x02,
+            SetHundreds = 0x04,
+        };
 
         /// <summary>
-        /// Converts a number string to words. Input string must not include decimal or exponential notation.
+        /// Converts a number string to words. Input string must not include a decimal point, spaces or
+        /// exponential notation.
         /// </summary>
-        private static string WordifyNumber(string digits)
+        private static string FormatNumber(string number)
         {
-            bool isNegative = false;
-            int firstIndex = 0;
-            bool allZeros = true;
-            string temp;
+            Debug.Assert(number != null);
+            Debug.Assert(!number.Contains('.'));
+            Debug.Assert(!number.Contains(' '));
 
-            Debug.Assert(!digits.Contains('.'));
+            ColumnState columnState = ColumnState.SetHundreds | ColumnState.SetTens;
+            StringBuilder builder = new();
+            int[] values;
+            int length;
 
-            if (digits.Length > 0 && digits[0] == '-')
+            // Create array with value for each digit
+            if (number[0] == '-')
             {
-                isNegative = true;
-                firstIndex = 1;
+                // Negative number
+                builder.Append("negative");
+                length = number.Length - 1;
+                values = new int[length];
+                for (int i = 0; i < length; i++)
+                    values[i] = number[i + 1] - '0';
+            }
+            else
+            {
+                length = number.Length;
+                values = new int[length];
+                for (int i = 0; i < length; i++)
+                    values[i] = number[i] - '0';
             }
 
-            // Use StringBuilder to build result
-            StringBuilder builder = new();
-
-            // Traverse characters in reverse order
-            for (int i = digits.Length - 1; i >= firstIndex; i--)
+            // Iterate through each digit
+            for (int i = 0; i < length; i++)
             {
-                int digitValue = digits[i] - '0';
-                int column = digits.Length - (i + 1);
+                // Remaining digits after this one
+                int remaining = length - (i + 1);
 
-                // Determine if ones, tens, or hundreds column
-                switch (column % 3)
+                switch (remaining % 3)
                 {
-                    case 0:        // Ones position
-                        bool showThousands = true;
-                        if (i == 0)
+                    case 0: // Ones column
+
+                        // Write ones digit
+                        if (values[i] != 0 && !columnState.HasFlag(ColumnState.SetOnes))
                         {
-                            // First digit in number (last in loop)
-                            temp = $"{StringHelper.Ones[digitValue]} ";
+                            if (i > 0 && values[i - 1] != 0)
+                                builder.Append('-');
+                            else if (builder.Length > 0)
+                                builder.Append(' ');
+                            builder.Append(StringHelper.Ones[values[i]]);
                         }
-                        else if (digits[i - 1] == '1')
+                        else if (remaining == 0 && i == 0)
+                            builder.Append(StringHelper.Ones[0]);
+
+                        // Write thousand, million, etc.
+                        if (remaining >= 3 && columnState != ColumnState.None)
                         {
-                            // This digit is part of "teen" value
-                            temp = $"{StringHelper.Teens[digitValue]} ";
-                            // Skip tens position
-                            i--;
-                        }
-                        else if (digitValue != 0)
-                        {
-                            // Any non-zero digit
-                            temp = $"{StringHelper.Ones[digitValue]} ";
-                        }
-                        else
-                        {
-                            // This digit is zero. If digit in tens and hundreds
-                            // column are also zero, don't show "thousands"
-                            temp = string.Empty;
-                            // Test for non-zero digit in this grouping
-                            if (digits[i - 1] != '0' || i > 1 && digits[i - 2] != '0')
-                                showThousands = true;
-                            else
-                                showThousands = false;
+                            builder.Append(' ');
+                            builder.Append(StringHelper.Thousands[remaining / 3]);
                         }
 
-                        // Show "thousands" if non-zero in grouping
-                        if (showThousands)
-                        {
-                            if (column > 0)
-                                temp = $"{temp}{StringHelper.Thousands[column / 3]}{(allZeros ? " " : ", ")}";
-                            // Indicate non-zero digit encountered
-                            allZeros = false;
-                        }
-                        builder.Insert(0, temp);
+                        // Reset column state
+                        columnState = ColumnState.None;
                         break;
 
-                    case 1:        // Tens column
-                        if (digitValue > 0)
-                            builder.Insert(0, $"{StringHelper.Tens[digitValue]}{(digits[i + 1] != '0' ? "-" : " ")}");
+                    case 1: // Tens column
+
+                        if (values[i] > 0)
+                        {
+                            // Write tens column
+                            if (builder.Length > 0)
+                                builder.Append(' ');
+
+                            if (values[i] == 1)
+                            {
+                                Debug.Assert(i + 1 < length);
+                                builder.Append(StringHelper.Teens[values[i + 1]]);
+                                // Indicate ones column set
+                                columnState |= ColumnState.SetOnes;
+                            }
+                            else builder.Append(StringHelper.Tens[values[i]]);
+
+                            // Indicate tens column set
+                            columnState |= ColumnState.SetTens;
+                        }
                         break;
 
-                    case 2:        // Hundreds column
-                        if (digitValue > 0)
-                            builder.Insert(0, $"{StringHelper.Ones[digitValue]} hundred ");
+                    case 2: // Hundreds column
+                        if (values[i] > 0)
+                        {
+                            // Write hundreds column
+                            if (builder.Length > 0)
+                                builder.Append(' ');
+
+                            builder.Append(StringHelper.Ones[values[i]]);
+                            builder.Append(" hundred");
+
+                            // Indicate hundreds column set
+                            columnState |= ColumnState.SetHundreds;
+                        }
                         break;
                 }
             }
-
-            // Remove trailing space
-            if (char.IsWhiteSpace(builder[^1]))
-                builder.Length--;
-
-            // Indicate if negative
-            if (isNegative)
-                builder.Insert(0, "negative ");
-
             return builder.ToString();
         }
 
@@ -289,7 +209,7 @@ namespace SoftCircuits.Wordify
         private static string? FormatFraction(ref decimal value, FractionFormat format)
         {
             // Note: Math.Floor rounds down, Math.Ceiling rounds up, and Math.Truncate rounds towards zero.
-            long integralPart = (long)Math.Truncate(value);
+            decimal integralPart = Math.Truncate(value);
             decimal fractionalPart = Math.Abs(value - integralPart);
             string? fraction = null;
 
@@ -323,7 +243,7 @@ namespace SoftCircuits.Wordify
                         {
                             if (f.Denominator == 1)
                             {
-                                fraction = WordifyNumber(f.Numerator.ToString());
+                                fraction = FormatNumber(f.Numerator.ToString());
                             }
                             else if (f.Numerator == 1 && f.Denominator == 2)
                             {
@@ -332,7 +252,7 @@ namespace SoftCircuits.Wordify
                             else
                             {
                                 fraction = MakeOrdinal(f.Denominator);
-                                fraction = $"{WordifyNumber(f.Numerator.ToString())} {fraction.Pluralize(f.Numerator)}";
+                                fraction = $"{FormatNumber(f.Numerator.ToString())} {fraction.Pluralize(f.Numerator)}";
                             }
                         }
                     }
@@ -341,10 +261,10 @@ namespace SoftCircuits.Wordify
                 case FractionFormat.Check:
                     {
                         int cents = (int)Math.Round(fractionalPart * 100.0m);
-                        if (cents > 0)
+                        //if (cents > 0)
                             fraction = $"{cents:00}/100";
-                        else
-                            fraction = "XX/100";
+                        //else
+                        //    fraction = "XX/100";
                     }
                     break;
             }
