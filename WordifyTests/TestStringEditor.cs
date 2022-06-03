@@ -99,6 +99,81 @@ namespace WordifyTests
             Assert.AreEqual("abcd12345j@#$%opqrstuvabcd", editor);
         }
 
+
+
+
+
+        [TestMethod]
+        public void TestIndexOf()
+        {
+            StringEditor editor = new("abcdefghijklmnopqrstuvwxyz");
+
+            Assert.AreEqual(2, editor.IndexOf('c'));
+            Assert.AreEqual(-1, editor.IndexOf('c', 5));
+            Assert.AreEqual(9, editor.IndexOf("jkl"));
+            Assert.AreEqual(9, editor.IndexOf("jkl", 9));
+            Assert.AreEqual(-1, editor.IndexOf("jkl", 14));
+            Assert.AreEqual(23, editor.IndexOf("xyz"));
+            Assert.AreEqual(-1, editor.IndexOf("yz@"));
+            Assert.AreEqual(1, editor.IndexOf(CharExtensions.IsConsonant));
+            Assert.AreEqual(-1, editor.IndexOf(CharExtensions.IsConsonant, 26));
+            Assert.AreEqual(-1, editor.IndexOf(char.IsWhiteSpace));
+
+            Assert.AreEqual(2, editor.LastIndexOf('c'));
+            Assert.AreEqual(-1, editor.LastIndexOf('c', 1));
+
+            Assert.AreEqual(9, editor.LastIndexOf("jkl"));
+            Assert.AreEqual(9, editor.LastIndexOf("jkl", 11));
+            Assert.AreEqual(-1, editor.LastIndexOf("jkl", 8));
+            Assert.AreEqual(0, editor.LastIndexOf("abc"));
+            Assert.AreEqual(-1, editor.LastIndexOf("@ab"));
+
+            Assert.AreEqual(25, editor.LastIndexOf(CharExtensions.IsConsonant));
+            Assert.AreEqual(-1, editor.LastIndexOf(CharExtensions.IsConsonant, 0));
+            Assert.AreEqual(-1, editor.LastIndexOf(char.IsWhiteSpace));
+
+            Assert.IsTrue(editor.Contains('l'));
+            Assert.IsFalse(editor.Contains('7'));
+            Assert.IsTrue(editor.Contains("lmn"));
+            Assert.IsFalse(editor.Contains("lemon"));
+            Assert.IsTrue(editor.Contains(CharExtensions.IsVowel));
+            Assert.IsFalse(editor.Contains(char.IsWhiteSpace));
+        }
+
+        [TestMethod]
+        public void TestFind()
+        {
+            StringEditor editor = new("Now is the time");
+            Assert.IsTrue(editor.FindFirstWord(out int startIndex, out int endIndex));
+            Assert.AreEqual("Now", editor.Substring(startIndex, endIndex - startIndex));
+            Assert.IsTrue(editor.FindLastWord(out startIndex, out endIndex));
+            Assert.AreEqual("time", editor.Substring(startIndex, endIndex - startIndex));
+
+            editor = new(">>>Now is the time!<<<");
+            Assert.IsTrue(editor.FindFirstWord(out startIndex, out endIndex));
+            Assert.AreEqual("Now", editor.Substring(startIndex, endIndex - startIndex));
+            Assert.IsTrue(editor.FindLastWord(out startIndex, out endIndex));
+            Assert.AreEqual("time", editor.Substring(startIndex, endIndex - startIndex));
+
+            editor = new(">>>!<<<");
+            Assert.IsFalse(editor.FindFirstWord(out _, out _));
+            Assert.IsFalse(editor.FindLastWord(out _, out _));
+
+            editor = new("abcdefghijklmnopqrstuvwxyz");
+            Assert.IsTrue(editor.MatchesEndingAt(25, "xyz"));
+            Assert.IsFalse(editor.MatchesEndingAt(25, "XYZ"));
+            Assert.IsTrue(editor.MatchesEndingAt(25, "XYZ", true));
+            Assert.IsFalse(editor.MatchesEndingAt(25, "xyz#"));
+
+            Assert.IsTrue(editor.MatchesEndingAt(2, "abc"));
+            Assert.IsFalse(editor.MatchesEndingAt(2, "ABC"));
+            Assert.IsTrue(editor.MatchesEndingAt(2, "ABC", true));
+            Assert.IsFalse(editor.MatchesEndingAt(23, "abcd"));
+        }
+
+
+
+
         [TestMethod]
         public void TestEdit()
         {

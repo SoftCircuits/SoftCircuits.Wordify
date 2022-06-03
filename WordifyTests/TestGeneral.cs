@@ -52,7 +52,29 @@ namespace WordifyTests
 
 
 
+        [TestMethod]
+        public void TestInsertSpaces()
+        {
+            Assert.AreEqual("", Wordify.InsertSpaces(null));
+            Assert.AreEqual("", Wordify.InsertSpaces(""));
 
+            Assert.AreEqual("abc", Wordify.InsertSpaces("abc"));
+            Assert.AreEqual("abc def", Wordify.InsertSpaces("abc def"));
+            Assert.AreEqual("abc Def", Wordify.InsertSpaces("abcDef"));
+            Assert.AreEqual("abc def", Wordify.InsertSpaces("abc-def"));
+            Assert.AreEqual("abc def", Wordify.InsertSpaces("abc_def"));
+            Assert.AreEqual(" abc def ", Wordify.InsertSpaces(" abc def "));
+            Assert.AreEqual(" abc Def ", Wordify.InsertSpaces(" abcDef "));
+            Assert.AreEqual(" abc def ", Wordify.InsertSpaces(" abc-def "));
+            Assert.AreEqual(" abc def ", Wordify.InsertSpaces(" abc_def "));
+
+            Assert.AreEqual("This Is A Test", Wordify.InsertSpaces("ThisIsATest"));
+            Assert.AreEqual("This Is A Test", Wordify.InsertSpaces("This-Is-A-Test"));
+            Assert.AreEqual("This Is A Test", Wordify.InsertSpaces("This_Is_A_Test"));
+            Assert.AreEqual(" This Is A Test ", Wordify.InsertSpaces(" ThisIsATest "));
+            Assert.AreEqual(" This Is A Test ", Wordify.InsertSpaces(" This-Is-A-Test "));
+            Assert.AreEqual(" This Is A Test ", Wordify.InsertSpaces(" This_Is_A_Test "));
+        }
 
         [TestMethod]
         public void TestCamelCase()

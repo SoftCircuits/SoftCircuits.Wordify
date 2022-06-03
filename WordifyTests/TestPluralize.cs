@@ -9,6 +9,8 @@ namespace WordifyTests
         {
             ("cat", "cats"),
             ("dog", "dogs"),
+            ("door", "doors"),
+            ("engagement", "engagements"),
 
             ("class", "classes"),
             ("lunch", "lunches"),
@@ -18,11 +20,17 @@ namespace WordifyTests
 
             ("boy", "boys"),
             ("party", "parties"),
+            ("day", "days"),
+            ("agony", "agonies"),
             ("y", "ys"),
 
+            ("buffalo", "buffalo"),
+            ("glass", "glass"),
             ("pants", "pants"),
             ("sheep", "sheep"),
 
+            ("", ""),
+            (" ", " "),
             ("    t    ", "    ts    "),
             (" This is a test! ", " This is a tests! "),
         };

@@ -41,22 +41,25 @@ namespace SoftCircuits.Wordify
         /// character.
         /// </summary>
         /// <returns></returns>
-        public static int CountWords(this string s)
+        public static int CountWords(this string? s)
         {
             bool wasSpace = true;
             int words = 0;
 
-            foreach (char c in s)
+            if (s != null)
             {
-                if (char.IsWhiteSpace(c))
+                foreach (char c in s)
                 {
-                    wasSpace = true;
-                }
-                else
-                {
-                    if (wasSpace)
-                        words++;
-                    wasSpace = false;
+                    if (char.IsWhiteSpace(c))
+                    {
+                        wasSpace = true;
+                    }
+                    else
+                    {
+                        if (wasSpace)
+                            words++;
+                        wasSpace = false;
+                    }
                 }
             }
             return words;
@@ -95,6 +98,32 @@ namespace SoftCircuits.Wordify
 
 
         // TimeSpans
+
+
+        /// <summary>
+        /// Inserts spaces into this string. If the string contains hyphens, they are replaced with spaces.
+        /// Otherwise, if the string contains underscores, they are replaced with spaces. Otherwise, spaces
+        /// are inserted based on camel case letters. If the string already contains embedded spaces, no
+        /// changes are made.
+        /// </summary>
+        /// <param name="s"></param>
+        /// <returns></returns>
+        public static string InsertSpaces(this string? s)
+        {
+            if (s == null)
+                return string.Empty;
+
+            if (s.Length == 0 || s.HasEmbeddedWhiteSpace())
+                return s;
+
+            if (s.Contains('-'))
+                return s.Replace('-', ' ');
+
+            if (s.Contains('_'))
+                return s.Replace('_', ' ');
+
+            return s.InsertCamelCaseSpaces();
+        }
 
         /// <summary>
         /// Inserts spaces between words as indicated by camel case. For example,

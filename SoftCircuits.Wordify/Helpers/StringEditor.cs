@@ -200,6 +200,8 @@ namespace SoftCircuits.Wordify
         /// </summary>
         public override string ToString() => (InternalArray != null) ? new(InternalArray, 0, Length) : Original;
 
+        public string Substring(int startIndex, int length) => (InternalArray != null) ? new string(InternalArray, startIndex, length) : Original.Substring(startIndex, length);
+
         #region Character Access
 
         /// <summary>
@@ -234,117 +236,128 @@ namespace SoftCircuits.Wordify
 
         #endregion
 
-        #region IndexOf
+        #region IndexOf / Contains
 
-        // TODO: Can these work without building the array?
-
-        //public int IndexOf(char c, int startIndex = -1, int endIndex = -1)
-        //{
-        //    if (startIndex < 0)
-        //        startIndex = 0;
-        //    if (endIndex < 0)
-        //        endIndex = Length;
-
-        //    for (int i = startIndex; i < endIndex; i++)
-        //    {
-        //        if (this[i] == c)
-        //            return i;
-        //    }
-        //    return -1;
-        //}
-
-        //public int IndexOf(string s, int startIndex = -1, int endIndex = -1)
-        //{
-        //    if (startIndex < 0)
-        //        startIndex = 0;
-        //    if (endIndex < 0)
-        //        endIndex = Length - s.Length;
-
-        //    for (int i = startIndex; i < endIndex; i++)
-        //    {
-        //        for (int j = 0; j < s.Length; j++)
-        //        {
-        //            if (s[j] != this[i])
-        //                return i;
-        //        }
-        //    }
-        //    return -1;
-        //}
-
-        public int IndexOf(Func<char, bool> predicate, int startIndex = -1, int endIndex = -1)
+        public int IndexOf(char c, int startIndex = -1)
         {
             if (startIndex < 0)
                 startIndex = 0;
-            if (endIndex < 0)
-                endIndex = Length;
 
-            for (int i = startIndex; i < endIndex; i++)
+            for (int i = startIndex; i < Length; i++)
             {
-                if (predicate(this[i]))
+                if (GetAt(i) == c)
                     return i;
             }
             return -1;
         }
 
-        public int LastIndexOf(char c, int startIndex = -1, int endIndex = -1)
+        public int IndexOf(string s, int startIndex = -1)
         {
             if (startIndex < 0)
                 startIndex = 0;
-            if (endIndex < 0)
-                endIndex = Length - 1;
 
-            for (int i = endIndex; i >= startIndex; i--)
+            for (int i = startIndex; i < Length - (s.Length - 1); i++)
             {
-                if (this[i] == c)
+                int j = 0;
+                for (; j < s.Length; j++)
+                {
+                    if (GetAt(i + j) != s[j])
+                        break;
+                }
+                if (j == s.Length)
                     return i;
             }
             return -1;
         }
 
-        //public int LastIndexOf(string s, int startIndex = -1, int endIndex = -1)
-        //{
-        //    if (startIndex < 0)
-        //        startIndex = 0;
-        //    if (endIndex < 0)
-        //        endIndex = Length - 1;
-
-        //    for (int i = endIndex; i >= startIndex; i--)
-        //    {
-        //        for (int j = 0; j < s.Length; j++)
-        //        {
-        //            if (s[j] != this[i])
-        //                return i;
-        //        }
-        //    }
-        //    return -1;
-        //}
-
-        public int LastIndexOf(Func<char, bool> predicate, int startIndex = -1, int endIndex = -1)
+        public int IndexOf(Func<char, bool> predicate, int startIndex = -1)
         {
             if (startIndex < 0)
                 startIndex = 0;
-            if (endIndex < 0)
-                endIndex = Length - 1;
 
-            for (int i = endIndex; i >= startIndex; i--)
+            for (int i = startIndex; i < Length; i++)
             {
-                if (predicate(this[i]))
+                if (predicate(GetAt(i)))
                     return i;
             }
             return -1;
         }
 
-        //public bool FindFirstWord(out int startIndex, out int endIndex)
-        //{
+        public int LastIndexOf(char c, int startIndex = -1)
+        {
+            if (startIndex < 0)
+                startIndex = Length - 1;
 
-        //}
+            for (int i = startIndex; i >= 0; i--)
+            {
+                if (GetAt(i) == c)
+                    return i;
+            }
+            return -1;
+        }
+
+        public int LastIndexOf(string s, int startIndex = -1)
+        {
+            if (startIndex < 0)
+                startIndex = Length - 1;
+
+            for (int i = startIndex - (s.Length - 1); i >= 0; i--)
+            {
+                int j = 0;
+                for (; j < s.Length; j++)
+                {
+                    if (GetAt(i + j) != s[j])
+                        break;
+                }
+                if (j == s.Length)
+                    return i;
+            }
+            return -1;
+        }
+
+        public int LastIndexOf(Func<char, bool> predicate, int startIndex = -1)
+        {
+            if (startIndex < 0)
+                startIndex = Length - 1;
+
+            for (int i = startIndex; i >= 0; i--)
+            {
+                if (predicate(GetAt(i)))
+                    return i;
+            }
+            return -1;
+        }
+
+        public bool Contains(char c) => IndexOf(c) >= 0;
+
+        public bool Contains(string s) => IndexOf(s) >= 0;
+
+        public bool Contains(Func<char, bool> predicate) => IndexOf(predicate) >= 0;
+
+        #endregion
+
+        #region Find First/Last Word / Matching
+
+        public bool FindFirstWord(out int startIndex, out int endIndex)
+        {
+            startIndex = IndexOf(char.IsLetter);
+            if (startIndex >= 0)
+            {
+                endIndex = IndexOf(c => !char.IsLetter(c), startIndex + 1);
+                if (endIndex < 0)
+                    endIndex = Length;
+                return true;
+            }
+            endIndex = -1;
+            return false;
+        }
 
         public bool FindLastWord(out int startIndex, out int endIndex)
         {
             endIndex = LastIndexOf(char.IsLetter);
             if (endIndex >= 0)
             {
-                startIndex = LastIndexOf(c => !char.IsLetter(c), 0, endIndex);
+                startIndex = LastIndexOf(c => !char.IsLetter(c), endIndex - 1);
                 if (startIndex < 0)
                     startIndex = 0;
                 else
@@ -357,33 +370,24 @@ namespace SoftCircuits.Wordify
         }
 
 
-        public string Substring(int startIndex, int length)
-        {
-            if (InternalArray != null)
-                return new string(InternalArray, startIndex, length);
-            else
-                return Original.Substring(startIndex, length);
-        }
-
         //public bool MatchesAt(int index, string s, bool ignoreCase)
         //{
 
         //}
 
-        public bool MatchesEndingAt(int index, string s, bool ignoreCase)
+        public bool MatchesEndingAt(int index, string s, bool ignoreCase = false)
         {
-            Debug.Assert(s != null || s.Length == 0);
+            Debug.Assert(s != null && s.Length > 0);
 
             index -= s.Length - 1;
             if (index < 0)
                 return false;
 
-            char[] array = Array;
             if (ignoreCase)
             {
                 for (int i = 0; i < s.Length; i++)
                 {
-                    if (char.ToLower(array[index + i]) != char.ToLower(s[i]))
+                    if (char.ToLower(GetAt(index + i)) != char.ToLower(s[i]))
                         return false;
                 }
             }
@@ -391,7 +395,7 @@ namespace SoftCircuits.Wordify
             {
                 for (int i = 0; i < s.Length; i++)
                 {
-                    if (array[index + i] != s[i])
+                    if (GetAt(index + i) != s[i])
                         return false;
                 }
             }

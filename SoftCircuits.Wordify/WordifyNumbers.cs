@@ -50,12 +50,12 @@ namespace SoftCircuits.Wordify
         {
             string? fraction = FormatFraction(ref value, format);
 
-            decimal floor = Math.Floor(value);
-            StringBuilder builder = new(FormatNumber(floor.ToString()));
+            decimal dollars = Math.Floor(value);
+            StringBuilder builder = new(FormatNumber(dollars.ToString()));
             if (format == FractionOption.UsCurrency)
             {
                 builder.Append(' ');
-                builder.Append(Pluralize("dollar", floor));
+                builder.Append(Pluralize("dollar", dollars));
             }
             if (fraction != null)
             {
