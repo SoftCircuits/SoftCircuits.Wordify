@@ -3,44 +3,146 @@
     public static partial class Wordify
     {
         /// <summary>
+        /// Words that are the same for both singular and plural.
+        /// </summary>
+        private static readonly HashSet<string> DefectiveNounsLookup = new(StringComparer.OrdinalIgnoreCase)
+        {
+            "aircraft",
+            "binoculars",
+            "bison",
+            "bourgeois",
+            "buffalo",
+            "carps",
+            "chassis",
+            "clothes",
+            "cod",
+            "corps",
+            "deer",
+            "dice",
+            "elk",
+            "fish",
+            "fruit",
+            "gallows",
+            "glasses",
+            "goggles",
+            "goldfish",
+            "grouse",
+            "halibut",
+            "means",
+            "moose",
+            "offspring",
+            "pajamas",
+            "pants",
+            "pas", // faux pas
+            "reindeer",
+            "rendezvous",
+            "salmon",
+            "scissors",
+            "series",
+            "scissors",
+            "shrimp",
+            "sheep",
+            "shellfish",
+            "shorts",
+            "species",
+            "squid",
+            "swine",
+            "trout",
+            "tuna",
+            "tweezers",
+        };
+
+        private static readonly Dictionary<string, string> IrregularNounsLookup = new(StringComparer.OrdinalIgnoreCase)
+        {
+            ["analysis"] = "analyses",
+            ["antithesis"] = "antitheses",
+            ["axis"] = "axes",
+            ["bacillus"] = "bacilli",
+            ["bacterium"] = "bacteria",
+            ["child"] = "children",
+            ["codex"] = "codices",
+            ["crisis"] = "crises",
+            ["datum"] = "data",
+            ["diagnosis"] = "diagnoses",
+            ["die"] = "dice",
+            ["ellipsis"] = "ellipses",
+            ["erratum"] = "errata",
+            ["foot"] = "feet",
+            ["goose"] = "geese",
+            ["hypothesis"] = "hypotheses",
+            ["locus"] = "loci",
+            ["louse"] = "lice",
+            ["man"] = "men",
+            ["minutia"] = "minutiae",
+            ["mouse"] = "mice",
+            ["oasis"] = "oases",
+            ["ovum"] = "ova",
+            ["ox"] = "oxen",
+            ["parenthesis"] = "parentheses",
+            ["person"] = "people",
+            ["phylum"] = "phyla",
+            ["quiz"] = "quizzes",
+            ["stimulus"] = "stimuli",
+            ["stratum"] = "strata",
+            ["synopsis"] = "synopses",
+            ["thesis"] = "theses",
+            ["tooth"] = "teeth",
+            ["vita"] = "vitae",
+            ["woman"] = "women",
+
+            // Ends if "f" or "fe"
+            ["calf"] = "calves",
+            ["elf"] = "elves",
+            ["half"] = "halves",
+            ["knife"] = "knives",
+            ["leaf"] = "leaves",
+            ["life"] = "lives",
+            ["loaf"] = "loaves",
+            ["self"] = "selves",
+            ["thief"] = "thieves",
+            ["wife"] = "wives",
+            ["wolf"] = "wolves",
+        };
+
+        /// <summary>
         /// Converts a string to its plural form.
         /// </summary>
         /// <param name="s"></param>
         /// <returns></returns>
         public static string Pluralize(this string? s)
         {
-            bool isUpper = false;
-            int lastCharIndex = -1;
-
-            if (s != null)
-            {
-                for (int i = s.Length - 1; i >= 0; i--)
-                {
-                    if (char.IsLetter(s[i]))
-                    {
-                        isUpper = char.IsUpper(s[i]);
-                        lastCharIndex = i;
-                        break;
-                    }
-                }
-            }
-
-            if (lastCharIndex < 0)
-                return s ?? string.Empty;
+            if (s == null)
+                return string.Empty;
 
             StringEditor editor = new(s);
+            if (!editor.FindLastWord(out int startIndex, out int endIndex))
+                return s;
+            string lastWord = editor.Substring(startIndex, endIndex - startIndex);
 
-            if (char.ToLower(editor[lastCharIndex]) == 'y')
-            {
-                editor.Insert(lastCharIndex, isUpper ? "IES" : "ies");
-            }
-            else if (char.ToLower(editor[lastCharIndex]) == 's')
-            {
-                editor.Insert(lastCharIndex, isUpper ? "ES" : "es");
-            }
-            else editor.Insert(lastCharIndex, isUpper ? "S" : "s");
+            if (DefectiveNounsLookup.Contains(lastWord))
+                return s;
 
-            return editor.ToString();
+            if (IrregularNounsLookup.TryGetValue(lastWord, out string? replacement))
+            {
+                editor.Insert(startIndex, replacement, endIndex - startIndex);
+            }
+            else if (char.ToLower(editor[endIndex - 1]) == 'y' && endIndex >= 2 && editor[endIndex - 2].IsConsonant())
+            {
+                editor.Insert(endIndex - 1, "ies", 1);
+            }
+            else if (editor.MatchesEndingAt(endIndex - 1, "s", true) ||
+                editor.MatchesEndingAt(endIndex - 1, "x", true) ||
+                editor.MatchesEndingAt(endIndex - 1, "z", true) ||
+                editor.MatchesEndingAt(endIndex - 1, "sh", true) ||
+                editor.MatchesEndingAt(endIndex - 1, "ch", true))
+            {
+                editor.Insert(endIndex, "es");
+            }
+            else
+            {
+                editor.Insert(endIndex, "s");
+            }
+            return editor;
         }
 
         /// <summary>
@@ -50,51 +152,51 @@
         /// <returns></returns>
         public static string Singularize(this string? s)
         {
-            bool isUpper = false;
-            int lastCharIndex = -1;
+            if (s == null)
+                return string.Empty;
 
-            if (s != null)
+            StringEditor editor = new(s);
+            if (!editor.FindLastWord(out int startIndex, out int endIndex))
+                return s;
+            string lastWord = editor.Substring(startIndex, endIndex - startIndex);
+
+            if (DefectiveNounsLookup.Contains(lastWord))
+                return s;
+
+            string? replacement = null;
+            foreach (KeyValuePair<string, string> noun in IrregularNounsLookup)
             {
-                for (int i = s.Length - 1; i >= 0; i--)
+                if (lastWord.Equals(noun.Value, StringComparison.OrdinalIgnoreCase))
                 {
-                    if (char.IsLetter(s[i]))
-                    {
-                        isUpper = char.IsUpper(s[i]);
-                        lastCharIndex = i;
-                        break;
-                    }
+                    replacement = noun.Key;
+                    break;
                 }
             }
 
-            if (lastCharIndex < 0)
-                return s ?? string.Empty;
-
-            // TODO: EndsWith() is probably better for case-insensitive comparisons
-
-            StringEditor editor = new(s);
-
-            if (s.EndsWith("ies", StringComparison.OrdinalIgnoreCase))
-                return s[0..^3] + "y";
-            if (s.EndsWith("es", StringComparison.OrdinalIgnoreCase))
-                return s[0..^2];
-            if (s.EndsWith("s", StringComparison.OrdinalIgnoreCase))
-                return s[0..^1];
-            return s;
-
-
-
-
-            //if (char.ToLower(modifier[lastCharIndex]) == 'y')
-            //{
-            //    modifier.Replace(lastCharIndex, isUpper ? "IES" : "ies");
-            //}
-            //else if (char.ToLower(modifier[lastCharIndex]) == 's')
-            //{
-            //    modifier.Replace(lastCharIndex, isUpper ? "ES" : "es");
-            //}
-            //else modifier.Replace(lastCharIndex, isUpper ? "S" : "s");
-
-            //return modifier.ToString();
+            if (replacement != null)
+            {
+                editor.Insert(startIndex, replacement, endIndex - startIndex);
+            }
+            else if (editor.MatchesEndingAt(endIndex - 1, "ies", true))
+            {
+                editor.Insert(endIndex - 3, "y", 3);
+            }
+            else if (editor.MatchesEndingAt(endIndex - 1, "ses", true) ||
+                editor.MatchesEndingAt(endIndex - 1, "xes", true) ||
+                editor.MatchesEndingAt(endIndex - 1, "zes", true))
+            {
+                editor.Delete(endIndex - 2, 2);
+            }
+            else if (editor.MatchesEndingAt(endIndex - 1, "shes", true) ||
+                editor.MatchesEndingAt(endIndex - 1, "ches", true))
+            {
+                editor.Delete(endIndex - 2, 2);
+            }
+            else if (editor.MatchesEndingAt(endIndex - 1, "s", true))
+            {
+                editor.Delete(endIndex - 1, 1);
+            }
+            return editor;
         }
 
         /// <summary>

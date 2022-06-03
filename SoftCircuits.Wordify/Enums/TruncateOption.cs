@@ -1,7 +1,7 @@
 ﻿namespace SoftCircuits.Wordify
 {
     [Flags]
-    public enum TruncateOptions
+    public enum TruncateOption
     {
         /// <summary>
         /// Disable all options.

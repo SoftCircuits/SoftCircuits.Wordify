@@ -8,18 +8,18 @@ namespace WordifyTests
         [TestMethod]
         public void Tests()
         {
-            Assert.AreEqual($"\"\"", Wordify.DoubleQuotes(null));
-            Assert.AreEqual($"\"\"", Wordify.DoubleQuotes(""));
-            Assert.AreEqual($"\"a\"", Wordify.DoubleQuotes("a"));
-            Assert.AreEqual($"\"abc\"", Wordify.DoubleQuotes("abc"));
+            Assert.AreEqual($"\"\"", Wordify.SetInQuotes(null));
+            Assert.AreEqual($"\"\"", Wordify.SetInQuotes(""));
+            Assert.AreEqual($"\"a\"", Wordify.SetInQuotes("a"));
+            Assert.AreEqual($"\"abc\"", Wordify.SetInQuotes("abc"));
 
-            Assert.AreEqual($"''", Wordify.SingleQuotes(null));
-            Assert.AreEqual($"''", Wordify.SingleQuotes(""));
-            Assert.AreEqual($"'a'", Wordify.SingleQuotes("a"));
-            Assert.AreEqual($"'abc'", Wordify.SingleQuotes("abc"));
+            Assert.AreEqual($"''", Wordify.SetInSingleQuotes(null));
+            Assert.AreEqual($"''", Wordify.SetInSingleQuotes(""));
+            Assert.AreEqual($"'a'", Wordify.SetInSingleQuotes("a"));
+            Assert.AreEqual($"'abc'", Wordify.SetInSingleQuotes("abc"));
 
-            Assert.AreEqual($"\"a\"", Wordify.DoubleQuotes('a'));
-            Assert.AreEqual($"'a'", Wordify.SingleQuotes('a'));
+            Assert.AreEqual($"\"a\"", Wordify.SetInQuotes('a'));
+            Assert.AreEqual($"'a'", Wordify.SetInSingleQuotes('a'));
         }
     }
 }

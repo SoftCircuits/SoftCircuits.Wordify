@@ -61,6 +61,13 @@ namespace WordifyTests
             (long.MaxValue, "nine quintillion two hundred twenty-three quadrillion three hundred seventy-two trillion thirty-six billion eight hundred fifty-four million seven hundred seventy-five thousand eight hundred seven"),
         };
 
+        [TestMethod]
+        public void TestIntegers()
+        {
+            foreach ((long input, string output) in IntegerData)
+                Assert.AreEqual(output, Wordify.Transform(input));
+        }
+
         private static readonly List<(decimal, string)> FloatingPointData = new()
         {
             (0m, "zero and 00/100"),
@@ -165,30 +172,111 @@ namespace WordifyTests
         };
 
         [TestMethod]
-        public void TestIntegers()
-        {
-            foreach ((long input, string output) in IntegerData)
-                Assert.AreEqual(output, Wordify.Transform(input));
-        }
-
-        [TestMethod]
         public void TestFloatingPoints()
         {
             foreach ((decimal input, string output) in FloatingPointData)
-                Assert.AreEqual(output, Wordify.Transform(input, FractionFormat.Check));
+                Assert.AreEqual(output, Wordify.Transform(input, FractionOption.Check));
         }
+
+        private class FractionResult
+        {
+            public decimal Value { get; set; }
+            public string Result { get; set; }
+
+            public FractionResult(decimal value, string result)
+            {
+                Value = value;
+                Result = result;
+            }
+        }
+
+        private class FractionTest
+        {
+            public FractionOption Format { get; set; }
+            public List<FractionResult> Results { get; set; }
+
+            public FractionTest(FractionOption format, List<FractionResult> results)
+            {
+                Format = format;
+                Results = results;
+            }
+        }
+
+        private static readonly FractionTest[] FractionTests = new FractionTest[]
+        {
+            new(FractionOption.Round, new()
+            {
+                new(0.0m, "zero"),
+                new(0.0001m, "zero"),
+                new(0.25m, "zero"),
+                new(0.5m, "zero"),
+                new(0.5001m, "one"),
+                new(0.75m, "one"),
+                new(0.9999m, "one"),
+            }),
+            new(FractionOption.Truncate, new()
+            {
+                new(0.0m, "zero"),
+                new(0.0001m, "zero"),
+                new(0.25m, "zero"),
+                new(0.5m, "zero"),
+                new(0.75m, "zero"),
+                new(0.9999m, "zero"),
+            }),
+            new(FractionOption.Fraction, new()
+            {
+                new(0.0m, "zero"),
+                new(0.5m, "zero and 1/2"),
+                new(0.25m, "zero and 1/4"),
+                new(0.75m, "zero and 3/4"),
+                new(0.33m, "zero and 33/100"),
+                new(0.66m, "zero and 33/50"),
+            }),
+            new(FractionOption.Words, new()
+            {
+                new(0.0m, "zero"),
+                new(0.5m, "zero and one half"),
+                new(0.25m, "zero and one fourth"),
+                new(0.75m, "zero and three fourths"),
+                new(0.33m, "zero and thirty-three one hundredths"),
+                new(0.66m, "zero and thirty-three fiftieths"),
+            }),
+            new(FractionOption.Check, new()
+            {
+                new(0.0m, "zero and 00/100"),
+                new(0.001m, "zero and 00/100"),
+                new(0.01m, "zero and 01/100"),
+                new(0.5m, "zero and 50/100"),
+                new(0.25m, "zero and 25/100"),
+                new(0.75m, "zero and 75/100"),
+                new(0.33m, "zero and 33/100"),
+                new(0.66m, "zero and 66/100"),
+                new(0.0001m, "zero and 00/100"),
+                new(0.9999m, "one and 00/100"),
+            }),
+            new(FractionOption.UsCurrency, new()
+            {
+                new(0.0m, "zero dollars and no cents"),
+                new(0.001m, "zero dollars and no cents"),
+                new(0.01m, "zero dollars and one cent"),
+                new(0.5m, "zero dollars and fifty cents"),
+                new(0.25m, "zero dollars and twenty-five cents"),
+                new(0.75m, "zero dollars and seventy-five cents"),
+                new(0.33m, "zero dollars and thirty-three cents"),
+                new(0.66m, "zero dollars and sixty-six cents"),
+                new(0.0001m, "zero dollars and no cents"),
+                new(0.9999m, "one dollar and no cents"),
+            })
+        };
 
         [TestMethod]
         public void TestFractions()
         {
-            //Wordify.Tranform(0.12m, FractionFormat.Check)
-
-            //Assert.AreEqual("one hundred twenty-three", Wordify.Transform(123.4m, FractionFormat.Round));
-            //Assert.AreEqual("one hundred twenty-three", Wordify.Transform(123.4m, FractionFormat.Truncate));
-            //Assert.AreEqual("one hundred twenty-three and .4", Wordify.Transform(123.4m, FractionFormat.Decimal));
-            //Assert.AreEqual("one hundred twenty-three and 2/5", Wordify.Transform(123.4m, FractionFormat.Fraction));
-            ////Assert.AreEqual("one hundred twenty-three and two fifths", Stringify.Transform(123.4m, FractionFormat.Words));
-            //Assert.AreEqual("one hundred twenty-three and 40/100", Wordify.Transform(123.4m, FractionFormat.Check));
+            foreach (FractionTest test in FractionTests)
+            {
+                foreach (FractionResult result in test.Results)
+                    Assert.AreEqual(result.Result, Wordify.Transform(result.Value, test.Format));
+            }
         }
     }
 }

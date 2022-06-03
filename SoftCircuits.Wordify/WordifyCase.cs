@@ -6,41 +6,56 @@ namespace SoftCircuits.Wordify
     public static partial class Wordify
     {
         /// <summary>
-        /// Converts each character in the string to upper case.
+        /// Sets the case of this string's characters using the specified option.
         /// </summary>
-        /// <param name="s">The string to convert</param>
-        /// <param name="caseType"></param>
-        /// <returns></returns>
-        public static string SetCase(this string? s, CaseType caseType)
+        /// <param name="s">The string to convert.</param>
+        /// <param name="caseOption"></param>
+        /// <returns>The converted string.</returns>
+        public static string SetCase(this string? s, CaseOption caseOption)
         {
-            s ??= string.Empty;
+            if (s == null)
+                return string.Empty;
 
-            return caseType switch
+            return caseOption switch
             {
-                CaseType.Lower => s.ToLower(),
-                CaseType.Upper => s.ToUpper(),
-                CaseType.CapitalizeFirstCharacter => CapitalizeFirstCharacter(s),
-                CaseType.Sentence => SetSentenceCase(s),
-                CaseType.Title => SetTitleCase(s),
+                CaseOption.Lower => s.ToLower(),
+                CaseOption.Upper => s.ToUpper(),
+                CaseOption.CapitalizeFirstLetter => SetFirstLetterCapital(s),
+                CaseOption.Sentence => SetSentenceCase(s),
+                CaseOption.Title => SetTitleCase(s),
                 _ => s,
             };
         }
 
         /// <summary>
-        /// Capitalizes the first character in the given string. Does not modify any other characters.
+        /// Converts this string to upper case.
+        /// </summary>
+        /// <param name="s">The string to convert.</param>
+        /// <returns>The converted string.</returns>
+        public static string SetUpperCase(this string? s) => (s != null) ? s.ToUpper() : string.Empty;
+
+        /// <summary>
+        /// Convert this string to lower case.
+        /// </summary>
+        /// <param name="s">The string to convert.</param>
+        /// <returns>The converted string.</returns>
+        public static string SetLowerCase(this string? s) => (s != null) ? s.ToLower() : string.Empty;
+
+        /// <summary>
+        /// Capitalizes the first letter in the given string. Does not modify any other characters.
         /// </summary>
         /// <param name="s"></param>
         /// <returns></returns>
-        public static string CapitalizeFirstCharacter(this string? s)
+        public static string SetFirstLetterCapital(this string? s)
         {
             if (s == null || s.Length == 0)
                 return string.Empty;
 
-            if (!char.IsLower(s[0]))
-                return s;
-
             StringEditor editor = new(s);
-            editor[0] = char.ToUpper(editor[0]);
+            int firstLetterIndex = editor.IndexOf(char.IsLetter);
+            if (!char.IsLower(editor[firstLetterIndex]))
+                return s;
+            editor[firstLetterIndex] = char.ToUpper(editor[firstLetterIndex]);
             return editor;
         }
 

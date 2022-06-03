@@ -10,9 +10,7 @@ namespace WordifyTests
         {
             List<(int, string)> data = new()
             {
-                // TODO:
-                //(0, "0th"),
-
+                (0, "zeroth"),
                 (1, "first"),
                 (2, "second"),
                 (3, "third"),
@@ -73,6 +71,13 @@ namespace WordifyTests
                 (1000002, "one million second"),
                 (1000003, "one million third"),
                 (1000004, "one million fourth"),
+                (-7, "negative seventh"),
+                (-8, "negative eighth"),
+                (-9, "negative ninth"),
+                (-10, "negative tenth"),
+                (-11, "negative eleventh"),
+                (-12, "negative twelfth"),
+                (-13, "negative thirteenth"),
             };
 
             foreach ((int input, string output) in data)
@@ -145,9 +150,94 @@ namespace WordifyTests
                 (1000002, "1,000,002nd"),
                 (1000003, "1,000,003rd"),
                 (1000004, "1,000,004th"),
+                (-30, "-30th"),
+                (-100, "-100th"),
+                (-101, "-101st"),
+                (-102, "-102nd"),
+                (-103, "-103rd"),
+                (-104, "-104th"),
             };
 
             foreach ((int input, string output) in data)
+                Assert.AreEqual(output, Wordify.MakeOrdinalDigits(input));
+        }
+
+        [TestMethod]
+        public void TestOrdinalDigitsStrings()
+        {
+            List<(string?, string)> data = new()
+            {
+                ("0", "0th"),
+                ("1", "1st"),
+                ("2", "2nd"),
+                ("3", "3rd"),
+                ("4", "4th"),
+                ("5", "5th"),
+                ("6", "6th"),
+                ("7", "7th"),
+                ("8", "8th"),
+                ("9", "9th"),
+                ("10", "10th"),
+                ("11", "11th"),
+                ("12", "12th"),
+                ("13", "13th"),
+                ("14", "14th"),
+                ("15", "15th"),
+                ("16", "16th"),
+                ("17", "17th"),
+                ("18", "18th"),
+                ("19", "19th"),
+                ("20", "20th"),
+                ("21", "21st"),
+                ("22", "22nd"),
+                ("23", "23rd"),
+                ("24", "24th"),
+                ("25", "25th"),
+                ("26", "26th"),
+                ("27", "27th"),
+                ("28", "28th"),
+                ("29", "29th"),
+                ("30", "30th"),
+                ("100", "100th"),
+                ("101", "101st"),
+                ("102", "102nd"),
+                ("103", "103rd"),
+                ("104", "104th"),
+                ("105", "105th"),
+                ("106", "106th"),
+                ("107", "107th"),
+                ("108", "108th"),
+                ("109", "109th"),
+                ("-110", "-110th"),
+                ("-111", "-111th"),
+                ("-112", "-112th"),
+                ("-113", "-113th"),
+                ("-114", "-114th"),
+                ("115", "115th"),
+                ("116", "116th"),
+                ("2000", "2000th"),
+                ("2001", "2001st"),
+                ("2002", "2002nd"),
+                ("2003", "2003rd"),
+                ("2004", "2004th"),
+                ("2022", "2022nd"),
+                ("2023", "2023rd"),
+                ("2024", "2024th"),
+                ("1000000", "1000000th"),
+                ("1000001", "1000001st"),
+                ("1000002", "1000002nd"),
+                ("1000003", "1000003rd"),
+                ("1,000,004", "1,000,004th"),
+                (null, ""),
+                ("", ""),
+                (" 0 ", " 0th "),
+                (">>>1<<<", ">>>1st<<<"),
+                ("2!", "2nd!"),
+                ("f(3)", "f(3rd)"),
+                ("...100...", "...100th..."),
+            };
+
+            foreach ((string? input, string output) in data)
                 Assert.AreEqual(output, Wordify.MakeOrdinalDigits(input));
         }
     }

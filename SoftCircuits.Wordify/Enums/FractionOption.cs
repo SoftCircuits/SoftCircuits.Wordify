@@ -1,6 +1,6 @@
 ﻿namespace SoftCircuits.Wordify
 {
-    public enum FractionFormat
+    public enum FractionOption
     {
         /// <summary>
         /// Round to the nearest whole number value and do not display any fractional portion.
@@ -18,18 +18,23 @@
         Decimal,
 
         /// <summary>
-        /// Display any fractional portion using a fraction (e.g. "4 3/4").
+        /// Display any fractional portion using a fraction (e.g. "3/4").
         /// </summary>
         Fraction,
 
         /// <summary>
-        /// Display any fractional portion using words.
+        /// Display any fractional portion using words (e.g. "three fourths").
         /// </summary>
         Words,
 
         /// <summary>
-        /// Display the fractional portion as is common when writing checks (e.g. "4 75/100").
+        /// Display the fractional portion as is common when writing checks (e.g. "75/100").
         /// </summary>
-        Check
+        Check,
+
+        /// <summary>
+        /// Display the fraction portion as US currency (e.g. "seventy-five cents").
+        /// </summary>
+        UsCurrency,
     }
 }

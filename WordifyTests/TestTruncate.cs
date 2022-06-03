@@ -5,13 +5,13 @@ namespace WordifyTests
     [TestClass]
     public class TestTruncate
     {
-        class TruncateTest
+        private class TruncateTest
         {
             public string Input { get; set; }
-            public TruncateOptions Options { get; set; }
+            public TruncateOption Options { get; set; }
             public List<TruncateResult> Results { get; set; }
 
-            public TruncateTest(string input, TruncateOptions options)
+            public TruncateTest(string input, TruncateOption options)
             {
                 Input = input;
                 Options = options;
@@ -19,7 +19,7 @@ namespace WordifyTests
             }
         }
 
-        class TruncateResult
+        private class TruncateResult
         {
             public int MaxLength { get; set; }
             public string Result { get; set; }
@@ -33,7 +33,7 @@ namespace WordifyTests
 
         private readonly List<TruncateTest> TruncateTestData = new()
         {
-            new("This is a test.", TruncateOptions.TrimPartialWords | TruncateOptions.AppendEllipsis)
+            new("This is a test.", TruncateOption.TrimPartialWords | TruncateOption.AppendEllipsis)
             {
                 Results = new()
                 {
@@ -55,7 +55,7 @@ namespace WordifyTests
                     new(0, string.Empty),
                 }
             },
-            new("This is a test.", TruncateOptions.AppendEllipsis)
+            new("This is a test.", TruncateOption.AppendEllipsis)
             {
                 Results = new()
                 {
@@ -77,7 +77,7 @@ namespace WordifyTests
                     new(0, string.Empty),
                 }
             },
-            new("This is a test.", TruncateOptions.TrimPartialWords)
+            new("This is a test.", TruncateOption.TrimPartialWords)
             {
                 Results = new()
                 {
@@ -99,7 +99,7 @@ namespace WordifyTests
                     new(0, string.Empty),
                 }
             },
-            new("This is a test.", TruncateOptions.None)
+            new("This is a test.", TruncateOption.None)
             {
                 Results = new()
                 {

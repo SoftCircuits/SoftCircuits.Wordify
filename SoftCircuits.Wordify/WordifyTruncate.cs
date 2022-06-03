@@ -14,7 +14,7 @@ namespace SoftCircuits.Wordify
         /// <param name="options">Specifies truncate options.</param>
         /// <returns>The modified string.</returns>
         /// <exception cref="ArgumentOutOfRangeException"></exception>
-        public static string Truncate(this string? s, int maxLength, TruncateOptions options = TruncateOptions.None)
+        public static string Truncate(this string? s, int maxLength, TruncateOption options = TruncateOption.None)
         {
             if (maxLength < 0)
                 throw new ArgumentOutOfRangeException(nameof(maxLength), "Length cannot be less than zero.");
@@ -26,17 +26,17 @@ namespace SoftCircuits.Wordify
                 return s;
 
             StringEditor editor = new(s);
-            if (options.HasFlag(TruncateOptions.AppendEllipsis))
+            if (options.HasFlag(TruncateOption.AppendEllipsis))
             {
                 if (maxLength > Ellipsis.Length)
                     maxLength -= Ellipsis.Length;
                 else
-                    options &= ~TruncateOptions.AppendEllipsis;
+                    options &= ~TruncateOption.AppendEllipsis;
             }
 
             int length = maxLength;
 
-            if (options.HasFlag(TruncateOptions.TrimPartialWords))
+            if (options.HasFlag(TruncateOption.TrimPartialWords))
             {
                 while (length > 0 && StringHelper.IsWordCharacter(editor, length))
                     length--;
@@ -48,7 +48,7 @@ namespace SoftCircuits.Wordify
 
             editor.Resize(length);
 
-            if (options.HasFlag(TruncateOptions.AppendEllipsis))
+            if (options.HasFlag(TruncateOption.AppendEllipsis))
                 editor.Append(Ellipsis);
 
             return editor;

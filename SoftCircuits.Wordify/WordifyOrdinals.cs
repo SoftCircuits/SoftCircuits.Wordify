@@ -1,38 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace SoftCircuits.Wordify
+﻿namespace SoftCircuits.Wordify
 {
     public static partial class Wordify
     {
-        // Ordinal Rules:
-        //
-        // Translations:
-        // One = first
-        // Two = second
-        // Three = third
-        // Five = fifth
-        // Eight = eighth
-        // Nine = “ninth”
-        // Twelve = Twelfth
-        //
-        // When numbers end in "y" this letter is replaced with "ieth"
-        // Twenty = twentieth
-        // Thirty = thirtieth
-        // Forty = fortieth
-        // Fifty = fiftieth
-        // Eighty = eightieth
-        //
-        // Remember that, in compound numbers, "th" is added only to the last digit
-        // 422 = four hundred and twenty-second
-        // 5111 = five thousand, one hundred and eleventh
-        // 650 = six hundred and fortieth
-        // 129 = one hundred and twenty-ninth
-
-        private static Dictionary<string, string> OrdinalReplacementLookup = new(StringComparer.OrdinalIgnoreCase)
+        /// <summary>
+        /// Numbers with different words for ordinal version.
+        /// </summary>
+        private static readonly Dictionary<string, string> OrdinalReplacementLookup = new(StringComparer.OrdinalIgnoreCase)
         {
             ["one"] = "first",
             ["two"] = "second",
@@ -44,67 +17,73 @@ namespace SoftCircuits.Wordify
         };
 
         /// <summary>
-        /// 
+        /// Converts a number to ordinal words.
         /// </summary>
-        /// <param name="value"></param>
-        /// <returns></returns>
+        /// <param name="value">The value to convert.</param>
+        /// <returns>The resulting ordinal string.</returns>
         public static string MakeOrdinal(int value) => MakeOrdinal(Transform(value));
 
         /// <summary>
-        /// 
+        /// Converts a number to ordinal words.
         /// </summary>
-        /// <param name="value"></param>
-        /// <returns></returns>
+        /// <param name="value">The value to convert.</param>
+        /// <returns>The resulting ordinal string.</returns>
         public static string MakeOrdinal(long value) => MakeOrdinal(Transform(value));
 
+        /// <summary>
+        /// Converts a number to ordinal words.
+        /// </summary>
+        /// <param name="value">The value to convert.</param>
+        /// <returns>The resulting ordinal string.</returns>
+        public static string MakeOrdinal(uint value) => MakeOrdinal(Transform(value));
 
-        // TODO: Do we need a version that uses digits? (e.g. 2nd, 21st ?)
-        public static string MakeOrdinal(string? s)
+        /// <summary>
+        /// Converts a number to ordinal words.
+        /// </summary>
+        /// <param name="value">The value to convert.</param>
+        /// <returns>The resulting ordinal string.</returns>
+        public static string MakeOrdinal(ulong value) => MakeOrdinal(Transform(value));
+
+        /// <summary>
+        /// Converts a string of numbers, expressed as word, to an ordinal version.
+        /// </summary>
+        /// <remarks>
+        /// We might want to make this public but it will ignore strings with just digits.
+        /// Also, it doesnt test for non-number words (e.g. would convert boy to boieth).
+        /// </remarks>
+        /// <param name="s"></param>
+        /// <returns></returns>
+        private static string MakeOrdinal(string? s)
         {
             if (s == null)
                 return string.Empty;
 
-            s = s.Trim();
-            if (s.Length == 0)
-                return s;
-
             StringEditor editor = new(s);
 
             // Find last word
-            int pos = s.Length - 1;
-            while (pos >= 0 && !char.IsLetter(editor[pos]))
-                pos--;
-            int lastWordEnd = pos + 1;
+            if (!editor.FindLastWord(out int startIndex, out int endIndex))
+                return s;   // No words
 
-            while (pos >= 0 && char.IsLetter(editor[pos]))
-                pos--;
-            int lastWordStart = pos + 1;
-
-            if (lastWordStart == lastWordEnd)
-                return s;
-
-            string lastWord = editor[lastWordStart..lastWordEnd];
+            string lastWord = editor[startIndex..endIndex];
 
             if (OrdinalReplacementLookup.TryGetValue(lastWord, out string? replacement))
             {
-                editor.Insert(lastWordStart, replacement, lastWord.Length);
+                editor.Insert(startIndex, replacement, lastWord.Length);
             }
             else if (lastWord[^1] == 'y')
             {
-                editor.Insert(lastWordEnd - 1, "ieth", 1);
+                editor.Insert(endIndex - 1, "ieth", 1);
             }
             else
             {
-                editor.Insert(lastWordEnd, "th");
+                editor.Insert(endIndex, "th");
             }
 
             return editor;
         }
 
-
-
         /// <summary>
-        /// Converts a number info an ordinal number string.
+        /// Converts a number into an ordinal number string.
         /// </summary>
         /// <param name="value">The value to convert.</param>
         /// <param name="format">Format string used to create the digits.</param>
@@ -112,7 +91,7 @@ namespace SoftCircuits.Wordify
         public static string MakeOrdinalDigits(int value, string format = "#,0") => MakeOrdinalDigits(value.ToString(format));
 
         /// <summary>
-        /// Converts a number info an ordinal number string.
+        /// Converts a number into an ordinal number string.
         /// </summary>
         /// <param name="value">The value to convert.</param>
         /// <param name="format">Format string used to create the digits.</param>
@@ -120,7 +99,23 @@ namespace SoftCircuits.Wordify
         public static string MakeOrdinalDigits(long value, string format = "#,0") => MakeOrdinalDigits(value.ToString(format));
 
         /// <summary>
-        /// Converts a number info an ordinal number string.
+        /// Converts a number into an ordinal number string.
+        /// </summary>
+        /// <param name="value">The value to convert.</param>
+        /// <param name="format">Format string used to create the digits.</param>
+        /// <returns>The ordinal string.</returns>
+        public static string MakeOrdinalDigits(uint value, string format = "#,0") => MakeOrdinalDigits(value.ToString(format));
+
+        /// <summary>
+        /// Converts a number into an ordinal number string.
+        /// </summary>
+        /// <param name="value">The value to convert.</param>
+        /// <param name="format">Format string used to create the digits.</param>
+        /// <returns>The ordinal string.</returns>
+        public static string MakeOrdinalDigits(ulong value, string format = "#,0") => MakeOrdinalDigits(value.ToString(format));
+
+        /// <summary>
+        /// Converts a number into an ordinal number string.
         /// </summary>
         /// <param name="s">A string with numeric digits.</param>
         /// <returns>The ordinal string.</returns>
@@ -129,12 +124,14 @@ namespace SoftCircuits.Wordify
             if (string.IsNullOrEmpty(s))
                 return string.Empty;
 
-            char lastDigit = s[^1];
-            char prevDigit = (s.Length > 1) ? s[^2] : '\0';
-            string suffix;
+            StringEditor editor = new(s);
+            int lastDigitIndex = editor.LastIndexOf(char.IsDigit);
+            if (lastDigitIndex < 0)
+                return s;   // No digits
 
-            if (!char.IsDigit(lastDigit))
-                return s;
+            char lastDigit = editor[lastDigitIndex];
+            char prevDigit = (lastDigitIndex > 0) ? editor[lastDigitIndex - 1] : '\0';
+            string suffix;
 
             if (lastDigit == '1' && prevDigit != '1')
                 suffix = "st";
@@ -145,7 +142,8 @@ namespace SoftCircuits.Wordify
             else
                 suffix = "th";
 
-            return string.Concat(s, suffix);
+            editor.Insert(lastDigitIndex + 1, suffix);
+            return editor;
         }
     }
 }

@@ -236,42 +236,40 @@ namespace SoftCircuits.Wordify
 
         #region IndexOf
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="c"></param>
-        /// <param name="startIndex">inclusive</param>
-        /// <param name="endIndex">exclusive</param>
-        /// <returns></returns>
-        public int IndexOf(char c, int startIndex = -1, int endIndex = -1)
-        {
-            if (startIndex < 0)
-                startIndex = 0;
-            if (endIndex < 0)
-                endIndex = Length;
+        // TODO: Can these work without building the array?
 
-            for (int i = startIndex; i < endIndex; i++)
-            {
-                if (this[i] == c)
-                    return i;
-            }
-            return -1;
-        }
+        //public int IndexOf(char c, int startIndex = -1, int endIndex = -1)
+        //{
+        //    if (startIndex < 0)
+        //        startIndex = 0;
+        //    if (endIndex < 0)
+        //        endIndex = Length;
 
-        public int LastIndexOf(char c, int startIndex = -1, int endIndex = -1)
-        {
-            if (startIndex < 0)
-                startIndex = 0;
-            if (endIndex < 0)
-                endIndex = Length;
+        //    for (int i = startIndex; i < endIndex; i++)
+        //    {
+        //        if (this[i] == c)
+        //            return i;
+        //    }
+        //    return -1;
+        //}
 
-            for (int i = startIndex; i < endIndex; i++)
-            {
-                if (this[i] == c)
-                    return i;
-            }
-            return -1;
-        }
+        //public int IndexOf(string s, int startIndex = -1, int endIndex = -1)
+        //{
+        //    if (startIndex < 0)
+        //        startIndex = 0;
+        //    if (endIndex < 0)
+        //        endIndex = Length - s.Length;
+
+        //    for (int i = startIndex; i < endIndex; i++)
+        //    {
+        //        for (int j = 0; j < s.Length; j++)
+        //        {
+        //            if (s[j] != this[i])
+        //                return i;
+        //        }
+        //    }
+        //    return -1;
+        //}
 
         public int IndexOf(Func<char, bool> predicate, int startIndex = -1, int endIndex = -1)
         {
@@ -288,22 +286,116 @@ namespace SoftCircuits.Wordify
             return -1;
         }
 
-        public int IndexOf(string s, int startIndex = -1, int endIndex = -1)
+        public int LastIndexOf(char c, int startIndex = -1, int endIndex = -1)
         {
             if (startIndex < 0)
                 startIndex = 0;
             if (endIndex < 0)
-                endIndex = Length - s.Length;
+                endIndex = Length - 1;
 
-            for (int i = startIndex; i < endIndex; i++)
+            for (int i = endIndex; i >= startIndex; i--)
             {
-                for (int j = 0; j < s.Length; j++)
-                {
-                    if (s[j] != this[i])
-                        return i;
-                }
+                if (this[i] == c)
+                    return i;
             }
             return -1;
+        }
+
+        //public int LastIndexOf(string s, int startIndex = -1, int endIndex = -1)
+        //{
+        //    if (startIndex < 0)
+        //        startIndex = 0;
+        //    if (endIndex < 0)
+        //        endIndex = Length - 1;
+
+        //    for (int i = endIndex; i >= startIndex; i--)
+        //    {
+        //        for (int j = 0; j < s.Length; j++)
+        //        {
+        //            if (s[j] != this[i])
+        //                return i;
+        //        }
+        //    }
+        //    return -1;
+        //}
+
+        public int LastIndexOf(Func<char, bool> predicate, int startIndex = -1, int endIndex = -1)
+        {
+            if (startIndex < 0)
+                startIndex = 0;
+            if (endIndex < 0)
+                endIndex = Length - 1;
+
+            for (int i = endIndex; i >= startIndex; i--)
+            {
+                if (predicate(this[i]))
+                    return i;
+            }
+            return -1;
+        }
+
+        //public bool FindFirstWord(out int startIndex, out int endIndex)
+        //{
+
+        //}
+
+        public bool FindLastWord(out int startIndex, out int endIndex)
+        {
+            endIndex = LastIndexOf(char.IsLetter);
+            if (endIndex >= 0)
+            {
+                startIndex = LastIndexOf(c => !char.IsLetter(c), 0, endIndex);
+                if (startIndex < 0)
+                    startIndex = 0;
+                else
+                    startIndex++;
+                endIndex++;
+                return true;
+            }
+            startIndex = -1;
+            return false;
+        }
+
+
+        public string Substring(int startIndex, int length)
+        {
+            if (InternalArray != null)
+                return new string(InternalArray, startIndex, length);
+            else
+                return Original.Substring(startIndex, length);
+        }
+
+        //public bool MatchesAt(int index, string s, bool ignoreCase)
+        //{
+
+        //}
+
+        public bool MatchesEndingAt(int index, string s, bool ignoreCase)
+        {
+            Debug.Assert(s != null || s.Length == 0);
+
+            index -= s.Length - 1;
+            if (index < 0)
+                return false;
+
+            char[] array = Array;
+            if (ignoreCase)
+            {
+                for (int i = 0; i < s.Length; i++)
+                {
+                    if (char.ToLower(array[index + i]) != char.ToLower(s[i]))
+                        return false;
+                }
+            }
+            else
+            {
+                for (int i = 0; i < s.Length; i++)
+                {
+                    if (array[index + i] != s[i])
+                        return false;
+                }
+            }
+            return true;
         }
 
         #endregion

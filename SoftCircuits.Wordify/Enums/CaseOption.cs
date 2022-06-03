@@ -1,6 +1,6 @@
 ﻿namespace SoftCircuits.Wordify
 {
-    public enum CaseType
+    public enum CaseOption
     {
         /// <summary>
         /// Converts each character in the string to upper case.
@@ -13,10 +13,10 @@
         Lower,
 
         /// <summary>
-        /// Convert only the first character to upper case. Leave all other characters
+        /// Convert only the first letter to upper case. All other characters left unchanged.
         /// unchanged.
         /// </summary>
-        CapitalizeFirstCharacter,
+        CapitalizeFirstLetter,
 
         /// <summary>
         /// Converts the first character of each sentence to upper case.

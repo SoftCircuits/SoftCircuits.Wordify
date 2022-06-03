@@ -39,41 +39,30 @@ namespace SoftCircuits.Wordify
         /// </summary>
         /// <param name="value">The value to convert.</param>
         /// <returns>The converted string.</returns>
-        public static string Transform(double value, FractionFormat format) => Transform((decimal)value, format);
+        public static string Transform(double value, FractionOption format) => Transform((decimal)value, format);
 
         /// <summary>
         /// Converts the given value to words.
         /// </summary>
         /// <param name="value">The value to convert.</param>
         /// <returns>The converted string.</returns>
-        public static string Transform(decimal value, FractionFormat format)
+        public static string Transform(decimal value, FractionOption format)
         {
             string? fraction = FormatFraction(ref value, format);
-            string s = FormatNumber(Math.Floor(value).ToString());
+
+            decimal floor = Math.Floor(value);
+            StringBuilder builder = new(FormatNumber(floor.ToString()));
+            if (format == FractionOption.UsCurrency)
+            {
+                builder.Append(' ');
+                builder.Append(Pluralize("dollar", floor));
+            }
             if (fraction != null)
-                s = $"{s} and {fraction}";
-
-
-            //string s = WordifyNumber(value.ToString());
-            //if (sFraction != null)
-            //{
-            //    StringEditor editor = new(s);
-
-            //    // Replace " and " with ", "
-            //    // Append " and "
-            //    // Append fraction
-
-            //    int i = editor.IndexOf(" and ");
-            //    if (i != -1)
-            //        editor.Insert(i, ", ", 5);
-            //    editor.Append(sFraction);
-
-            //    return editor;
-            //}
-            //else return s;
-
-
-            return s;
+            {
+                builder.Append(" and ");
+                builder.Append(fraction);
+            }
+            return builder.ToString();
         }
 
         [Flags]
@@ -198,7 +187,7 @@ namespace SoftCircuits.Wordify
         /// The formatted fraction is positive regardless of the sign of <paramref name="value"/>.
         /// </para>
         /// <para>
-        /// If <paramref name="format"/> is <see cref="FractionFormat.Round"/> or <see cref="FractionFormat.Truncate"/>,
+        /// If <paramref name="format"/> is <see cref="FractionOption.Round"/> or <see cref="FractionOption.Truncate"/>,
         /// <paramref name="value"/> is modified by being rounded to the appropriate whole number.
         /// </para>
         /// </summary>
@@ -206,7 +195,7 @@ namespace SoftCircuits.Wordify
         /// <param name="format">The type of format to use.</param>
         /// <returns>The formatted fractional part of <paramref name="value"/>, or <c>null</c> if it
         /// has no fractional part after possible modification.</returns>
-        private static string? FormatFraction(ref decimal value, FractionFormat format)
+        private static string? FormatFraction(ref decimal value, FractionOption format)
         {
             // Note: Math.Floor rounds down, Math.Ceiling rounds up, and Math.Truncate rounds towards zero.
             decimal integralPart = Math.Truncate(value);
@@ -215,19 +204,19 @@ namespace SoftCircuits.Wordify
 
             switch (format)
             {
-                case FractionFormat.Round:
+                case FractionOption.Round:
                     value = Math.Round(value);
                     break;
 
-                case FractionFormat.Truncate:
+                case FractionOption.Truncate:
                     value = integralPart;
                     break;
 
-                case FractionFormat.Decimal:
+                case FractionOption.Decimal:
                     fraction = fractionalPart.ToString(".0");
                     break;
 
-                case FractionFormat.Fraction:
+                case FractionOption.Fraction:
                     {
                         Fraction f = Fraction.FromReal(fractionalPart);
                         if (!f.IsEmpty)
@@ -235,7 +224,7 @@ namespace SoftCircuits.Wordify
                     }
                     break;
 
-                case FractionFormat.Words:
+                case FractionOption.Words:
                 default:
                     {
                         Fraction f = Fraction.FromReal(fractionalPart);
@@ -258,13 +247,30 @@ namespace SoftCircuits.Wordify
                     }
                     break;
 
-                case FractionFormat.Check:
+                case FractionOption.Check:
                     {
                         int cents = (int)Math.Round(fractionalPart * 100.0m);
-                        //if (cents > 0)
-                            fraction = $"{cents:00}/100";
-                        //else
-                        //    fraction = "XX/100";
+                        if (cents >= 100)
+                        {
+                            value += 1;
+                            cents = 0;
+                        }
+                        fraction = $"{cents:00}/100";
+                    }
+                    break;
+
+                case FractionOption.UsCurrency:
+                    {
+                        int cents = (int)Math.Round(fractionalPart * 100.0m);
+                        if (cents >= 100)
+                        {
+                            value += 1;
+                            cents = 0;
+                        }
+                        if (cents == 0)
+                            fraction = "no cents";
+                        else
+                            fraction = $"{FormatNumber(cents.ToString())} {Pluralize("cent", cents)}";
                     }
                     break;
             }
