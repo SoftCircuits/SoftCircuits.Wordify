@@ -1,4 +1,8 @@
-﻿using System.Diagnostics;
+﻿// Copyright (c) 2022 Jonathan Wood (www.softcircuits.com)
+// Licensed under the MIT license.
+//
+
+using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
 using System.Runtime.CompilerServices;
 
@@ -223,10 +227,13 @@ namespace SoftCircuits.Wordify
         {
             get
             {
-                int start = range.Start.GetOffset(Length);
-                return (InternalArray != null) ?
-                    new(InternalArray, start, range.End.GetOffset(Length) - start) :
-                    Original[range];
+                if (InternalArray != null)
+                {
+                    int startIndex = range.Start.GetOffset(Length);
+                    int length = range.End.GetOffset(Length) - startIndex;
+                    return new(InternalArray, startIndex, length);
+                }
+                else return Original[range];
             }
         }
 

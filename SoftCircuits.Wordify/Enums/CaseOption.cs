@@ -1,30 +1,33 @@
-﻿namespace SoftCircuits.Wordify
+﻿// Copyright (c) 2022 Jonathan Wood (www.softcircuits.com)
+// Licensed under the MIT license.
+//
+
+namespace SoftCircuits.Wordify
 {
     public enum CaseOption
     {
         /// <summary>
-        /// Converts each character in the string to upper case.
+        /// Convert each character in the string to upper case.
         /// </summary>
         Upper,
 
         /// <summary>
-        /// Converts each character in the string to lower case.
+        /// Convert each character in the string to lower case.
         /// </summary>
         Lower,
 
         /// <summary>
-        /// Convert only the first letter to upper case. All other characters left unchanged.
-        /// unchanged.
+        /// Convert the first letter to upper case. All other characters are left unchanged.
         /// </summary>
         CapitalizeFirstLetter,
 
         /// <summary>
-        /// Converts the first character of each sentence to upper case.
+        /// Convert the first letter of each sentence to upper case.
         /// </summary>
         Sentence,
 
         /// <summary>
-        /// Converts the string to title capitalization.
+        /// Convert the string to title capitalization.
         /// </summary>
         Title,
     }

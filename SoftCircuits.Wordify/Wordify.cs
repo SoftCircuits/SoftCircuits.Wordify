@@ -1,4 +1,8 @@
-﻿using System.Text;
+﻿// Copyright (c) 2022 Jonathan Wood (www.softcircuits.com)
+// Licensed under the MIT license.
+//
+
+using System.Text;
 
 namespace SoftCircuits.Wordify
 {
@@ -88,17 +92,6 @@ namespace SoftCircuits.Wordify
         public static string? NullIfEmptyOrWhiteSpace(this string? s) => string.IsNullOrWhiteSpace(s) ? null : s;
 
         #endregion
-
-
-
-
-
-
-        // Dates
-
-
-        // TimeSpans
-
 
         /// <summary>
         /// Inserts spaces into this string. If the string contains hyphens, they are replaced with spaces.

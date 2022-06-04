@@ -1,5 +1,8 @@
-﻿using SoftCircuits.Wordify.Helpers;
-using System.Diagnostics;
+﻿// Copyright (c) 2022 Jonathan Wood (www.softcircuits.com)
+// Licensed under the MIT license.
+//
+
+using SoftCircuits.Wordify.Helpers;
 
 namespace SoftCircuits.Wordify
 {
@@ -48,77 +51,52 @@ namespace SoftCircuits.Wordify
         /// <returns></returns>
         public static string SetFirstLetterCapital(this string? s)
         {
-            if (s == null || s.Length == 0)
-                return string.Empty;
-
-            StringEditor editor = new(s);
-            int firstLetterIndex = editor.IndexOf(char.IsLetter);
-            if (!char.IsLower(editor[firstLetterIndex]))
-                return s;
-            editor[firstLetterIndex] = char.ToUpper(editor[firstLetterIndex]);
-            return editor;
+            if (s != null && s.Length > 0)
+            {
+                StringEditor editor = new(s);
+                int firstLetterIndex = editor.IndexOf(char.IsLetter);
+                if (firstLetterIndex != -1)
+                {
+                    if (char.IsLower(editor[firstLetterIndex]))
+                    {
+                        editor[firstLetterIndex] = char.ToUpper(editor[firstLetterIndex]);
+                        return editor;
+                    }
+                }
+            }
+            return s ?? string.Empty;
         }
 
-        #region Sentence Case
-
         /// <summary>
-        /// Converts a string to sentence case.
+        /// Converts a string to sentence case by capitalizing the first letter in each sentence.
         /// </summary>
         public static string SetSentenceCase(string? s)
         {
             bool inSentence = false;
-            int wordStart = -1;
-            int i;
 
             StringEditor editor = new(s);
-            for (i = 0; i < editor.Length; i++)
+            for (int i = 0; i < editor.Length; i++)
             {
                 if (StringHelper.IsWordCharacter(editor, i))
                 {
-                    if (wordStart == -1)
-                        wordStart = i;
+                    if (!inSentence)
+                    {
+                        editor[i] = char.ToUpper(editor[i]);
+                        inSentence = true;
+                    }
                 }
-                else if (wordStart != -1)
+                else if (StringHelper.IsEndOfSentenceCharacter(editor, i))
                 {
-                    SetWordSentenceCase(editor, wordStart, i, ref inSentence);
-                    wordStart = -1;
+                    inSentence = false;
                 }
             }
-
-            if (wordStart != -1)
-                SetWordSentenceCase(editor, wordStart, i, ref inSentence);
-
             return editor;
         }
 
-        private static void SetWordSentenceCase(StringEditor editor, int wordStart, int wordEnd, ref bool inSentence)
-        {
-            Debug.Assert(wordStart != -1);
-            Debug.Assert(wordStart <= wordEnd);
-            Debug.Assert(wordEnd <= editor.Length);
-
-            // Set word to lower case if not acronym
-            if (StringHelper.RangeIncludesLowerCase(editor, wordStart, wordEnd))
-            {
-                for (int i = wordStart; i < wordEnd; i++)
-                    editor[i] = char.ToLower(editor[i]);
-            }
-
-            if (!inSentence)
-            {
-                editor[wordStart] = char.ToUpper(editor[wordStart]);
-                inSentence = true;
-            }
-
-            if (inSentence && wordEnd < editor.Length && StringHelper.IsEndOfSentenceCharacter(editor, wordEnd))
-                inSentence = false;
-        }
-
-        #endregion
-
-        #region Title Case
-
-        private static HashSet<string> UncapitalizedTitleWords { get; set; } = new(StringComparer.OrdinalIgnoreCase)
+        /// <summary>
+        /// Words that are not capitalized in a title.
+        /// </summary>
+        private static readonly HashSet<string> UncapitalizedTitleWords = new(StringComparer.OrdinalIgnoreCase)
         {
             "a",
             "about",
@@ -165,56 +143,42 @@ namespace SoftCircuits.Wordify
         /// </summary>
         public static string SetTitleCase(string s)
         {
+            int wordStartIndex = -1;
             bool inSentence = false;
-            int wordStart = -1;
-            int i;
 
             StringEditor editor = new(s);
 
-            for (i = 0; i < editor.Length; i++)
+            int i = 0;
+            for (; i < editor.Length; i++)
             {
                 if (StringHelper.IsWordCharacter(editor, i))
                 {
-                    if (wordStart == -1)
-                        wordStart = i;
+                    if (wordStartIndex == -1)
+                        wordStartIndex = i;
                 }
-                else if (wordStart != -1)
+                else
                 {
-                    SetWordTitleCase(editor, wordStart, i, ref inSentence);
-                    wordStart = -1;
+                    if (wordStartIndex != -1)
+                    {
+                        if (!inSentence || !UncapitalizedTitleWords.Contains(editor[wordStartIndex..i]))
+                        {
+                            editor[wordStartIndex] = char.ToUpper(editor[wordStartIndex]);
+                            inSentence = true;
+                        }
+                        wordStartIndex = -1;
+                    }
+                    if (inSentence && StringHelper.IsEndOfSentenceCharacter(editor, i))
+                        inSentence = false;
                 }
             }
 
-            if (wordStart != -1)
-                SetWordTitleCase(editor, wordStart, i, ref inSentence);
-
-            return editor.ToString();
-        }
-
-        private static void SetWordTitleCase(StringEditor editor, int wordStart, int wordEnd, ref bool inSentence)
-        {
-            Debug.Assert(wordStart != -1);
-            Debug.Assert(wordStart <= wordEnd);
-            Debug.Assert(wordEnd <= editor.Length);
-
-            // Set word to lower case if not acronym
-            if (StringHelper.RangeIncludesLowerCase(editor, wordStart, wordEnd))
+            if (wordStartIndex != -1)
             {
-                for (int i = wordStart; i < wordEnd; i++)
-                    editor[i] = char.ToLower(editor[i]);
+                if (!inSentence || !UncapitalizedTitleWords.Contains(editor[wordStartIndex..i]))
+                    editor[wordStartIndex] = char.ToUpper(editor[wordStartIndex]);
             }
 
-            if (!inSentence || !UncapitalizedTitleWords.Contains(editor[wordStart..wordEnd]))
-            {
-                editor[wordStart] = char.ToUpper(editor[wordStart]);
-                inSentence = true;
-            }
-
-            if (inSentence && wordEnd < editor.Length && StringHelper.IsEndOfSentenceCharacter(editor, wordEnd))
-                inSentence = false;
+            return editor;
         }
-
-        #endregion
-
     }
 }

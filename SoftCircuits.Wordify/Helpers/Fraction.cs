@@ -1,4 +1,8 @@
-﻿namespace SoftCircuits.Wordify
+﻿// Copyright (c) 2022 Jonathan Wood (www.softcircuits.com)
+// Licensed under the MIT license.
+//
+
+namespace SoftCircuits.Wordify
 {
     /// <summary>
     /// Class to hold a fraction. Includes methods to convert a floating point value to a fraction.

@@ -1,4 +1,8 @@
-﻿using System.Diagnostics;
+﻿// Copyright (c) 2022 Jonathan Wood (www.softcircuits.com)
+// Licensed under the MIT license.
+//
+
+using System.Diagnostics;
 
 namespace SoftCircuits.Wordify.Helpers
 {

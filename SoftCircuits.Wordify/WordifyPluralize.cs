@@ -1,4 +1,8 @@
-﻿namespace SoftCircuits.Wordify
+﻿// Copyright (c) 2022 Jonathan Wood (www.softcircuits.com)
+// Licensed under the MIT license.
+//
+
+namespace SoftCircuits.Wordify
 {
     public static partial class Wordify
     {
@@ -75,7 +79,6 @@
             ["curriculum"] = "curricula",
             ["datum"] = "data",
             ["diagnosis"] = "diagnoses",
-            ["die"] = "dice",
             ["ellipsis"] = "ellipses",
             ["emphasis"] = "emphases",
             ["erratum"] = "errata",
@@ -151,6 +154,7 @@
         /// <summary>
         /// Converts a string to its plural form.
         /// </summary>
+        /// <remarks>Added characters are always lower case (e.g., "WMD" => "WMDs").</remarks>
         /// <param name="s"></param>
         /// <returns></returns>
         public static string Pluralize(this string? s)
@@ -168,7 +172,7 @@
 
             if (IrregularNounsLookup.TryGetValue(lastWord, out string? replacement))
             {
-                editor.Insert(startIndex, replacement, endIndex - startIndex);
+                editor.Insert(startIndex, char.IsUpper(lastWord[0]) ? replacement.SetFirstLetterCapital() : replacement, endIndex - startIndex);
             }
             else if (char.ToLower(editor[endIndex - 1]) == 'y' && endIndex >= 2 && editor[endIndex - 2].IsConsonant())
             {
@@ -193,6 +197,7 @@
         /// Converts a string to its singular form.
         /// </summary>
         /// <param name="s"></param>
+        /// <remarks></remarks>
         /// <returns></returns>
         public static string Singularize(this string? s)
         {
@@ -219,7 +224,7 @@
 
             if (replacement != null)
             {
-                editor.Insert(startIndex, replacement, endIndex - startIndex);
+                editor.Insert(startIndex, char.IsUpper(lastWord[0]) ? replacement.SetFirstLetterCapital() : replacement, endIndex - startIndex);
             }
             else if (editor.MatchesEndingAt(endIndex - 1, "ies", true))
             {
@@ -252,6 +257,16 @@
         /// Converts the given string to the plural form only if <paramref name="value"/> is not equal to 1.
         /// </summary>
         public static string Pluralize(this string? s, long value) => (value == 1) ? s ?? string.Empty : Pluralize(s);
+
+        /// <summary>
+        /// Converts the given string to the plural form only if <paramref name="value"/> is not equal to 1.
+        /// </summary>
+        public static string Pluralize(this string? s, uint value) => (value == 1) ? s ?? string.Empty : Pluralize(s);
+
+        /// <summary>
+        /// Converts the given string to the plural form only if <paramref name="value"/> is not equal to 1.
+        /// </summary>
+        public static string Pluralize(this string? s, ulong value) => (value == 1) ? s ?? string.Empty : Pluralize(s);
 
         /// <summary>
         /// Converts the given string to the plural form only if <paramref name="value"/> is not equal to 1.0.

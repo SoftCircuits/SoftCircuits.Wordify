@@ -1,4 +1,8 @@
-﻿using SoftCircuits.Wordify;
+﻿// Copyright (c) 2022 Jonathan Wood (www.softcircuits.com)
+// Licensed under the MIT license.
+//
+
+using SoftCircuits.Wordify;
 
 namespace WordifyTests
 {
@@ -8,18 +12,18 @@ namespace WordifyTests
         [TestMethod]
         public void Tests()
         {
-            Assert.AreEqual($"\"\"", Wordify.SetInQuotes(null));
-            Assert.AreEqual($"\"\"", Wordify.SetInQuotes(""));
-            Assert.AreEqual($"\"a\"", Wordify.SetInQuotes("a"));
-            Assert.AreEqual($"\"abc\"", Wordify.SetInQuotes("abc"));
+            Assert.AreEqual($"\"\"", Wordify.WrapInQuotes(null));
+            Assert.AreEqual($"\"\"", Wordify.WrapInQuotes(""));
+            Assert.AreEqual($"\"a\"", Wordify.WrapInQuotes("a"));
+            Assert.AreEqual($"\"abc\"", Wordify.WrapInQuotes("abc"));
 
-            Assert.AreEqual($"''", Wordify.SetInSingleQuotes(null));
-            Assert.AreEqual($"''", Wordify.SetInSingleQuotes(""));
-            Assert.AreEqual($"'a'", Wordify.SetInSingleQuotes("a"));
-            Assert.AreEqual($"'abc'", Wordify.SetInSingleQuotes("abc"));
+            Assert.AreEqual($"''", Wordify.WrapInSingleQuotes(null));
+            Assert.AreEqual($"''", Wordify.WrapInSingleQuotes(""));
+            Assert.AreEqual($"'a'", Wordify.WrapInSingleQuotes("a"));
+            Assert.AreEqual($"'abc'", Wordify.WrapInSingleQuotes("abc"));
 
-            Assert.AreEqual($"\"a\"", Wordify.SetInQuotes('a'));
-            Assert.AreEqual($"'a'", Wordify.SetInSingleQuotes('a'));
+            Assert.AreEqual($"\"a\"", Wordify.WrapInQuotes('a'));
+            Assert.AreEqual($"'a'", Wordify.WrapInSingleQuotes('a'));
         }
     }
 }

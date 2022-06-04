@@ -1,4 +1,8 @@
-﻿using SoftCircuits.Wordify.Helpers;
+﻿// Copyright (c) 2022 Jonathan Wood (www.softcircuits.com)
+// Licensed under the MIT license.
+//
+
+using SoftCircuits.Wordify.Helpers;
 
 namespace SoftCircuits.Wordify
 {

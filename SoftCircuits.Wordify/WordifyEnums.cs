@@ -1,4 +1,8 @@
-﻿using System.ComponentModel;
+﻿// Copyright (c) 2022 Jonathan Wood (www.softcircuits.com)
+// Licensed under the MIT license.
+//
+
+using System.ComponentModel;
 using System.Reflection;
 
 namespace SoftCircuits.Wordify
