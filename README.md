@@ -92,6 +92,16 @@ The library has several methods that help in formatting strings that are too lon
 
 ## Converting Case
 
+`Wordify` contains several extension methods for setting case of a string. You can use any of the individual methods `SetUpperCase()`, `SetLowerCase()`, `Capitalize()` or `SetTitleCase()`. Or you can pass a `CaseOption` parameter to `SetCase()`.
+
+| Code | Output |
+|---|---|
+| `"this is a test".SetUpperCase();` | THIS IS A TEST |
+| `"THIS IS A TEST".SetUpperCase();` | this is a test |
+| `"this is a test".Capitalize();` | This is a test |
+| `"this is a test".SetTitleCase();` | This is a Test |
+| `"this is a test".SetCase(CaseOption.Capitalize);` | This is a test |
+
 ## Quoting Strings
 
 Use the `WrapInQuotes()` and `WrapInSingleQuotes()` methods to wrap a string or character in double or single quotes.
@@ -104,6 +114,16 @@ Use the `WrapInQuotes()` and `WrapInSingleQuotes()` methods to wrap a string or 
 | `'a'.WrapInSingleQuotes();` | 'a' |
 
 ## Formatting Collections
+
+Use the `Join()` extension method to combine a collection of items into a string.
+
+| Code | Output |
+|---|---|
+| `(new[] { 1, 2, 3 }).Join();` | 1, 2 and 3 |
+| `(new[] { 1, 2, 3 }).Join(JoinOption.AndConjunction);` | 1, 2 and 3 |
+| `(new[] { 1, 2, 3 }).Join(JoinOption.OrConjunction);` | 1, 2 or 3 |
+| `(new[] { 1, 2, 3 }).Join(JoinOption.OxfordComma);` | 1, 2, and 3 |
+| `(new[] { 1, 2, 3 }).Join(JoinOption.OrConjunction \| JoinOption.OxfordComma);` | 1, 2, or 3 |
 
 ## Displaying Memory Size
 
