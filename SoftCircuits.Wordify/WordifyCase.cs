@@ -2,8 +2,6 @@
 // Licensed under the MIT license.
 //
 
-using SoftCircuits.Wordify.Helpers;
-
 namespace SoftCircuits.Wordify
 {
     public static partial class Wordify
@@ -23,7 +21,7 @@ namespace SoftCircuits.Wordify
             {
                 CaseOption.Lower => s.ToLower(),
                 CaseOption.Upper => s.ToUpper(),
-                CaseOption.CapitalizeFirstLetter => SetFirstLetterCapital(s),
+                CaseOption.Capitalize => Capitalize(s),
                 CaseOption.Sentence => SetSentenceCase(s),
                 CaseOption.Title => SetTitleCase(s),
                 _ => s,
@@ -49,7 +47,7 @@ namespace SoftCircuits.Wordify
         /// </summary>
         /// <param name="s"></param>
         /// <returns></returns>
-        public static string SetFirstLetterCapital(this string? s)
+        public static string Capitalize(this string? s)
         {
             if (s != null && s.Length > 0)
             {
@@ -70,14 +68,14 @@ namespace SoftCircuits.Wordify
         /// <summary>
         /// Converts a string to sentence case by capitalizing the first letter in each sentence.
         /// </summary>
-        public static string SetSentenceCase(string? s)
+        public static string SetSentenceCase(this string? s)
         {
             bool inSentence = false;
 
             StringEditor editor = new(s);
             for (int i = 0; i < editor.Length; i++)
             {
-                if (StringHelper.IsWordCharacter(editor, i))
+                if (editor.IsWordCharacter(i))
                 {
                     if (!inSentence)
                     {
@@ -85,7 +83,7 @@ namespace SoftCircuits.Wordify
                         inSentence = true;
                     }
                 }
-                else if (StringHelper.IsEndOfSentenceCharacter(editor, i))
+                else if (editor.IsEndOfSentenceCharacter(i))
                 {
                     inSentence = false;
                 }
@@ -141,7 +139,7 @@ namespace SoftCircuits.Wordify
         /// <summary>
         /// Converts a string to title case.
         /// </summary>
-        public static string SetTitleCase(string s)
+        public static string SetTitleCase(this string? s)
         {
             int wordStartIndex = -1;
             bool inSentence = false;
@@ -151,7 +149,7 @@ namespace SoftCircuits.Wordify
             int i = 0;
             for (; i < editor.Length; i++)
             {
-                if (StringHelper.IsWordCharacter(editor, i))
+                if (editor.IsWordCharacter(i))
                 {
                     if (wordStartIndex == -1)
                         wordStartIndex = i;
@@ -167,7 +165,7 @@ namespace SoftCircuits.Wordify
                         }
                         wordStartIndex = -1;
                     }
-                    if (inSentence && StringHelper.IsEndOfSentenceCharacter(editor, i))
+                    if (inSentence && editor.IsEndOfSentenceCharacter(i))
                         inSentence = false;
                 }
             }

@@ -1,6 +1,8 @@
 ﻿// Copyright (c) 2022 Jonathan Wood (www.softcircuits.com)
 // Licensed under the MIT license.
 //
+// This code was derived from Stackoverflow at https://stackoverflow.com/questions/5124743/algorithm-for-simplifying-decimal-to-fractions
+//
 
 namespace SoftCircuits.Wordify
 {
@@ -19,19 +21,23 @@ namespace SoftCircuits.Wordify
         }
 
         /// <summary>
-        /// 
+        /// Returns true if either the <see cref="Numerator"/> is equal to the <see cref="Denominator"/>,
+        /// or if either one equals zero.
         /// </summary>
         public bool IsEmpty => Numerator == Denominator || Numerator == 0 || Denominator == 0;
 
         public override string ToString() => $"{Numerator}/{Denominator}";
 
+        /// <summary>
+        /// Creates a <see cref="Fraction"/> instance from a floating point value.
+        /// </summary>
+        /// <exception cref="ArgumentOutOfRangeException"></exception>
         public static Fraction FromReal(decimal value, decimal accuracy = 0.000001m)
         {
-
-            value = value - Math.Floor(value);
+            value -= Math.Floor(value);
 
             if (accuracy <= 0.0m || accuracy >= 1.0m)
-                throw new ArgumentOutOfRangeException(nameof(accuracy), "Must be between 0 and 1.");
+                throw new ArgumentOutOfRangeException(nameof(accuracy), "Must be between 0 and 1");
 
             int sign = Math.Sign(value);
 

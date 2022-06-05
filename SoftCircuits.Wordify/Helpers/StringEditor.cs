@@ -411,6 +411,29 @@ namespace SoftCircuits.Wordify
 
         #endregion
 
+        #region Character classification
+
+        public bool IsWordCharacter(int pos)
+        {
+            Debug.Assert(pos < Length);
+            char c = GetAt(pos);
+            return char.IsLetterOrDigit(c) ||
+                c == '\'' ||
+                (c == '.' && pos < Length - 1 && char.IsDigit(GetAt(pos + 1)));
+        }
+
+        public bool IsEndOfSentenceCharacter(int pos)
+        {
+            Debug.Assert(pos < Length);
+            char c = GetAt(pos);
+            return c == '!' ||
+                c == '?' ||
+                c == ':' ||
+                (c == '.' && !(pos < (Length - 1) && char.IsDigit(GetAt(pos + 1))));
+        }
+
+        #endregion
+
         #region Character array primatives
 
         /// <summary>

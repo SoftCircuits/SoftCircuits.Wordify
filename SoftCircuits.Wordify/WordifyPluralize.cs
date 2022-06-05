@@ -172,7 +172,7 @@ namespace SoftCircuits.Wordify
 
             if (IrregularNounsLookup.TryGetValue(lastWord, out string? replacement))
             {
-                editor.Insert(startIndex, char.IsUpper(lastWord[0]) ? replacement.SetFirstLetterCapital() : replacement, endIndex - startIndex);
+                editor.Insert(startIndex, char.IsUpper(lastWord[0]) ? replacement.Capitalize() : replacement, endIndex - startIndex);
             }
             else if (char.ToLower(editor[endIndex - 1]) == 'y' && endIndex >= 2 && editor[endIndex - 2].IsConsonant())
             {
@@ -224,7 +224,7 @@ namespace SoftCircuits.Wordify
 
             if (replacement != null)
             {
-                editor.Insert(startIndex, char.IsUpper(lastWord[0]) ? replacement.SetFirstLetterCapital() : replacement, endIndex - startIndex);
+                editor.Insert(startIndex, char.IsUpper(lastWord[0]) ? replacement.Capitalize() : replacement, endIndex - startIndex);
             }
             else if (editor.MatchesEndingAt(endIndex - 1, "ies", true))
             {

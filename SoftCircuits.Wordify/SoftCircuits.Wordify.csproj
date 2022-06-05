@@ -1,12 +1,20 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>net6.0</TargetFramework>
+    <TargetFrameworks>net6.0;net5.0</TargetFrameworks>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
+    <LangVersion>10</LangVersion>
     <Copyright>Copyright © 2022 Jonathan Wood</Copyright>
     <RepositoryType>git</RepositoryType>
-    <PackageTags>stringify; wordify; to string; strings; convert; format</PackageTags>
+    <PackageTags>stringify; wordify; to string; strings; convert; format; text; numbers</PackageTags>
+    <Authors>Jonathan Wood</Authors>
+    <Company>SoftCircuits</Company>
+    <Description>Class library that contains methods and extension methods to create and modify text. It includes methods to convert numbers and dates to text, insert spaces into camel-case strings, pluralize strings, truncate strings, convert Roman numerals, create memory size strings and much more.</Description>
+    <RepositoryUrl>https://github.com/SoftCircuits/SoftCircuits.Wordify</RepositoryUrl>
+    <PackageReleaseNotes>Initial version</PackageReleaseNotes>
+    <PackageLicenseFile>C:\Users\Jonathan\source\repos\SoftCircuits\SoftCircuits.Wordify\LICENSE.txt</PackageLicenseFile>
+    <PackageRequireLicenseAcceptance>True</PackageRequireLicenseAcceptance>
   </PropertyGroup>
 
 </Project>

@@ -25,28 +25,28 @@ namespace SoftCircuits.Wordify
         /// </summary>
         /// <param name="value">The value to convert.</param>
         /// <returns>The resulting ordinal string.</returns>
-        public static string MakeOrdinal(int value) => MakeOrdinal(Transform(value));
+        public static string MakeOrdinal(this int value) => MakeOrdinal(Transform(value));
 
         /// <summary>
         /// Converts a number to ordinal words.
         /// </summary>
         /// <param name="value">The value to convert.</param>
         /// <returns>The resulting ordinal string.</returns>
-        public static string MakeOrdinal(long value) => MakeOrdinal(Transform(value));
+        public static string MakeOrdinal(this long value) => MakeOrdinal(Transform(value));
 
         /// <summary>
         /// Converts a number to ordinal words.
         /// </summary>
         /// <param name="value">The value to convert.</param>
         /// <returns>The resulting ordinal string.</returns>
-        public static string MakeOrdinal(uint value) => MakeOrdinal(Transform(value));
+        public static string MakeOrdinal(this uint value) => MakeOrdinal(Transform(value));
 
         /// <summary>
         /// Converts a number to ordinal words.
         /// </summary>
         /// <param name="value">The value to convert.</param>
         /// <returns>The resulting ordinal string.</returns>
-        public static string MakeOrdinal(ulong value) => MakeOrdinal(Transform(value));
+        public static string MakeOrdinal(this ulong value) => MakeOrdinal(Transform(value));
 
         /// <summary>
         /// Converts a string of numbers, expressed as word, to an ordinal version.
@@ -57,7 +57,7 @@ namespace SoftCircuits.Wordify
         /// </remarks>
         /// <param name="s"></param>
         /// <returns></returns>
-        private static string MakeOrdinal(string? s)
+        private static string MakeOrdinal(this string? s)
         {
             if (s == null)
                 return string.Empty;
@@ -92,7 +92,7 @@ namespace SoftCircuits.Wordify
         /// <param name="value">The value to convert.</param>
         /// <param name="format">Format string used to create the digits.</param>
         /// <returns>The ordinal string.</returns>
-        public static string MakeOrdinalDigits(int value, string format = "#,0") => MakeOrdinalDigits(value.ToString(format));
+        public static string MakeOrdinalDigits(this int value, string format = "#,0") => MakeOrdinalDigits(value.ToString(format));
 
         /// <summary>
         /// Converts a number into an ordinal number string.
@@ -100,7 +100,7 @@ namespace SoftCircuits.Wordify
         /// <param name="value">The value to convert.</param>
         /// <param name="format">Format string used to create the digits.</param>
         /// <returns>The ordinal string.</returns>
-        public static string MakeOrdinalDigits(long value, string format = "#,0") => MakeOrdinalDigits(value.ToString(format));
+        public static string MakeOrdinalDigits(this long value, string format = "#,0") => MakeOrdinalDigits(value.ToString(format));
 
         /// <summary>
         /// Converts a number into an ordinal number string.
@@ -108,7 +108,7 @@ namespace SoftCircuits.Wordify
         /// <param name="value">The value to convert.</param>
         /// <param name="format">Format string used to create the digits.</param>
         /// <returns>The ordinal string.</returns>
-        public static string MakeOrdinalDigits(uint value, string format = "#,0") => MakeOrdinalDigits(value.ToString(format));
+        public static string MakeOrdinalDigits(this uint value, string format = "#,0") => MakeOrdinalDigits(value.ToString(format));
 
         /// <summary>
         /// Converts a number into an ordinal number string.
@@ -116,14 +116,14 @@ namespace SoftCircuits.Wordify
         /// <param name="value">The value to convert.</param>
         /// <param name="format">Format string used to create the digits.</param>
         /// <returns>The ordinal string.</returns>
-        public static string MakeOrdinalDigits(ulong value, string format = "#,0") => MakeOrdinalDigits(value.ToString(format));
+        public static string MakeOrdinalDigits(this ulong value, string format = "#,0") => MakeOrdinalDigits(value.ToString(format));
 
         /// <summary>
         /// Converts a number into an ordinal number string.
         /// </summary>
         /// <param name="s">A string with numeric digits.</param>
         /// <returns>The ordinal string.</returns>
-        public static string MakeOrdinalDigits(string? s)
+        public static string MakeOrdinalDigits(this string? s)
         {
             if (string.IsNullOrEmpty(s))
                 return string.Empty;

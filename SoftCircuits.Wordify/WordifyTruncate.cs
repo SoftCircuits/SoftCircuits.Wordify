@@ -2,8 +2,6 @@
 // Licensed under the MIT license.
 //
 
-using SoftCircuits.Wordify.Helpers;
-
 namespace SoftCircuits.Wordify
 {
     public static partial class Wordify
@@ -42,7 +40,7 @@ namespace SoftCircuits.Wordify
 
             if (options.HasFlag(TruncateOption.TrimPartialWords))
             {
-                while (length > 0 && StringHelper.IsWordCharacter(editor, length))
+                while (length > 0 && editor.IsWordCharacter(length))
                     length--;
                 while (length > 0 && char.IsWhiteSpace(editor[length - 1]))
                     length--;

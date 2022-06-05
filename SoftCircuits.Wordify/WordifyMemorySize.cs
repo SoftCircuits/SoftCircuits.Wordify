@@ -16,7 +16,7 @@ namespace SoftCircuits.Wordify
         /// <param name="numberFormat">Optional format specifier used to format the numeric portion
         /// of the resulting string.</param>
         /// <returns>The resulting memory size string.</returns>
-        public static string ToMemorySize(ulong sizeInBytes, string numberFormat = "#,0.##")
+        public static string ToMemorySize(this ulong sizeInBytes, string numberFormat = "#,0.##")
         {
             double size = sizeInBytes;
             int suffixIndex = 0;

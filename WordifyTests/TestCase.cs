@@ -34,18 +34,18 @@ namespace WordifyTests
         [TestMethod]
         public void TestCapitalizeFirstLetter()
         {
-            Assert.AreEqual("", Wordify.SetCase(null, CaseOption.CapitalizeFirstLetter));
-            Assert.AreEqual("", Wordify.SetCase("", CaseOption.CapitalizeFirstLetter));
-            Assert.AreEqual("Abc", Wordify.SetCase("abc", CaseOption.CapitalizeFirstLetter));
-            Assert.AreEqual("ABC", Wordify.SetCase("ABC", CaseOption.CapitalizeFirstLetter));
-            Assert.AreEqual("Abc", Wordify.SetCase("Abc", CaseOption.CapitalizeFirstLetter));
-            Assert.AreEqual("ABC", Wordify.SetCase("aBC", CaseOption.CapitalizeFirstLetter));
+            Assert.AreEqual("", Wordify.SetCase(null, CaseOption.Capitalize));
+            Assert.AreEqual("", Wordify.SetCase("", CaseOption.Capitalize));
+            Assert.AreEqual("Abc", Wordify.SetCase("abc", CaseOption.Capitalize));
+            Assert.AreEqual("ABC", Wordify.SetCase("ABC", CaseOption.Capitalize));
+            Assert.AreEqual("Abc", Wordify.SetCase("Abc", CaseOption.Capitalize));
+            Assert.AreEqual("ABC", Wordify.SetCase("aBC", CaseOption.Capitalize));
 
-            Assert.AreEqual(" This is a test! ", Wordify.SetCase(" this is a test! ", CaseOption.CapitalizeFirstLetter));
-            Assert.AreEqual("  Abc  ", Wordify.SetCase("  Abc  ", CaseOption.CapitalizeFirstLetter));
-            Assert.AreEqual(" !@#$%Abc&* ", Wordify.SetCase(" !@#$%abc&* ", CaseOption.CapitalizeFirstLetter));
-            Assert.AreEqual("123456789Z123456789", Wordify.SetCase("123456789z123456789", CaseOption.CapitalizeFirstLetter));
-            Assert.AreEqual("123", Wordify.SetCase("123", CaseOption.CapitalizeFirstLetter));
+            Assert.AreEqual(" This is a test! ", Wordify.SetCase(" this is a test! ", CaseOption.Capitalize));
+            Assert.AreEqual("  Abc  ", Wordify.SetCase("  Abc  ", CaseOption.Capitalize));
+            Assert.AreEqual(" !@#$%Abc&* ", Wordify.SetCase(" !@#$%abc&* ", CaseOption.Capitalize));
+            Assert.AreEqual("123456789Z123456789", Wordify.SetCase("123456789z123456789", CaseOption.Capitalize));
+            Assert.AreEqual("123", Wordify.SetCase("123", CaseOption.Capitalize));
         }
 
         [TestMethod]

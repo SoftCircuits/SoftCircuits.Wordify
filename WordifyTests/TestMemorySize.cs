@@ -20,7 +20,6 @@ namespace WordifyTests
         [TestMethod]
         public void Test()
         {
-
             Assert.AreEqual("0 B", Wordify.ToMemorySize(0UL));
             Assert.AreEqual("1 B", Wordify.ToMemorySize(1UL));
             Assert.AreEqual("2 B", Wordify.ToMemorySize(2UL));

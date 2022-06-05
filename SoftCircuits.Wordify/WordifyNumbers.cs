@@ -2,7 +2,6 @@
 // Licensed under the MIT license.
 //
 
-using SoftCircuits.Wordify.Helpers;
 using System.Diagnostics;
 using System.Text;
 
@@ -10,6 +9,75 @@ namespace SoftCircuits.Wordify
 {
     public static partial class Wordify
     {
+        /// <summary>
+        /// Words for digits 0 through 9.
+        /// </summary>
+        private static readonly string[] Ones =
+        {
+            "zero",
+            "one",
+            "two",
+            "three",
+            "four",
+            "five",
+            "six",
+            "seven",
+            "eight",
+            "nine"
+        };
+
+        /// <summary>
+        /// Words for numbers 10 through 19.
+        /// </summary>
+        private static readonly string[] Teens =
+        {
+            "ten",
+            "eleven",
+            "twelve",
+            "thirteen",
+            "fourteen",
+            "fifteen",
+            "sixteen",
+            "seventeen",
+            "eighteen",
+            "nineteen"
+        };
+
+        /// <summary>
+        /// Words for "tens" 10 through 90.
+        /// </summary>
+        private static readonly string[] Tens =
+        {
+            "",
+            "ten",
+            "twenty",
+            "thirty",
+            "forty",
+            "fifty",
+            "sixty",
+            "seventy",
+            "eighty",
+            "ninety"
+        };
+
+        /// <summary>
+        /// US Numbering
+        /// </summary>
+        private static readonly string[] Thousands =
+        {
+            "",
+            "thousand",
+            "million",
+            "billion",
+            "trillion",
+            "quadrillion",
+            "quintillion",
+            "sextillion",
+            "septillion",
+            "octillion",
+        };
+
+
         /// <summary>
         /// Converts the given value to words.
         /// </summary>
@@ -128,16 +196,16 @@ namespace SoftCircuits.Wordify
                                 builder.Append('-');
                             else if (builder.Length > 0)
                                 builder.Append(' ');
-                            builder.Append(StringHelper.Ones[values[i]]);
+                            builder.Append(Ones[values[i]]);
                         }
                         else if (remaining == 0 && i == 0)
-                            builder.Append(StringHelper.Ones[0]);
+                            builder.Append(Ones[0]);
 
                         // Write thousand, million, etc.
                         if (remaining >= 3 && columnState != ColumnState.None)
                         {
                             builder.Append(' ');
-                            builder.Append(StringHelper.Thousands[remaining / 3]);
+                            builder.Append(Thousands[remaining / 3]);
                         }
 
                         // Reset column state
@@ -155,11 +223,11 @@ namespace SoftCircuits.Wordify
                             if (values[i] == 1)
                             {
                                 Debug.Assert(i + 1 < length);
-                                builder.Append(StringHelper.Teens[values[i + 1]]);
+                                builder.Append(Teens[values[i + 1]]);
                                 // Indicate ones column set
                                 columnState |= ColumnState.SetOnes;
                             }
-                            else builder.Append(StringHelper.Tens[values[i]]);
+                            else builder.Append(Tens[values[i]]);
 
                             // Indicate tens column set
                             columnState |= ColumnState.SetTens;
@@ -173,7 +241,7 @@ namespace SoftCircuits.Wordify
                             if (builder.Length > 0)
                                 builder.Append(' ');
 
-                            builder.Append(StringHelper.Ones[values[i]]);
+                            builder.Append(Ones[values[i]]);
                             builder.Append(" hundred");
 
                             // Indicate hundreds column set
