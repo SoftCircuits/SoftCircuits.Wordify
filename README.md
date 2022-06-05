@@ -61,8 +61,8 @@ The library also provides support for making words plural and then back to singu
 | `"cross".Pluralize();` | crosses |
 | `"party".Pluralize();` | parties |
 | `"goose".Pluralize();` | geese |
-| `" dog! ".Pluralize();` | dogs! |
 | `"sheep".Pluralize();` | sheep |
+| `" dog! ".Pluralize();` | dogs! |
 
 And use the `Singularize()` extension method to make a plural word singular.
 
@@ -73,8 +73,8 @@ And use the `Singularize()` extension method to make a plural word singular.
 | `"crosses".Singularize();` | cross |
 | `"parties".Singularize();` | party |
 | `"geese".Singularize();` | goose |
-| `" dogs! ".Singularize();` | dog! |
 | `"sheep".Singularize();` | sheep |
+| `" dogs! ".Singularize();` | dog! |
 
 *Note: The English language is complex. It is not possible for the library to handle every word perfectly. We are looking to make this functionality more extendible in the future.*
 
