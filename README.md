@@ -182,3 +182,18 @@ Use the `ParseRomanNumerals()` extension method to convert a string of Roman num
 | `"MM".ParseRomanNumerals();` | 2000 |
 | `"MMXXII".ParseRomanNumerals();` | 2022 |
 | `"  V  ".ParseRomanNumerals();` | 5 |
+
+## Miscellaneous
+
+The library also includes a number of helper extension methods that don't really fall into any other category. The examples below assume a variable `s` of type `string`.
+
+| Extension Method | Description |
+|---|---|
+| `s.CountWords();` | Counts the number of words in this string. Words are separated by one or more whitespace character. |
+| `s.NormalizeWhiteSpace();` | Returns a copy of `s` with all whitespace sequences replaced with a single space character and all leading and trailing whitespace removed. |
+| `s.EmptyIfNull();` | If `s` is `null`, then an empty string is returned. Otherwise, `s` is returned. |
+| `s.NullIfEmpty();` | If `s` is an empty string, then `null` is returned. Otherwise, `s` is returned. |
+| `s.EmptyIfNullOrWhiteSpace();` | If `s` is `null`, an empty string or only contains whitespace, then an empty string is returned. Otherwise, `s` is returned. |
+| `s.NullIfEmptyOrWhiteSpace();` | If `s` is `null`, an empty string or only contains whitespace, then `null` is returned. Otherwise, `s` is returned. |
+
+
