@@ -30,7 +30,6 @@ Because this method can return a string, it's easy to perform additional modific
 
 ```cs
 Wordify.Transform(345.67, FractionOption.Decimal)
-    .SetLowerCase()
     .Capitalize();
 ```
 
