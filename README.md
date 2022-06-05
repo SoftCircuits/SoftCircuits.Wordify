@@ -26,6 +26,14 @@ The `Transform` has many overloads. The one that accepts floating point values a
 | `Wordify.Transform(345.67, FractionOption.Words);` | three hundred forty-five and sixty-seven one hundredths |
 | `Wordify.Transform(345.67, FractionOption.UsCurrency);` | three hundred forty-five dollars and sixty-seven cents |
 
+Because this method can return a string, it's easy to perform additional modifications to it.
+
+```cs
+Wordify.Transform(345.67, FractionOption.Decimal)
+    .SetLowerCase()
+    .Capitalize();
+```
+
 ## Ordinals
 
 The library also has support for converting numbers to ordinals using the `MakeOrdinal()` extention method.
