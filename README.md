@@ -97,7 +97,7 @@ The library has several methods that help in formatting strings that are too lon
 | Code | Output |
 |---|---|
 | `"this is a test".SetUpperCase();` | THIS IS A TEST |
-| `"THIS IS A TEST".SetUpperCase();` | this is a test |
+| `"THIS IS A TEST".SetLowerCase();` | this is a test |
 | `"this is a test".Capitalize();` | This is a test |
 | `"this is a test".SetTitleCase();` | This is a Test |
 | `"this is a test".SetCase(CaseOption.Capitalize);` | This is a test |
