@@ -42,9 +42,12 @@ The `MakeOrdinalDigits()` extension method works similarly but outputs digits in
 | `1.MakeOrdinalDigits();` | 1st |
 | `123.MakeOrdinalDigits();` | 123rd |
 
+## Dates and TimeSpans
 
 
-
+TODO: Should these be combined into one topic? Converting symbols to strings???
+## Enums
+## Inserting Spaces
 
 
 ## Pluralization
@@ -73,7 +76,6 @@ And use the `Singularize()` extension method to make a plural word singular.
 | `" dogs! ".Singularize();` | dog! |
 | `"sheep".Singularize();` | sheep |
 
-
 *Note: The English language is complex. It is not possible for the library to handle every word perfectly. We are looking to make this functionality more extendible in the future.*
 
 ## Truncating
@@ -87,6 +89,41 @@ The library has several methods that help in formatting strings that are too lon
 | `"Another test string".Truncate(16, TruncateOption.AppendEllipsis);` | Another test ... |
 | `"Another test string".Truncate(16, TruncateOption.TrimPartialWords);` | Another test |
 | `"Another test string".Truncate(16, TruncateOption.TrimPartialWords \| TruncateOption.AppendEllipsis);` | Another test... |
+
+## Converting Case
+
+## Quoting Strings
+
+Use the `WrapInQuotes()` and `WrapInSingleQuotes()` methods to wrap a string or character in double or single quotes.
+
+| Code | Output |
+|---|---|
+| `"abc".WrapInQuotes();` | "abc" |
+| `'a'.WrapInQuotes();` | "a" |
+| `"abc".WrapInSingleQuotes();` | 'abc' |
+| `'a'.WrapInSingleQuotes();` | 'a' |
+
+## Formatting Collections
+
+## Displaying Memory Size
+
+The `ToMemorySize()` extension method is handy when displaying a number of bytes, such as a file size. This method accept a parameter of type `ulong`.
+
+| Code | Output |
+|---|---|
+| `0UL.ToMemorySize();` | 0 B |
+| `1UL.ToMemorySize();` | 1 B |
+| `1024UL.ToMemorySize();` | 1 KB |
+| `1124UL.ToMemorySize();` | 1.1 KB |
+
+You can use the `FromMemorySize()` extension method to convert a memory size string back to a `ulong`. This method does not throw any exceptions. It simply parses the string as best it can. If it is unable to parse anything meaningful, this method returns 0.
+
+| Code | Output |
+|---|---|
+| `"0 B".FromMemorySize();` | 0UL |
+| `"1b".FromMemorySize();` | 1UL |
+| `"1 kb".FromMemorySize();` | 1024UL |
+| `"1.1 KB".FromMemorySize();` | 1124UL |
 
 ## Roman Numerals
 
@@ -118,42 +155,3 @@ Use the `ParseRomanNumerals()` extension method to convert a string of Roman num
 | `"MM".ParseRomanNumerals();` | 2000 |
 | `"MMXXII".ParseRomanNumerals();` | 2022 |
 | `"  V  ".ParseRomanNumerals();` | 5 |
-
-## Quoting Strings
-
-Use the `WrapInQuotes()` and `WrapInSingleQuotes()` methods to wrap a string or character in double or single quotes.
-
-| Code | Output |
-|---|---|
-| `"abc".WrapInQuotes();` | "abc" |
-| `'a'.WrapInQuotes();` | "a" |
-| `"abc".WrapInSingleQuotes();` | 'abc' |
-| `'a'.WrapInSingleQuotes();` | 'a' |
-
-## Displaying Memory Size
-
-The `ToMemorySize()` extension method is handy when displaying a number of bytes, such as a file size. This method accept a parameter of type `ulong`.
-
-| Code | Output |
-|---|---|
-| `0UL.ToMemorySize();` | 0 B |
-| `1UL.ToMemorySize();` | 1 B |
-| `1024UL.ToMemorySize();` | 1 KB |
-| `1124UL.ToMemorySize();` | 1.1 KB |
-
-You can use the `FromMemorySize()` extension method to convert a memory size string back to a `ulong`. This method does not throw any exceptions. It simply parses the string as best it can. If it is unable to parse anything meaningful, this method returns 0.
-
-| Code | Output |
-|---|---|
-| `"0 B".FromMemorySize();` | 0UL |
-| `"1b".FromMemorySize();` | 1UL |
-| `"1 kb".FromMemorySize();` | 1024UL |
-| `"1.1 KB".FromMemorySize();` | 1124UL |
-
-## Formatting Collections
-
-## Converting Case
-
-## Enums
-
-## Inserting Spaces
