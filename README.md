@@ -76,7 +76,7 @@ And use the `Singularize()` extension method to make a plural word singular.
 | `"sheep".Singularize();` | sheep |
 | `" dogs! ".Singularize();` | dog! |
 
-*Note: The English language is complex. It is not possible for the library to handle every word perfectly. We are looking to make this functionality more extendible in the future.*
+*Note: The English language is complex. It is not possible for the library to handle every word perfectly. We are looking to make this functionality more extensible in the future.*
 
 ## Truncating
 
