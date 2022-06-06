@@ -31,7 +31,7 @@ namespace SoftCircuits.Wordify
                         return attribute.Description;
                 }
             }
-            return InsertCamelCaseSpaces(valueString);
+            return Transform(valueString, TransformOption.AutoDetect);
         }
     }
 }
