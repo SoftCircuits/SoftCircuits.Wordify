@@ -52,10 +52,55 @@ The `MakeOrdinalDigits()` extension method works similarly but outputs digits in
 ## Dates and TimeSpans
 
 
-TODO: Should these be combined into one topic? Converting symbols to strings???
-## Enums
-## Inserting Spaces
+## Transforming String
 
+`Wordify` has several methods to help convert symbol names like `TotalCount`, `total_count` and `total-count` to text like `total count`. The examples below use the `Transform()` extension method. If you know what method should be used for your string, you can pass the appropriate `TransformOption`. Otherwise, you can pass `TransformOption.AutoDetect` and `Transform()` will attempt to automatically detect the type of transformation needed.
+
+| Code | Output |
+|---|---|
+| `"abcDef".Transform();` | abc Def |
+| `"abc_def".Transform(TransformOption.AutoDetect);` | abc def |
+| `"abc-def".Transform(TransformOption.AutoDetect);` | abc def |
+| `"abc-def".Transform(TransformOption.ReplaceHypens);` | abc def |
+
+If you know your string contains camel case, you can call the `InsertCamelCaseSpaces()` extension method directly.
+
+| Code | Output |
+|---|---|
+| `"ThisIsATest".InsertCamelCaseSpaces();` | This Is A Test |
+| `"TheHTTPProtocol".InsertCamelCaseSpaces();` | The HTTP Protocol |
+| `"IBoughtAnOldIBMXT".InsertCamelCaseSpaces();` | I Bought An Old IBMXT |
+
+Notice in the last example that there is no way to detect if *IBM* and *XT* should be separate words. That's just a limitation of word detection from camel case.
+
+Finally, there is a variation of the `Transform()` method specifically for `enum`s. This extension method takes an `enum`. If the `enum` value has a `DescriptionAttribute` attribute, the method returns the description from that attribute. Otherwise, the name of the `enum` is passed to the `Transform()` extension method described above.
+
+This `Transform()` extension method takes an optional `bool` argument that, when set to `true`, will prevent this method from checking for the presence of a `DescriptionAttribute`.
+
+The examples below assuming the following `enum`.
+
+```cs
+enum MyEnums
+{
+    [Description("First enum")]
+    One,
+    [Description("Second enum")]
+    Two,
+    [Description("Third enum")]
+    Three,
+    OnTheGo,
+    ReadHTMLPage,
+}
+```
+
+| Code | Output |
+|---|---|
+| `MyEnums.One.Transform();` | First enum |
+| `MyEnums.Two.Transform();` | Second enum |
+| `MyEnums.Two.Transform(true);` | Two |
+| `MyEnums.Three.Transform(false);` | Third enum |
+| `MyEnums.OnTheGo.Transform();` | On The Go |
+| `MyEnums.ReadHTMLPage.Transform();` | Read HTML Page |
 
 ## Pluralization
 
