@@ -54,7 +54,7 @@ The `MakeOrdinalDigits()` extension method works similarly but outputs digits in
 
 ## Transforming String
 
-`Wordify` has several methods to help convert symbol names like `TotalCount`, `total_count` and `total-count` to text like `total count`. The examples below use the `Transform()` extension method. If you know what method should be used for your string, you can pass the appropriate `TransformOption`. Otherwise, you can pass `TransformOption.AutoDetect` and `Transform()` will attempt to automatically detect the type of transformation needed.
+`Wordify` has several methods to help convert symbol names like `TotalCount`, `total_count` and `total-count` to text like `total count`. The examples below use the `Transform()` extension method. If you know what method should be used for your string, you can achieve a small performance gain by passing the appropriate `TransformOption` option. Otherwise, you can pass `TransformOption.AutoDetect` and `Transform()` will attempt to automatically detect the type of transformation needed.
 
 | Code | Output |
 |---|---|
