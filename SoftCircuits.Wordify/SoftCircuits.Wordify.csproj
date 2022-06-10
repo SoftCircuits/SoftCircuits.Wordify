@@ -15,6 +15,20 @@
     <PackageReleaseNotes>Initial version</PackageReleaseNotes>
     <PackageLicenseFile>C:\Users\Jonathan\source\repos\SoftCircuits\SoftCircuits.Wordify\LICENSE.txt</PackageLicenseFile>
     <PackageRequireLicenseAcceptance>True</PackageRequireLicenseAcceptance>
+    <PackageIcon>Logo_64x64.png</PackageIcon>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
+    <NeutralLanguage>en-US</NeutralLanguage>
   </PropertyGroup>
+
+  <ItemGroup>
+    <None Include="..\Logo_64x64.png">
+      <Pack>True</Pack>
+      <PackagePath>\</PackagePath>
+    </None>
+    <None Include="..\README.md">
+      <Pack>True</Pack>
+      <PackagePath>\</PackagePath>
+    </None>
+  </ItemGroup>
 
 </Project>
