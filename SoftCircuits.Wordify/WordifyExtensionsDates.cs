@@ -6,61 +6,16 @@ using System.Diagnostics;
 
 namespace SoftCircuits.Wordify
 {
-    [Flags]
-    public enum DateTimeOptions
+    public static partial class WordifyExtensions
     {
-        None = 0,
-        UseWords,
-    }
-
-    public static partial class Wordify
-    {
-        private const double DaysPerYear = 365;
-        private const double DaysPerMonth = 30.437;
-
-        #region PartType
-
-        private enum PartType
-        {
-            Year,
-            Month,
-            Day,
-            Hour,
-            Minute,
-            Second,
-            Millisecond
-        };
-
-        private class TimeSpanPart
-        {
-            public PartType PartType { get; set; }
-            public double Value { get; set; }
-            //public double TotalValue { get; set; }
-
-
-            public TimeSpanPart(PartType partType, double value/*, double totalValue*/)
-            {
-                PartType = partType;
-                Value = value;
-                //TotalValue = totalValue;
-            }
-        }
-
-        #endregion
-
-        // TODO: Support DateOnly (.NET 6.0 or greater)
-        // TODO: Support TimeOnly (.NET 6.0 or greater)
-
-        // TODO: Support DateTimeOffset
-
         /// <summary>
         /// 
         /// </summary>
         /// <param name="dateTime"></param>
         /// <param name="useUtc"></param>
         /// <returns></returns>
-        public static string Transform(DateTime dateTime, bool useUtc = false, int precision = 1) =>
-            Transform(dateTime, useUtc ? DateTime.UtcNow : DateTime.Now, precision);
+        public static string Wordify(this DateTime dateTime, bool useUtc = false, DateTimeOption options = DateTimeOption.None) =>
+            Wordify(dateTime, useUtc ? DateTime.UtcNow : DateTime.Now, options);
 
         /// <summary>
         /// 
@@ -69,89 +24,49 @@ namespace SoftCircuits.Wordify
         /// <param name="relativeTo"></param>
         /// <param name="precision"></param>
         /// <returns></returns>
-        public static string Transform(this DateTime dateTime, DateTime relativeTo, int precision = 1)
+        public static string Wordify(this DateTime dateTime, DateTime relativeTo, DateTimeOption options = DateTimeOption.None)
         {
-            TimeSpan timeSpan = dateTime - relativeTo;
+            bool inPast = dateTime < relativeTo;
 
-            if (timeSpan.TotalSeconds < 1.0)
+            IEnumerator<DateTimeDifference> enumerator = GetDateTimeDifferences(dateTime, relativeTo).GetEnumerator();
+
+            if (!enumerator.MoveNext() || enumerator.Current.Type == DateTimeDifferenceType.Millisecond)
                 return "now";
 
-            Debug.Assert(dateTime != relativeTo);
-            bool inPast = (dateTime < relativeTo);
-            //Debug.Assert(timeSpan != TimeSpan.Zero);
-            //bool inPast = timeSpan < TimeSpan.Zero;
+            DateTimeDifference difference = enumerator.Current;
+            if (difference.Type == DateTimeDifferenceType.Day && difference.Value == 1)
+                return inPast ? "yesterday" : "tomorrow";
 
-            List<string> terms = new();
-
-            foreach (TimeSpanPart part in GetTimeSpanParts(timeSpan))
+            string type = difference.Type.ToString();
+            string value;
+            if (difference.Value == 1)
             {
-                int count = (precision == 1) ? (int)Math.Round(part.Value) : (int)Math.Truncate(part.Value);
-                terms.Add($"{count} {part.PartType.ToString().ToLower().Pluralize(count)}");
-                if (--precision == 0)
-                    break;
+                // Determine 'indefinite article'
+                value = (difference.Type == DateTimeDifferenceType.Hour) ? "an" : "a";
             }
+            else if (options.HasFlag(DateTimeOption.UseWords))
+                value = difference.Value.Wordify();
+            else
+                value = difference.Value.ToString();
 
-            return $"{terms.Wordify()} {((dateTime < relativeTo) ? "ago" : "from now")}";
+            string description = type
+                .ToLower()
+                .Pluralize(difference.Value);
 
-            // if (inPast)
-            // + " ago"
-            // else
-            // + " from now"
-
-            // Handle yesterday
-            // Handle tomorrow
-
-            //DateTime.UtcNow.AddHours(30).Humanize() => "tomorrow"
-            //DateTime.UtcNow.AddHours(2).Humanize() => "2 hours from now"
-
-
-
-
-
-
-            //if (timeSpan >= TimeSpan.Zero)
-            //{
-            //    List<string> xxx = new();
-
-            //    // In the future
-            //    foreach (TimeSpanPart part in GetTimeSpanParts(timeSpan))
-            //    {
-
-            //        xxx.Add($"{part.Value} {part.PartType.ToString().ToLower().Capitalize().Pluralize(part.Value)}   ");
-
-            //    }
-            //}
-            //else
-            //{
-            //    // In the past
-
-            //    // TODO: Need to pass positive span
-            //    timeSpan = timeSpan.Duration();
-
-            //    foreach ((string Unit, double Value) item in GetTimeSpanParts(timeSpan))
-            //    {
-
-            //    }
-            //}
-
-
-
-            //You can Humanize an instance of DateTime or DateTimeOffset and get back a string telling how far back or forward in time that is:
-
-            //DateTime.UtcNow.AddHours(-30).Humanize() => "yesterday"
-            //DateTime.UtcNow.AddHours(-2).Humanize() => "2 hours ago"
-
-            //DateTime.UtcNow.AddHours(30).Humanize() => "tomorrow"
-            //DateTime.UtcNow.AddHours(2).Humanize() => "2 hours from now"
-
-            //DateTimeOffset.UtcNow.AddHours(1).Humanize() => "an hour from now"
-            //Humanizer supports both local and UTC dates as well as dates with offset(DateTimeOffset). You could also provide the date you want the input date to be compared against.If null, it will use the current date as comparison base.Also, culture to use can be specified explicitly.If it is not, current thread's current UI culture is used. Here is the API signature:
-
-            //public static string Humanize(this DateTime input, bool utcDate = true, DateTime? dateToCompareAgainst = null, CultureInfo culture = null)
-            //public static string Humanize(this DateTimeOffset input, DateTimeOffset? dateToCompareAgainst = null, CultureInfo culture = null)
-
-            return string.Empty;
+            return $"{value} {description} {(inPast ? "ago" : "from now")}";
         }
+
+        // TODO: Support DateTimeOffset
+
+        //public static string Humanize(this DateTime input, bool utcDate = true, DateTime? dateToCompareAgainst = null, CultureInfo culture = null)
+        //public static string Humanize(this DateTimeOffset input, DateTimeOffset? dateToCompareAgainst = null, CultureInfo culture = null)
+
+#if NET6_0_OR_GREATER
+
+        // TODO: Support DateOnly
+        // TODO: Support TimeOnly
+
+#endif
 
         /// <summary>
         /// 
@@ -159,8 +74,40 @@ namespace SoftCircuits.Wordify
         /// <param name="timeSpan"></param>
         /// <param name="precision"></param>
         /// <returns></returns>
-        public static string Transform(this TimeSpan timeSpan, int precision = 1)
+        public static string Transform(this TimeSpan timeSpan, int precision = 1, DateTimeOption options)
         {
+            // TODO: How to handle negative span?
+
+            //bool inPast =  dateTime < relativeTo;
+
+            IEnumerator<DateTimeDifference> enumerator = GetDateTimeDifferences(dateTime, relativeTo).GetEnumerator();
+
+            if (!enumerator.MoveNext() || enumerator.Current.Type == DateTimeDifferenceType.Millisecond)
+                return "now";
+
+            DateTimeDifference difference = enumerator.Current;
+            if (difference.Type == DateTimeDifferenceType.Day && difference.Value == 1)
+                return inPast ? "yesterday" : "tomorrow";
+
+            string type = difference.Type.ToString();
+            string value;
+            if (difference.Value == 1)
+            {
+                // Determine 'indefinite article'
+                value = (difference.Type == DateTimeDifferenceType.Hour) ? "an" : "a";
+            }
+            else if (options.HasFlag(DateTimeOption.UseWords))
+                value = difference.Value.Wordify();
+            else
+                value = difference.Value.ToString();
+
+            string description = type
+                .ToLower()
+                .Pluralize(difference.Value);
+
+            return $"{value} {description}";
+
+
             //List<TimeSpanPart> parts = GetTimeSpanParts(timeSpan.Duration(), precision);
 
             //for (int i = 0; i < parts.Count; i++)
@@ -211,46 +158,88 @@ namespace SoftCircuits.Wordify
             return string.Empty;
         }
 
-        /// <summary>
-        /// Returns the non-zero parts of the given <see cref="TimeSpan"/> in the order of largest units first.
-        /// </summary>
-        private static IEnumerable<TimeSpanPart> GetTimeSpanParts(TimeSpan timeSpan)
+        #region Private Methods
+
+        private enum DateTimeDifferenceType
         {
-            timeSpan = timeSpan.Duration();
-            Debug.Assert(timeSpan >= TimeSpan.Zero);
+            Millisecond,
+            Second,
+            Minute,
+            Hour,
+            Day,
+            Month,
+            Year,
+        };
 
-            if (timeSpan.Days >= DaysPerYear)
+        private class DateTimeDifference
+        {
+            public DateTimeDifferenceType Type { get; set; }
+            public int Value { get; set; }
+
+            public DateTimeDifference(DateTimeDifferenceType partType, int value)
             {
-
-                // If last precision, we should round to nearest year
-                // Otherwise, just show complete years
-
-                double years = timeSpan.Days / DaysPerYear;
-                yield return new(PartType.Year, years);
-                timeSpan = timeSpan.Subtract(TimeSpan.FromDays(Math.Truncate(years) * DaysPerYear));
+                Type = partType;
+                Value = value;
             }
-
-            if (timeSpan.Days >= DaysPerMonth)
-            {
-                double months = timeSpan.Days / DaysPerMonth;
-                yield return new(PartType.Month, months);
-                timeSpan = timeSpan.Subtract(TimeSpan.FromDays(Math.Truncate(months) * DaysPerMonth));
-            }
-
-            if (timeSpan.Days > 0)
-                yield return new(PartType.Day, timeSpan.Days);
-
-            if (timeSpan.Hours > 0)
-                yield return new(PartType.Hour, timeSpan.Hours);
-
-            if (timeSpan.Minutes > 0)
-                yield return new(PartType.Minute, timeSpan.Minutes);
-
-            if (timeSpan.Seconds > 0)
-                yield return new(PartType.Second, timeSpan.Seconds);
-
-            if (timeSpan.Milliseconds > 0)
-                yield return new(PartType.Millisecond, timeSpan.Milliseconds);
         }
+
+        private static IEnumerable<DateTimeDifference> GetDateTimeDifferences(DateTime startDateTime, DateTime endDateTime)
+        {
+            // Calculate absoluate difference
+            DateTime lowDateTime, highDateTime;
+            if (startDateTime < endDateTime)
+            {
+                lowDateTime = startDateTime;
+                highDateTime = endDateTime;
+            }
+            else if (startDateTime > endDateTime)
+            {
+                lowDateTime = endDateTime;
+                highDateTime = startDateTime;
+            }
+            else yield break;   // No difference
+
+            DateTime tempDateTime;
+            int value;
+
+            // Years
+            if ((tempDateTime = lowDateTime.AddYears(1)) <= highDateTime)
+            {
+                value = 0;
+                do
+                {
+                    lowDateTime = tempDateTime;
+                    value++;
+                } while ((tempDateTime = lowDateTime.AddYears(1)) <= highDateTime);
+                yield return new(DateTimeDifferenceType.Year, value);
+            }
+
+            // Months
+            if ((tempDateTime = lowDateTime.AddMonths(1)) <= highDateTime)
+            {
+                value = 0;
+                do
+                {
+                    lowDateTime = tempDateTime;
+                    value++;
+                } while ((tempDateTime = lowDateTime.AddMonths(1)) <= highDateTime);
+                yield return new(DateTimeDifferenceType.Month, value);
+            }
+
+            TimeSpan timeSpan = highDateTime - lowDateTime;
+            if (timeSpan.Days > 0)
+                yield return new(DateTimeDifferenceType.Day, timeSpan.Days);
+            if (timeSpan.Hours > 0)
+                yield return new(DateTimeDifferenceType.Hour, timeSpan.Hours);
+            if (timeSpan.Minutes > 0)
+                yield return new(DateTimeDifferenceType.Minute, timeSpan.Minutes);
+            if (timeSpan.Seconds > 0)
+                yield return new(DateTimeDifferenceType.Second, timeSpan.Seconds);
+            if (timeSpan.Milliseconds > 0)
+                yield return new(DateTimeDifferenceType.Millisecond, timeSpan.Milliseconds);
+        }
+
+        #endregion
+
     }
 }

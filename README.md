@@ -14,7 +14,7 @@ The library can be used to convert numbers to words.
 | `Wordify.Wordify(123);` | one hundred twenty-three |
 | `Wordify.Wordify(12345);` | twelve thousand three hundred forty-five |
 
-The `Transform` has many overloads. The one that accepts floating point values also takes a `FractionOption` argument that specifies how to format the fractional part.
+The `Wordify()` method has many overloads. The one that accepts floating point values also takes a `FractionOption` argument that specifies how to format the fractional part.
 
 | Code | Output |
 |---|---|
@@ -52,9 +52,9 @@ The `MakeOrdinalDigits()` extension method works similarly but outputs digits in
 ## Dates and TimeSpans
 
 
-## Transforming String
+## Wordifying Strings
 
-`Wordify` has several methods to help convert symbol names like `TotalCount`, `total_count` and `total-count` to text like `total count`. The examples below use the `Wordify()` extension method. If you know what method should be used for your string, you can achieve a small performance gain by passing the appropriate `WordifyOption` option. Otherwise, you can pass `WordifyOption.AutoDetect` and `Wordify()` will attempt to automatically detect the type of transformation needed.
+`SoftCircuits.Wordify` has several methods to help convert symbol names like `TotalCount`, `total_count` and `total-count` to text like `total count`. The examples below use the `Wordify()` extension method. If you know what method should be used for your string, you can achieve a small performance gain by passing the appropriate `WordifyOption` option. Otherwise, you can pass `WordifyOption.AutoDetect` and `Wordify()` will attempt to automatically detect the type of transformation needed.
 
 | Code | Output |
 |---|---|
@@ -175,7 +175,7 @@ Use the `Wordify()` extension method to combine a collection of items into a str
 | `(new[] { 1, 2, 3 }).Wordify(CollectionOption.AndConjunction);` | 1, 2 and 3 |
 | `(new[] { 1, 2, 3 }).Wordify(CollectionOption.OrConjunction);` | 1, 2 or 3 |
 | `(new[] { 1, 2, 3 }).Wordify(CollectionOption.OxfordComma);` | 1, 2, and 3 |
-| `(new[] { 1, 2, 3 }).Wordify(CollectionOption.OrConjunction \| JoinOption.OxfordComma);` | 1, 2, or 3 |
+| `(new[] { 1, 2, 3 }).Wordify(CollectionOption.OrConjunction \| CollectionOption.OxfordComma);` | 1, 2, or 3 |
 
 ## Displaying Memory Size
 
