@@ -32,12 +32,12 @@ namespace WordifyTests
             Assert.AreEqual(" This Is A Test ", " This-Is-A-Test ".Wordify());
             Assert.AreEqual(" This Is A Test ", " This_Is_A_Test ".Wordify());
 
-            Assert.AreEqual("This Is A Test", "ThisIsATest".Wordify(TransformOption.CamelCase));
-            Assert.AreEqual("This Is A Test", "This-Is-A-Test".Wordify(TransformOption.ReplaceHyphens));
-            Assert.AreEqual("This Is A Test", "This_Is_A_Test".Wordify(TransformOption.ReplaceUnderscores));
-            Assert.AreEqual(" This Is A Test ", " ThisIsATest ".Wordify(TransformOption.CamelCase));
-            Assert.AreEqual(" This Is A Test ", " This-Is-A-Test ".Wordify(TransformOption.ReplaceHyphens));
-            Assert.AreEqual(" This Is A Test ", " This_Is_A_Test ".Wordify(TransformOption.ReplaceUnderscores));
+            Assert.AreEqual("This Is A Test", "ThisIsATest".Wordify(WordifyOption.CamelCase));
+            Assert.AreEqual("This Is A Test", "This-Is-A-Test".Wordify(WordifyOption.ReplaceHyphens));
+            Assert.AreEqual("This Is A Test", "This_Is_A_Test".Wordify(WordifyOption.ReplaceUnderscores));
+            Assert.AreEqual(" This Is A Test ", " ThisIsATest ".Wordify(WordifyOption.CamelCase));
+            Assert.AreEqual(" This Is A Test ", " This-Is-A-Test ".Wordify(WordifyOption.ReplaceHyphens));
+            Assert.AreEqual(" This Is A Test ", " This_Is_A_Test ".Wordify(WordifyOption.ReplaceUnderscores));
         }
 
         [TestMethod]

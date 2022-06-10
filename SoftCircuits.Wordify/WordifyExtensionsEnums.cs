@@ -31,7 +31,7 @@ namespace SoftCircuits.Wordify
                         return attribute.Description;
                 }
             }
-            return Wordify(valueString, TransformOption.AutoDetect);
+            return Wordify(valueString, WordifyOption.AutoDetect);
         }
     }
 }

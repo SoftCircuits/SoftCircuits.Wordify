@@ -4,11 +4,14 @@
 
 namespace SoftCircuits.Wordify
 {
+    /// <summary>
+    /// Specifies how a string shold be truncated.
+    /// </summary>
     [Flags]
     public enum TruncateOption
     {
         /// <summary>
-        /// Disable all options.
+        /// Specify no options.
         /// </summary>
         None,
 

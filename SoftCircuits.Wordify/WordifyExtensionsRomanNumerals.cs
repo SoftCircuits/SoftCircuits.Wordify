@@ -37,14 +37,11 @@ namespace SoftCircuits.Wordify
             new RomanInfo(1, "I"),
         };
 
-        // TODO: Comments
-        // TODO: How to handle overflow ???
-
         /// <summary>
-        /// 
+        /// Converts an integer value to Roman numerals.
         /// </summary>
-        /// <param name="value"></param>
-        /// <returns></returns>
+        /// <param name="value">The value to convert.</param>
+        /// <returns>The Roman numerals string.</returns>
         public static string ToRomanNumerals(this int value)
         {
             // Although Roman numerals don't generally include
@@ -74,7 +71,7 @@ namespace SoftCircuits.Wordify
         public static int ParseRomanNumerals(this string? s)
         {
             if (!TryParseRomanNumerals(s, out int result))
-                throw new ArgumentException("Invalid Roman numeral character", nameof(s));
+                throw new ArgumentException("Unexpected character", nameof(s));
             return result;
         }
 

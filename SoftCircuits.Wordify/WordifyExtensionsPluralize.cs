@@ -6,6 +6,8 @@ namespace SoftCircuits.Wordify
 {
     public static partial class WordifyExtensions
     {
+        #region Private Data
+
         /// <summary>
         /// Words that are the same for both singular and plural.
         /// </summary>
@@ -150,6 +152,8 @@ namespace SoftCircuits.Wordify
             ["torpedo"] = "torpedoes",
             ["veto"] = "vetoes",
         };
+
+        #endregion
 
         /// <summary>
         /// Converts a string to its plural form.

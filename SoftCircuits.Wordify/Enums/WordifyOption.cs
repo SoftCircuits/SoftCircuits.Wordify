@@ -7,7 +7,7 @@ namespace SoftCircuits.Wordify
     /// <summary>
     /// Specifies how spaces are inserted into a string.
     /// </summary>
-    public enum TransformOption
+    public enum WordifyOption
     {
         /// <summary>
         /// Replace hyphens with spaces.

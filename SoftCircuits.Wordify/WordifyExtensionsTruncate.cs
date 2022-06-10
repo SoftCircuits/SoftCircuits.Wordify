@@ -21,7 +21,7 @@ namespace SoftCircuits.Wordify
             if (maxLength < 0)
                 throw new ArgumentOutOfRangeException(nameof(maxLength), "Length cannot be less than zero.");
 
-            if (s == null)
+            if (s == null || maxLength == 0)
                 return string.Empty;
 
             if (s.Length <= maxLength)

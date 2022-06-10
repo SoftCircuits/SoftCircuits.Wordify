@@ -4,6 +4,9 @@
 
 namespace SoftCircuits.Wordify
 {
+    /// <summary>
+    /// Specifies how a fraction should be formatted.
+    /// </summary>
     public enum FractionOption
     {
         /// <summary>

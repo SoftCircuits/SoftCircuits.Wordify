@@ -4,16 +4,19 @@
 
 namespace SoftCircuits.Wordify
 {
+    /// <summary>
+    /// Specifies how a collection should be formatted.
+    /// </summary>
     [Flags]
     public enum CollectionOption
     {
         /// <summary>
-        /// Uses "and" as the final conjunction. This is the default.
+        /// Use "and" as the final conjunction. This is the default.
         /// </summary>
         AndConjunction = 0x00,
 
         /// <summary>
-        /// Uses "or" as the final conjunction.
+        /// Use "or" as the final conjunction.
         /// </summary>
         OrConjunction = 0x01,
 

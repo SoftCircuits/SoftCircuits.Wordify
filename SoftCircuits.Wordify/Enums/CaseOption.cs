@@ -4,6 +4,9 @@
 
 namespace SoftCircuits.Wordify
 {
+    /// <summary>
+    /// Specifies how a string's case should be set.
+    /// </summary>
     public enum CaseOption
     {
         /// <summary>

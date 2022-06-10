@@ -54,14 +54,14 @@ The `MakeOrdinalDigits()` extension method works similarly but outputs digits in
 
 ## Transforming String
 
-`Wordify` has several methods to help convert symbol names like `TotalCount`, `total_count` and `total-count` to text like `total count`. The examples below use the `Wordify()` extension method. If you know what method should be used for your string, you can achieve a small performance gain by passing the appropriate `TransformOption` option. Otherwise, you can pass `TransformOption.AutoDetect` and `Wordify()` will attempt to automatically detect the type of transformation needed.
+`Wordify` has several methods to help convert symbol names like `TotalCount`, `total_count` and `total-count` to text like `total count`. The examples below use the `Wordify()` extension method. If you know what method should be used for your string, you can achieve a small performance gain by passing the appropriate `WordifyOption` option. Otherwise, you can pass `WordifyOption.AutoDetect` and `Wordify()` will attempt to automatically detect the type of transformation needed.
 
 | Code | Output |
 |---|---|
 | `"abcDef".Wordify();` | abc Def |
-| `"abc_def".Wordify(TransformOption.AutoDetect);` | abc def |
-| `"abc-def".Wordify(TransformOption.AutoDetect);` | abc def |
-| `"abc-def".Wordify(TransformOption.ReplaceHypens);` | abc def |
+| `"abc_def".Wordify(WordifyOption.AutoDetect);` | abc def |
+| `"abc-def".Wordify(WordifyOption.AutoDetect);` | abc def |
+| `"abc-def".Wordify(WordifyOption.ReplaceHypens);` | abc def |
 
 If you know your string contains camel case, you can call the `InsertCamelCaseSpaces()` extension method directly.
 

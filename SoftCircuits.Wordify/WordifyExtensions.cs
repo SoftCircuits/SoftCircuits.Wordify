@@ -12,38 +12,38 @@ namespace SoftCircuits.Wordify
         /// Converts a string to text by attempting to insert spaces between words.
         /// </summary>
         /// <param name="s">The string to transform.</param>
-        /// <param name="option">The transformation method.</param>
+        /// <param name="options">The transformation method.</param>
         /// <returns>The transformed string.</returns>
-        public static string Wordify(this string? s, TransformOption option = TransformOption.AutoDetect)
+        public static string Wordify(this string? s, WordifyOption options = WordifyOption.AutoDetect)
         {
             if (s == null || s.Length == 0)
                 return string.Empty;
 
             // Auto detect method if needed
-            if (option == TransformOption.AutoDetect)
+            if (options == WordifyOption.AutoDetect)
             {
                 if (s.HasEmbeddedWhiteSpace())
                     return s;
                 if (s.Contains('_'))
-                    option = TransformOption.ReplaceUnderscores;
+                    options = WordifyOption.ReplaceUnderscores;
                 else if (s.Contains('-'))
-                    option = TransformOption.ReplaceHyphens;
+                    options = WordifyOption.ReplaceHyphens;
                 else
-                    option = TransformOption.CamelCase;
+                    options = WordifyOption.CamelCase;
             }
 
-            return option switch
+            return options switch
             {
-                TransformOption.ReplaceUnderscores => s.Replace('_', ' '),
-                TransformOption.ReplaceHyphens => s.Replace('-', ' '),
-                TransformOption.CamelCase => s.InsertCamelCaseSpaces(),
+                WordifyOption.ReplaceUnderscores => s.Replace('_', ' '),
+                WordifyOption.ReplaceHyphens => s.Replace('-', ' '),
+                WordifyOption.CamelCase => s.InsertCamelCaseSpaces(),
                 _ => s,
             };
         }
 
         /// <summary>
         /// Inserts spaces between words as indicated by camel case. For example,
-        /// "CamelCase" would be converted to "Camel Case".
+        /// "CamelCase" is converted to "Camel Case".
         /// </summary>
         /// <param name="s">The string to convert.</param>
         /// <returns>The converted string.</returns>
@@ -76,7 +76,7 @@ namespace SoftCircuits.Wordify
         /// Counts the number of words in this string. Words are separated by one or more whitespace
         /// character.
         /// </summary>
-        /// <returns></returns>
+        /// <returns>The modified string.</returns>
         public static int CountWords(this string? s)
         {
             bool wasSpace = true;
@@ -103,9 +103,9 @@ namespace SoftCircuits.Wordify
 
         /// <summary>
         /// Returns a copy of this string with all whitespace sequences replaced with a single space
-        /// character and all leading and trailing whitespace removed.
+        /// character, and all leading and trailing whitespace removed.
         /// </summary>
-        /// <param name="s">This string.</param>
+        /// <param name="s">The string to normalize.</param>
         /// <returns>The modified string.</returns>
         public static string NormalizeWhiteSpace(this string? s)
         {
@@ -136,22 +136,22 @@ namespace SoftCircuits.Wordify
         #region Null and empty strings
 
         /// <summary>
-        /// Returns this string, or an empty string if this string is null.
+        /// Returns the specified string, or an empty string if the string is null.
         /// </summary>
         public static string EmptyIfNull(this string? s) => s ?? string.Empty;
 
         /// <summary>
-        /// Returns this string, or null if this string is empty.
+        /// Returns the specified string, or null if the string is empty.
         /// </summary>
         public static string? NullIfEmpty(this string? s) => string.IsNullOrEmpty(s) ? null : s;
 
         /// <summary>
-        /// Returns this string, or an empty string if this string is null or contains only whitespace.
+        /// Returns the specified string, or an empty string if the string is null or contains only whitespace.
         /// </summary>
         public static string EmptyIfNullOrWhiteSpace(this string? s) => string.IsNullOrWhiteSpace(s) ? string.Empty : s;
 
         /// <summary>
-        /// Returns this string, or null if this string is null or contains only whitespace.
+        /// Returns the specified string, or null if the string is null or contains only whitespace.
         /// </summary>
         public static string? NullIfEmptyOrWhiteSpace(this string? s) => string.IsNullOrWhiteSpace(s) ? null : s;
 

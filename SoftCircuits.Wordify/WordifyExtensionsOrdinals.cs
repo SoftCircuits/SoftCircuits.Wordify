@@ -7,20 +7,6 @@ namespace SoftCircuits.Wordify
     public static partial class WordifyExtensions
     {
         /// <summary>
-        /// Numbers with different words for ordinal version.
-        /// </summary>
-        private static readonly Dictionary<string, string> OrdinalReplacementLookup = new(StringComparer.OrdinalIgnoreCase)
-        {
-            ["one"] = "first",
-            ["two"] = "second",
-            ["three"] = "third",
-            ["five"] = "fifth",
-            ["eight"] = "eighth",
-            ["nine"] = "ninth",
-            ["twelve"] = "twelfth",
-        };
-
-        /// <summary>
         /// Converts a number to ordinal words.
         /// </summary>
         /// <param name="value">The value to convert.</param>
@@ -47,44 +33,6 @@ namespace SoftCircuits.Wordify
         /// <param name="value">The value to convert.</param>
         /// <returns>The resulting ordinal string.</returns>
         public static string MakeOrdinal(this ulong value) => MakeOrdinal(Wordify(value));
-
-        /// <summary>
-        /// Converts a string of numbers, expressed as word, to an ordinal version.
-        /// </summary>
-        /// <remarks>
-        /// We might want to make this public but it will ignore strings with just digits.
-        /// Also, it doesnt test for non-number words (e.g. would convert boy to boieth).
-        /// </remarks>
-        /// <param name="s"></param>
-        /// <returns></returns>
-        private static string MakeOrdinal(this string? s)
-        {
-            if (s == null)
-                return string.Empty;
-
-            StringEditor editor = new(s);
-
-            // Find last word
-            if (!editor.FindLastWord(out int startIndex, out int endIndex))
-                return s;   // No words
-
-            string lastWord = editor[startIndex..endIndex];
-
-            if (OrdinalReplacementLookup.TryGetValue(lastWord, out string? replacement))
-            {
-                editor.Insert(startIndex, replacement, lastWord.Length);
-            }
-            else if (lastWord[^1] == 'y')
-            {
-                editor.Insert(endIndex - 1, "ieth", 1);
-            }
-            else
-            {
-                editor.Insert(endIndex, "th");
-            }
-
-            return editor;
-        }
 
         /// <summary>
         /// Converts a number into an ordinal number string.
@@ -149,5 +97,62 @@ namespace SoftCircuits.Wordify
             editor.Insert(lastDigitIndex + 1, suffix);
             return editor;
         }
+
+        #region Private Methods
+
+        /// <summary>
+        /// Numbers with different words for ordinal version.
+        /// </summary>
+        private static readonly Dictionary<string, string> OrdinalReplacementLookup = new(StringComparer.OrdinalIgnoreCase)
+        {
+            ["one"] = "first",
+            ["two"] = "second",
+            ["three"] = "third",
+            ["five"] = "fifth",
+            ["eight"] = "eighth",
+            ["nine"] = "ninth",
+            ["twelve"] = "twelfth",
+        };
+
+        /// <summary>
+        /// Converts a string of numbers, expressed as word, to an ordinal version.
+        /// </summary>
+        /// <remarks>
+        /// We might want to make this public but it will ignore strings with just digits.
+        /// Also, it doesnt test for non-number words (e.g. would convert boy to boieth).
+        /// </remarks>
+        /// <param name="s"></param>
+        /// <returns></returns>
+        private static string MakeOrdinal(this string? s)
+        {
+            if (s == null)
+                return string.Empty;
+
+            StringEditor editor = new(s);
+
+            // Find last word
+            if (!editor.FindLastWord(out int startIndex, out int endIndex))
+                return s;   // No words
+
+            string lastWord = editor[startIndex..endIndex];
+
+            if (OrdinalReplacementLookup.TryGetValue(lastWord, out string? replacement))
+            {
+                editor.Insert(startIndex, replacement, lastWord.Length);
+            }
+            else if (lastWord[^1] == 'y')
+            {
+                editor.Insert(endIndex - 1, "ieth", 1);
+            }
+            else
+            {
+                editor.Insert(endIndex, "th");
+            }
+
+            return editor;
+        }
+
+        #endregion
+
     }
 }

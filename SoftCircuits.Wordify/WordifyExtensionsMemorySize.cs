@@ -30,7 +30,7 @@ namespace SoftCircuits.Wordify
         }
 
         /// <summary>
-        /// Converts a memory size string (e.g., "1.5 MB") to the integer value.
+        /// Converts a memory size string (e.g., "1.5 MB") to the corresponding integer value.
         /// </summary>
         /// <param name="s">The memory size string to convert.</param>
         /// <returns>The integer value of the memory size string.</returns>

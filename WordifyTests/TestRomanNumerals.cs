@@ -73,6 +73,10 @@ namespace WordifyTests
             Assert.AreEqual(3, "  III  ".ParseRomanNumerals());
             Assert.AreEqual(4, "   IV   ".ParseRomanNumerals());
             Assert.AreEqual(5, " V ".ParseRomanNumerals());
+
+            // Test out-of-range values
+            Assert.AreEqual("MMMMDCCCLXXVI", 4876.ToRomanNumerals());
+            Assert.AreEqual(4876, "MMMMDCCCLXXVI".ParseRomanNumerals());
         }
     }
 }

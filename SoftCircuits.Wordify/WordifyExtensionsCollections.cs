@@ -32,32 +32,31 @@ namespace SoftCircuits.Wordify
 
             int i = 0, lastIndex = stringValues.Count() - 1;
 
-            using (IEnumerator<string> enumerator = stringValues.GetEnumerator())
+            using IEnumerator<string> enumerator = stringValues.GetEnumerator();
+
+            if (!enumerator.MoveNext())
+                return string.Empty;
+
+            StringBuilder builder = new();
+            builder.Append(enumerator.Current);
+
+            while (enumerator.MoveNext())
             {
-                if (!enumerator.MoveNext())
-                    return string.Empty;
+                bool isLast = ++i == lastIndex;
 
-                StringBuilder builder = new();
-                builder.Append(enumerator.Current);
-
-                while (enumerator.MoveNext())
+                if (isLast)
                 {
-                    bool isLast = ++i == lastIndex;
-
-                    if (isLast)
-                    {
-                        if (options.HasFlag(CollectionOption.OxfordComma))
-                            builder.Append(CommaNoSpace);
-                        builder.Append(options.HasFlag(CollectionOption.OrConjunction) ? OrConjunction : AndConjunction);
-                    }
-                    else
-                    {
-                        builder.Append(Comma);
-                    }
-                    builder.Append(enumerator.Current);
+                    if (options.HasFlag(CollectionOption.OxfordComma))
+                        builder.Append(CommaNoSpace);
+                    builder.Append(options.HasFlag(CollectionOption.OrConjunction) ? OrConjunction : AndConjunction);
                 }
-                return builder.ToString();
+                else
+                {
+                    builder.Append(Comma);
+                }
+                builder.Append(enumerator.Current);
             }
+            return builder.ToString();
         }
     }
 }

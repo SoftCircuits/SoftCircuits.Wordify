@@ -10,6 +10,67 @@ namespace SoftCircuits.Wordify
     public static partial class WordifyExtensions
     {
         /// <summary>
+        /// Converts the given value to words.
+        /// </summary>
+        /// <param name="value">The value to convert.</param>
+        /// <returns>The converted string.</returns>
+        public static string Wordify(this int value) => FormatNumber(value.ToString());
+
+        /// <summary>
+        /// Converts the given value to words.
+        /// </summary>
+        /// <param name="value">The value to convert.</param>
+        /// <returns>The converted string.</returns>
+        public static string Wordify(this long value) => FormatNumber(value.ToString());
+
+        /// <summary>
+        /// Converts the given value to words.
+        /// </summary>
+        /// <param name="value">The value to convert.</param>
+        /// <returns>The converted string.</returns>
+        public static string Wordify(this uint value) => FormatNumber(value.ToString());
+
+        /// <summary>
+        /// Converts the given value to words.
+        /// </summary>
+        /// <param name="value">The value to convert.</param>
+        /// <returns>The converted string.</returns>
+        public static string Wordify(this ulong value) => FormatNumber(value.ToString());
+
+        /// <summary>
+        /// Converts the given value to words.
+        /// </summary>
+        /// <param name="value">The value to convert.</param>
+        /// <returns>The converted string.</returns>
+        public static string Wordify(this double value, FractionOption format) => Wordify((decimal)value, format);
+
+        /// <summary>
+        /// Converts the given value to words.
+        /// </summary>
+        /// <param name="value">The value to convert.</param>
+        /// <returns>The converted string.</returns>
+        public static string Wordify(this decimal value, FractionOption format)
+        {
+            string? fraction = FormatFraction(ref value, format);
+
+            decimal dollars = Math.Floor(value);
+            StringBuilder builder = new(FormatNumber(dollars.ToString()));
+            if (format == FractionOption.UsCurrency)
+            {
+                builder.Append(' ');
+                builder.Append(Pluralize("dollar", dollars));
+            }
+            if (fraction != null)
+            {
+                builder.Append(" and ");
+                builder.Append(fraction);
+            }
+            return builder.ToString();
+        }
+
+        #region Private methods
+
+        /// <summary>
         /// Words for digits 0 through 9.
         /// </summary>
         private static readonly string[] Ones =
@@ -76,66 +137,6 @@ namespace SoftCircuits.Wordify
             "septillion",
             "octillion",
         };
-
-
-        /// <summary>
-        /// Converts the given value to words.
-        /// </summary>
-        /// <param name="value">The value to convert.</param>
-        /// <returns>The converted string.</returns>
-        public static string Wordify(this int value) => FormatNumber(value.ToString());
-
-        /// <summary>
-        /// Converts the given value to words.
-        /// </summary>
-        /// <param name="value">The value to convert.</param>
-        /// <returns>The converted string.</returns>
-        public static string Wordify(this long value) => FormatNumber(value.ToString());
-
-        /// <summary>
-        /// Converts the given value to words.
-        /// </summary>
-        /// <param name="value">The value to convert.</param>
-        /// <returns>The converted string.</returns>
-        public static string Wordify(this uint value) => FormatNumber(value.ToString());
-
-        /// <summary>
-        /// Converts the given value to words.
-        /// </summary>
-        /// <param name="value">The value to convert.</param>
-        /// <returns>The converted string.</returns>
-        public static string Wordify(this ulong value) => FormatNumber(value.ToString());
-
-        /// <summary>
-        /// Converts the given value to words.
-        /// </summary>
-        /// <param name="value">The value to convert.</param>
-        /// <returns>The converted string.</returns>
-        public static string Wordify(this double value, FractionOption format) => Wordify((decimal)value, format);
-
-        /// <summary>
-        /// Converts the given value to words.
-        /// </summary>
-        /// <param name="value">The value to convert.</param>
-        /// <returns>The converted string.</returns>
-        public static string Wordify(this decimal value, FractionOption format)
-        {
-            string? fraction = FormatFraction(ref value, format);
-
-            decimal dollars = Math.Floor(value);
-            StringBuilder builder = new(FormatNumber(dollars.ToString()));
-            if (format == FractionOption.UsCurrency)
-            {
-                builder.Append(' ');
-                builder.Append(Pluralize("dollar", dollars));
-            }
-            if (fraction != null)
-            {
-                builder.Append(" and ");
-                builder.Append(fraction);
-            }
-            return builder.ToString();
-        }
 
         [Flags]
         private enum ColumnState
@@ -349,5 +350,8 @@ namespace SoftCircuits.Wordify
 
             return fraction;
         }
+
+        #endregion
+
     }
 }

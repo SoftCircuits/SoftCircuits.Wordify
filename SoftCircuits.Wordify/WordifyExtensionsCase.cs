@@ -43,7 +43,7 @@ namespace SoftCircuits.Wordify
         public static string SetLowerCase(this string? s) => (s != null) ? s.ToLower() : string.Empty;
 
         /// <summary>
-        /// Capitalizes the first letter in the given string. Does not modify any other characters.
+        /// Capitalizes the first letter in the given string. No other characters are modified.
         /// </summary>
         /// <param name="s"></param>
         /// <returns></returns>
@@ -141,6 +141,8 @@ namespace SoftCircuits.Wordify
         /// </summary>
         public static string SetTitleCase(this string? s)
         {
+            // NOTE: Technically, the last word of the title should always be capitalized
+
             int wordStartIndex = -1;
             bool inSentence = false;
 

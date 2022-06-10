@@ -34,6 +34,7 @@ namespace WordifyTests
             ("Boy", "Boys"),
 
             // Irregular nouns
+            ("axis", "axes"),
             ("child", "children"),
             ("person", "people"),
             ("potato", "potatoes"),
