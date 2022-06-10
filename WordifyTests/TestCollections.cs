@@ -11,10 +11,10 @@ namespace WordifyTests
     {
         private class TestResult
         {
-            public JoinOption Options { get; set; }
+            public CollectionOption Options { get; set; }
             public string Result { get; set; }
 
-            public TestResult(JoinOption options, string result)
+            public TestResult(CollectionOption options, string result)
             {
                 Options = options;
                 Result = result;
@@ -38,58 +38,58 @@ namespace WordifyTests
             new TestItem(Array.Empty<string?>(),
                 new[]
                 {
-                    new TestResult(JoinOption.AndConjunction, string.Empty),
-                    new TestResult(JoinOption.OxfordComma, string.Empty),
-                    new TestResult(JoinOption.OrConjunction, string.Empty),
-                    new TestResult(JoinOption.OrConjunction | JoinOption.OxfordComma, string.Empty),
+                    new TestResult(CollectionOption.AndConjunction, string.Empty),
+                    new TestResult(CollectionOption.OxfordComma, string.Empty),
+                    new TestResult(CollectionOption.OrConjunction, string.Empty),
+                    new TestResult(CollectionOption.OrConjunction | CollectionOption.OxfordComma, string.Empty),
                 }),
             new TestItem(new[] { "one" },
                 new[]
                 {
-                    new TestResult(JoinOption.AndConjunction, "one"),
-                    new TestResult(JoinOption.OxfordComma, "one"),
-                    new TestResult(JoinOption.OrConjunction, "one"),
-                    new TestResult(JoinOption.OrConjunction | JoinOption.OxfordComma, "one"),
+                    new TestResult(CollectionOption.AndConjunction, "one"),
+                    new TestResult(CollectionOption.OxfordComma, "one"),
+                    new TestResult(CollectionOption.OrConjunction, "one"),
+                    new TestResult(CollectionOption.OrConjunction | CollectionOption.OxfordComma, "one"),
                 }),
             new TestItem(new[] { "one", "two" },
                 new[]
                 {
-                    new TestResult(JoinOption.AndConjunction, "one and two"),
-                    new TestResult(JoinOption.OxfordComma, "one, and two"),
-                    new TestResult(JoinOption.OrConjunction, "one or two"),
-                    new TestResult(JoinOption.OrConjunction | JoinOption.OxfordComma, "one, or two"),
+                    new TestResult(CollectionOption.AndConjunction, "one and two"),
+                    new TestResult(CollectionOption.OxfordComma, "one, and two"),
+                    new TestResult(CollectionOption.OrConjunction, "one or two"),
+                    new TestResult(CollectionOption.OrConjunction | CollectionOption.OxfordComma, "one, or two"),
                 }),
             new TestItem(new[] { "one", "two", "three" },
                 new[]
                 {
-                    new TestResult(JoinOption.AndConjunction, "one, two and three"),
-                    new TestResult(JoinOption.OxfordComma, "one, two, and three"),
-                    new TestResult(JoinOption.OrConjunction, "one, two or three"),
-                    new TestResult(JoinOption.OrConjunction | JoinOption.OxfordComma, "one, two, or three"),
+                    new TestResult(CollectionOption.AndConjunction, "one, two and three"),
+                    new TestResult(CollectionOption.OxfordComma, "one, two, and three"),
+                    new TestResult(CollectionOption.OrConjunction, "one, two or three"),
+                    new TestResult(CollectionOption.OrConjunction | CollectionOption.OxfordComma, "one, two, or three"),
                 }),
             new TestItem(new[] { "one", null, "three" },
                 new[]
                 {
-                    new TestResult(JoinOption.AndConjunction, "one and three"),
-                    new TestResult(JoinOption.OxfordComma, "one, and three"),
-                    new TestResult(JoinOption.OrConjunction, "one or three"),
-                    new TestResult(JoinOption.OrConjunction | JoinOption.OxfordComma, "one, or three"),
+                    new TestResult(CollectionOption.AndConjunction, "one and three"),
+                    new TestResult(CollectionOption.OxfordComma, "one, and three"),
+                    new TestResult(CollectionOption.OrConjunction, "one or three"),
+                    new TestResult(CollectionOption.OrConjunction | CollectionOption.OxfordComma, "one, or three"),
                 }),
             new TestItem(new[] { "one", null, null },
                 new[]
                 {
-                    new TestResult(JoinOption.AndConjunction, "one"),
-                    new TestResult(JoinOption.OxfordComma, "one"),
-                    new TestResult(JoinOption.OrConjunction, "one"),
-                    new TestResult(JoinOption.OrConjunction | JoinOption.OxfordComma, "one"),
+                    new TestResult(CollectionOption.AndConjunction, "one"),
+                    new TestResult(CollectionOption.OxfordComma, "one"),
+                    new TestResult(CollectionOption.OrConjunction, "one"),
+                    new TestResult(CollectionOption.OrConjunction | CollectionOption.OxfordComma, "one"),
                 }),
             new TestItem(new string?[] { null, null, null },
                 new[]
                 {
-                    new TestResult(JoinOption.AndConjunction, string.Empty),
-                    new TestResult(JoinOption.OxfordComma, string.Empty),
-                    new TestResult(JoinOption.OrConjunction, string.Empty),
-                    new TestResult(JoinOption.OrConjunction | JoinOption.OxfordComma, string.Empty),
+                    new TestResult(CollectionOption.AndConjunction, string.Empty),
+                    new TestResult(CollectionOption.OxfordComma, string.Empty),
+                    new TestResult(CollectionOption.OrConjunction, string.Empty),
+                    new TestResult(CollectionOption.OrConjunction | CollectionOption.OxfordComma, string.Empty),
                 }),
         };
 
@@ -99,7 +99,7 @@ namespace WordifyTests
             foreach (TestItem item in TestItems)
             {
                 foreach (TestResult result in item.Results)
-                    Assert.AreEqual(result.Result, Wordify.Join(item.Items, result.Options));
+                    Assert.AreEqual(result.Result, item.Items.Wordify(result.Options));
             }
         }
     }

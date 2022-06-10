@@ -7,7 +7,7 @@ using System.Text;
 
 namespace SoftCircuits.Wordify
 {
-    public static partial class Wordify
+    public static partial class WordifyExtensions
     {
         /// <summary>
         /// Words for digits 0 through 9.
@@ -83,42 +83,42 @@ namespace SoftCircuits.Wordify
         /// </summary>
         /// <param name="value">The value to convert.</param>
         /// <returns>The converted string.</returns>
-        public static string Transform(int value) => FormatNumber(value.ToString());
+        public static string Wordify(this int value) => FormatNumber(value.ToString());
 
         /// <summary>
         /// Converts the given value to words.
         /// </summary>
         /// <param name="value">The value to convert.</param>
         /// <returns>The converted string.</returns>
-        public static string Transform(long value) => FormatNumber(value.ToString());
+        public static string Wordify(this long value) => FormatNumber(value.ToString());
 
         /// <summary>
         /// Converts the given value to words.
         /// </summary>
         /// <param name="value">The value to convert.</param>
         /// <returns>The converted string.</returns>
-        public static string Transform(uint value) => FormatNumber(value.ToString());
+        public static string Wordify(this uint value) => FormatNumber(value.ToString());
 
         /// <summary>
         /// Converts the given value to words.
         /// </summary>
         /// <param name="value">The value to convert.</param>
         /// <returns>The converted string.</returns>
-        public static string Transform(ulong value) => FormatNumber(value.ToString());
+        public static string Wordify(this ulong value) => FormatNumber(value.ToString());
 
         /// <summary>
         /// Converts the given value to words.
         /// </summary>
         /// <param name="value">The value to convert.</param>
         /// <returns>The converted string.</returns>
-        public static string Transform(double value, FractionOption format) => Transform((decimal)value, format);
+        public static string Wordify(this double value, FractionOption format) => Wordify((decimal)value, format);
 
         /// <summary>
         /// Converts the given value to words.
         /// </summary>
         /// <param name="value">The value to convert.</param>
         /// <returns>The converted string.</returns>
-        public static string Transform(decimal value, FractionOption format)
+        public static string Wordify(this decimal value, FractionOption format)
         {
             string? fraction = FormatFraction(ref value, format);
 

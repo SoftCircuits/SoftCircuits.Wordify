@@ -4,7 +4,7 @@
 
 namespace SoftCircuits.Wordify
 {
-    public static partial class Wordify
+    public static partial class WordifyExtensions
     {
         /// <summary>
         /// Numbers with different words for ordinal version.
@@ -25,28 +25,28 @@ namespace SoftCircuits.Wordify
         /// </summary>
         /// <param name="value">The value to convert.</param>
         /// <returns>The resulting ordinal string.</returns>
-        public static string MakeOrdinal(this int value) => MakeOrdinal(Transform(value));
+        public static string MakeOrdinal(this int value) => MakeOrdinal(Wordify(value));
 
         /// <summary>
         /// Converts a number to ordinal words.
         /// </summary>
         /// <param name="value">The value to convert.</param>
         /// <returns>The resulting ordinal string.</returns>
-        public static string MakeOrdinal(this long value) => MakeOrdinal(Transform(value));
+        public static string MakeOrdinal(this long value) => MakeOrdinal(Wordify(value));
 
         /// <summary>
         /// Converts a number to ordinal words.
         /// </summary>
         /// <param name="value">The value to convert.</param>
         /// <returns>The resulting ordinal string.</returns>
-        public static string MakeOrdinal(this uint value) => MakeOrdinal(Transform(value));
+        public static string MakeOrdinal(this uint value) => MakeOrdinal(Wordify(value));
 
         /// <summary>
         /// Converts a number to ordinal words.
         /// </summary>
         /// <param name="value">The value to convert.</param>
         /// <returns>The resulting ordinal string.</returns>
-        public static string MakeOrdinal(this ulong value) => MakeOrdinal(Transform(value));
+        public static string MakeOrdinal(this ulong value) => MakeOrdinal(Wordify(value));
 
         /// <summary>
         /// Converts a string of numbers, expressed as word, to an ordinal version.

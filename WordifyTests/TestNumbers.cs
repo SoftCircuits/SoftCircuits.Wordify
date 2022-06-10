@@ -69,7 +69,7 @@ namespace WordifyTests
         public void TestIntegers()
         {
             foreach ((long input, string output) in IntegerData)
-                Assert.AreEqual(output, Wordify.Transform(input));
+                Assert.AreEqual(output, input.Wordify());
         }
 
         private static readonly List<(decimal, string)> FloatingPointData = new()
@@ -179,7 +179,7 @@ namespace WordifyTests
         public void TestFloatingPoints()
         {
             foreach ((decimal input, string output) in FloatingPointData)
-                Assert.AreEqual(output, Wordify.Transform(input, FractionOption.Check));
+                Assert.AreEqual(output, input.Wordify(FractionOption.Check));
         }
 
         private class FractionResult
@@ -279,7 +279,7 @@ namespace WordifyTests
             foreach (FractionTest test in FractionTests)
             {
                 foreach (FractionResult result in test.Results)
-                    Assert.AreEqual(result.Result, Wordify.Transform(result.Value, test.Format));
+                    Assert.AreEqual(result.Result, result.Value.Wordify(test.Format));
             }
         }
     }

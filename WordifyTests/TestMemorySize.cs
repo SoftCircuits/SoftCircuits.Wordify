@@ -9,58 +9,59 @@ namespace WordifyTests
     [TestClass]
     public class TestMemorySize
     {
-        private const ulong KBytes = 1024UL;
-        private const ulong MBytes = 1048576UL;
-        private const ulong GBytes = 1073741824UL;
-        private const ulong TBytes = 1099511627776UL;
-        private const ulong PBytes = 1125899906842624UL;
-        //private const ulong EBytes = 1180591620717411303424UL;
-        //private const ulong ZBytes = 1208925819614629174706176UL;
+        private const ulong Kilobytes = 1024UL;
+        private const ulong Megabytes = 1048576UL;
+        private const ulong Gigabytes = 1073741824UL;
+        private const ulong Terabytes = 1099511627776UL;
+        private const ulong Petabytes = 1125899906842624UL;
+        //private const ulong Exabytes = 1180591620717411303424UL;
+        //private const ulong Zettabytes = 1208925819614629174706176UL;
+        //private const ulong Yottabytes = 0UL;
 
         [TestMethod]
         public void Test()
         {
-            Assert.AreEqual("0 B", Wordify.ToMemorySize(0UL));
-            Assert.AreEqual("1 B", Wordify.ToMemorySize(1UL));
-            Assert.AreEqual("2 B", Wordify.ToMemorySize(2UL));
-            Assert.AreEqual("1 KB", Wordify.ToMemorySize(KBytes));
-            Assert.AreEqual("1 MB", Wordify.ToMemorySize(MBytes));
-            Assert.AreEqual("1 GB", Wordify.ToMemorySize(GBytes));
-            Assert.AreEqual("1 TB", Wordify.ToMemorySize(TBytes));
-            Assert.AreEqual("1 PB", Wordify.ToMemorySize(PBytes));
-            //Assert.AreEqual("1 EB", Wordify.ToMemorySize(EBytes));
-            //Assert.AreEqual("1 ZB", Wordify.ToMemorySize(ZBytes));
+            Assert.AreEqual("0 B", 0UL.ToMemorySize());
+            Assert.AreEqual("1 B", 1UL.ToMemorySize());
+            Assert.AreEqual("2 B", 2UL.ToMemorySize());
+            Assert.AreEqual("1 KB", Kilobytes.ToMemorySize());
+            Assert.AreEqual("1 MB", Megabytes.ToMemorySize());
+            Assert.AreEqual("1 GB", Gigabytes.ToMemorySize());
+            Assert.AreEqual("1 TB", Terabytes.ToMemorySize());
+            Assert.AreEqual("1 PB", Petabytes.ToMemorySize());
+            //Assert.AreEqual("1 EB", Exabytes.ToMemorySize());
+            //Assert.AreEqual("1 ZB", Zettabytes.ToMemorySize());
 
-            Assert.AreEqual("1.5 KB", Wordify.ToMemorySize(KBytes + KBytes / 2));
-            Assert.AreEqual("1.5 MB", Wordify.ToMemorySize(MBytes + MBytes / 2));
-            Assert.AreEqual("1.5 GB", Wordify.ToMemorySize(GBytes + GBytes / 2));
-            Assert.AreEqual("1.5 TB", Wordify.ToMemorySize(TBytes + TBytes / 2));
-            Assert.AreEqual("1.5 PB", Wordify.ToMemorySize(PBytes + PBytes / 2));
-            Assert.AreEqual("1.1 KB", Wordify.ToMemorySize(KBytes + KBytes / 10));
-            Assert.AreEqual("1.25 KB", Wordify.ToMemorySize(KBytes + KBytes / 4));
-            Assert.AreEqual("1.75 MB", Wordify.ToMemorySize(MBytes + (MBytes / 4 * 3)));
-            Assert.AreEqual("1.33 GB", Wordify.ToMemorySize(GBytes + GBytes / 3));
-            Assert.AreEqual("1.25 TB", Wordify.ToMemorySize(TBytes + TBytes / 4));
-            Assert.AreEqual("1.2 PB", Wordify.ToMemorySize(PBytes + PBytes / 5));
-            Assert.AreEqual("1.1 PB", Wordify.ToMemorySize(PBytes + PBytes / 10));
+            Assert.AreEqual("1.5 KB", (Kilobytes + Kilobytes / 2).ToMemorySize());
+            Assert.AreEqual("1.5 MB", (Megabytes + Megabytes / 2).ToMemorySize());
+            Assert.AreEqual("1.5 GB", (Gigabytes + Gigabytes / 2).ToMemorySize());
+            Assert.AreEqual("1.5 TB", (Terabytes + Terabytes / 2).ToMemorySize());
+            Assert.AreEqual("1.5 PB", (Petabytes + Petabytes / 2).ToMemorySize());
+            Assert.AreEqual("1.1 KB", (Kilobytes + Kilobytes / 10).ToMemorySize());
+           Assert.AreEqual("1.25 KB", (Kilobytes + Kilobytes / 4).ToMemorySize());
+           Assert.AreEqual("1.75 MB", (Megabytes + (Megabytes / 4 * 3)).ToMemorySize());
+           Assert.AreEqual("1.33 GB", (Gigabytes + Gigabytes / 3).ToMemorySize());
+           Assert.AreEqual("1.25 TB", (Terabytes + Terabytes / 4).ToMemorySize());
+            Assert.AreEqual("1.2 PB", (Petabytes + Petabytes / 5).ToMemorySize());
+            Assert.AreEqual("1.1 PB", (Petabytes + Petabytes / 10).ToMemorySize());
 
-            Assert.AreEqual(1UL, Wordify.FromMemorySize("1"));
-            Assert.AreEqual(1UL, Wordify.FromMemorySize("1 b"));
-            Assert.AreEqual(1UL, Wordify.FromMemorySize("1BYTES"));
-            Assert.AreEqual(KBytes, Wordify.FromMemorySize("1  KB"));
-            Assert.AreEqual(MBytes, Wordify.FromMemorySize("1 mb "));
-            Assert.AreEqual(GBytes, Wordify.FromMemorySize("1gb "));
-            Assert.AreEqual(TBytes, Wordify.FromMemorySize("1 TB"));
-            Assert.AreEqual(PBytes, Wordify.FromMemorySize("1PB"));
-            //Assert.AreEqual(EBytes, Wordify.FromMemorySize("1 eb"));
-            //Assert.AreEqual(ZBytes, Wordify.FromMemorySize("1 ZB"));
+            Assert.AreEqual(1UL, "1".FromMemorySize());
+            Assert.AreEqual(1UL, "1 b".FromMemorySize());
+            Assert.AreEqual(1UL, "1BYTES".FromMemorySize());
+            Assert.AreEqual(Kilobytes, "1  KB".FromMemorySize());
+            Assert.AreEqual(Megabytes, "1 mb ".FromMemorySize());
+            Assert.AreEqual(Gigabytes, "1gb ".FromMemorySize());
+            Assert.AreEqual(Terabytes, "1 TB".FromMemorySize());
+            Assert.AreEqual(Petabytes, "1PB".FromMemorySize());
+            //Assert.AreEqual(Exabytes, "1 eb".FromMemorySize());
+            //Assert.AreEqual(Zettabytes, "1 ZB".FromMemorySize());
 
-            Assert.AreEqual(1026UL + 100UL, Wordify.FromMemorySize("1.1 kb"));
-            Assert.AreEqual(KBytes + KBytes / 2, Wordify.FromMemorySize("1.5 kb"));
-            Assert.AreEqual(MBytes + MBytes / 2, Wordify.FromMemorySize("   1.5   MB   "));
-            Assert.AreEqual(GBytes + GBytes / 2, Wordify.FromMemorySize("1.5gb"));
-            Assert.AreEqual(KBytes + KBytes / 4, Wordify.FromMemorySize("1.25 kb"));
-            Assert.AreEqual(MBytes + (MBytes / 4 * 3), Wordify.FromMemorySize("1.75 MB"));
+            Assert.AreEqual(1026UL + 100UL, "1.1 kb".FromMemorySize());
+            Assert.AreEqual(Kilobytes + Kilobytes / 2, "1.5 kb".FromMemorySize());
+            Assert.AreEqual(Megabytes + Megabytes / 2, "   1.5   MB   ".FromMemorySize());
+            Assert.AreEqual(Gigabytes + Gigabytes / 2, "1.5gb".FromMemorySize());
+            Assert.AreEqual(Kilobytes + Kilobytes / 4, "1.25 kb".FromMemorySize());
+            Assert.AreEqual(Megabytes + (Megabytes / 4 * 3), "1.75 MB".FromMemorySize());
         }
     }
 }

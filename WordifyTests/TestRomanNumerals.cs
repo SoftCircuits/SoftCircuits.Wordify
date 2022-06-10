@@ -63,16 +63,16 @@ namespace WordifyTests
         {
             foreach ((int Value, string RomanNumerals) item in TestData)
             {
-                Assert.AreEqual(item.RomanNumerals, Wordify.ToRomanNumerals(item.Value));
-                Assert.AreEqual(item.Value, Wordify.ParseRomanNumerals(item.RomanNumerals));
+                Assert.AreEqual(item.RomanNumerals, item.Value.ToRomanNumerals());
+                Assert.AreEqual(item.Value, item.RomanNumerals.ParseRomanNumerals());
             }
 
-            Assert.AreEqual(0, Wordify.ParseRomanNumerals(" N "));
-            Assert.AreEqual(1, Wordify.ParseRomanNumerals("  I  "));
-            Assert.AreEqual(2, Wordify.ParseRomanNumerals(" II "));
-            Assert.AreEqual(3, Wordify.ParseRomanNumerals("  III  "));
-            Assert.AreEqual(4, Wordify.ParseRomanNumerals("   IV   "));
-            Assert.AreEqual(5, Wordify.ParseRomanNumerals(" V "));
+            Assert.AreEqual(0, " N ".ParseRomanNumerals());
+            Assert.AreEqual(1, "  I  ".ParseRomanNumerals());
+            Assert.AreEqual(2, " II ".ParseRomanNumerals());
+            Assert.AreEqual(3, "  III  ".ParseRomanNumerals());
+            Assert.AreEqual(4, "   IV   ".ParseRomanNumerals());
+            Assert.AreEqual(5, " V ".ParseRomanNumerals());
         }
     }
 }

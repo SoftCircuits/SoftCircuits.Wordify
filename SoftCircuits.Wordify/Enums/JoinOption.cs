@@ -5,7 +5,7 @@
 namespace SoftCircuits.Wordify
 {
     [Flags]
-    public enum JoinOption
+    public enum CollectionOption
     {
         /// <summary>
         /// Uses "and" as the final conjunction. This is the default.

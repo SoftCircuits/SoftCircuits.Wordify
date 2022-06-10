@@ -60,8 +60,8 @@ namespace WordifyTests
         {
             foreach ((string Original, string Plural) item in Data)
             {
-                Assert.AreEqual(item.Plural, Wordify.Pluralize(item.Original));
-                Assert.AreEqual(item.Original, Wordify.Singularize(item.Plural));
+                Assert.AreEqual(item.Plural, item.Original.Pluralize());
+                Assert.AreEqual(item.Original, item.Plural.Singularize());
             }
         }
     }

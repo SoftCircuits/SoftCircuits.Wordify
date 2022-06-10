@@ -6,7 +6,7 @@ using System.Text;
 
 namespace SoftCircuits.Wordify
 {
-    public static partial class Wordify
+    public static partial class WordifyExtensions
     {
         private const string AndConjunction = " and ";
         private const string OrConjunction = " or ";
@@ -20,7 +20,7 @@ namespace SoftCircuits.Wordify
         /// <param name="values">The collection to join.</param>
         /// <param name="options">Options for how the string is formed.</param>
         /// <returns>A string that represents the collection.</returns>
-        public static string Join<T>(this IEnumerable<T>? values, JoinOption options = JoinOption.AndConjunction)
+        public static string Wordify<T>(this IEnumerable<T>? values, CollectionOption options = CollectionOption.AndConjunction)
         {
             if (values == null)
                 return string.Empty;
@@ -46,9 +46,9 @@ namespace SoftCircuits.Wordify
 
                     if (isLast)
                     {
-                        if (options.HasFlag(JoinOption.OxfordComma))
+                        if (options.HasFlag(CollectionOption.OxfordComma))
                             builder.Append(CommaNoSpace);
-                        builder.Append(options.HasFlag(JoinOption.OrConjunction) ? OrConjunction : AndConjunction);
+                        builder.Append(options.HasFlag(CollectionOption.OrConjunction) ? OrConjunction : AndConjunction);
                     }
                     else
                     {

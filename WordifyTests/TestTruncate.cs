@@ -134,7 +134,7 @@ namespace WordifyTests
             {
                 foreach (TruncateResult result in test.Results)
                 {
-                    Assert.AreEqual(result.Result, Wordify.Truncate(test.Input, result.MaxLength, test.Options));
+                    Assert.AreEqual(result.Result, test.Input.Truncate(result.MaxLength, test.Options));
                 }
             }
         }

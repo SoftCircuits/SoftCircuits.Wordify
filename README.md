@@ -10,26 +10,26 @@ The library can be used to convert numbers to words.
 
 | Code | Output |
 |---|---|
-| `Wordify.Transform(1);` | one |
-| `Wordify.Transform(123);` | one hundred twenty-three |
-| `Wordify.Transform(12345);` | twelve thousand three hundred forty-five |
+| `Wordify.Wordify(1);` | one |
+| `Wordify.Wordify(123);` | one hundred twenty-three |
+| `Wordify.Wordify(12345);` | twelve thousand three hundred forty-five |
 
 The `Transform` has many overloads. The one that accepts floating point values also takes a `FractionOption` argument that specifies how to format the fractional part.
 
 | Code | Output |
 |---|---|
-| `Wordify.Transform(345.67, FractionOption.Round);` | three hundred forty-six |
-| `Wordify.Transform(345.67, FractionOption.Truncate);` | three hundred forty-five |
-| `Wordify.Transform(345.67, FractionOption.Decimal);` | three hundred forty-five and .7 |
-| `Wordify.Transform(345.67, FractionOption.Fraction);` | three hundred forty-five and 67/100 |
-| `Wordify.Transform(345.67, FractionOption.Check);` | three hundred forty-five and 67/100 |
-| `Wordify.Transform(345.67, FractionOption.Words);` | three hundred forty-five and sixty-seven one hundredths |
-| `Wordify.Transform(345.67, FractionOption.UsCurrency);` | three hundred forty-five dollars and sixty-seven cents |
+| `Wordify.Wordify(345.67, FractionOption.Round);` | three hundred forty-six |
+| `Wordify.Wordify(345.67, FractionOption.Truncate);` | three hundred forty-five |
+| `Wordify.Wordify(345.67, FractionOption.Decimal);` | three hundred forty-five and .7 |
+| `Wordify.Wordify(345.67, FractionOption.Fraction);` | three hundred forty-five and 67/100 |
+| `Wordify.Wordify(345.67, FractionOption.Check);` | three hundred forty-five and 67/100 |
+| `Wordify.Wordify(345.67, FractionOption.Words);` | three hundred forty-five and sixty-seven one hundredths |
+| `Wordify.Wordify(345.67, FractionOption.UsCurrency);` | three hundred forty-five dollars and sixty-seven cents |
 
 Because this method can return a string, it's easy to perform additional modifications to it.
 
 ```cs
-Wordify.Transform(345.67, FractionOption.Decimal)
+Wordify.Wordify(345.67, FractionOption.Decimal)
     .Capitalize();
 ```
 
@@ -54,14 +54,14 @@ The `MakeOrdinalDigits()` extension method works similarly but outputs digits in
 
 ## Transforming String
 
-`Wordify` has several methods to help convert symbol names like `TotalCount`, `total_count` and `total-count` to text like `total count`. The examples below use the `Transform()` extension method. If you know what method should be used for your string, you can achieve a small performance gain by passing the appropriate `TransformOption` option. Otherwise, you can pass `TransformOption.AutoDetect` and `Transform()` will attempt to automatically detect the type of transformation needed.
+`Wordify` has several methods to help convert symbol names like `TotalCount`, `total_count` and `total-count` to text like `total count`. The examples below use the `Wordify()` extension method. If you know what method should be used for your string, you can achieve a small performance gain by passing the appropriate `TransformOption` option. Otherwise, you can pass `TransformOption.AutoDetect` and `Wordify()` will attempt to automatically detect the type of transformation needed.
 
 | Code | Output |
 |---|---|
-| `"abcDef".Transform();` | abc Def |
-| `"abc_def".Transform(TransformOption.AutoDetect);` | abc def |
-| `"abc-def".Transform(TransformOption.AutoDetect);` | abc def |
-| `"abc-def".Transform(TransformOption.ReplaceHypens);` | abc def |
+| `"abcDef".Wordify();` | abc Def |
+| `"abc_def".Wordify(TransformOption.AutoDetect);` | abc def |
+| `"abc-def".Wordify(TransformOption.AutoDetect);` | abc def |
+| `"abc-def".Wordify(TransformOption.ReplaceHypens);` | abc def |
 
 If you know your string contains camel case, you can call the `InsertCamelCaseSpaces()` extension method directly.
 
@@ -73,9 +73,9 @@ If you know your string contains camel case, you can call the `InsertCamelCaseSp
 
 Notice in the last example that there is no way to detect if *IBM* and *XT* should be separate words. That's just a limitation of word detection from camel case.
 
-Finally, there is a variation of the `Transform()` method specifically for `enum`s. This extension method takes an `enum`. If the `enum` value has a `DescriptionAttribute` attribute, the method returns the description from that attribute. Otherwise, the name of the `enum` is passed to the `Transform()` extension method described above.
+Finally, there is a variation of the `Wordify()` method specifically for `enum`s. This extension method takes an `enum`. If the `enum` value has a `DescriptionAttribute` attribute, the method returns the description from that attribute. Otherwise, the name of the `enum` is passed to the `Wordify()` extension method described above.
 
-This `Transform()` extension method takes an optional `bool` argument that, when set to `true`, will prevent this method from checking for the presence of a `DescriptionAttribute`.
+This `Wordify()` extension method takes an optional `bool` argument that, when set to `true`, will prevent this method from checking for the presence of a `DescriptionAttribute`.
 
 The examples below assuming the following `enum`.
 
@@ -95,12 +95,12 @@ enum MyEnums
 
 | Code | Output |
 |---|---|
-| `MyEnums.One.Transform();` | First enum |
-| `MyEnums.Two.Transform();` | Second enum |
-| `MyEnums.Two.Transform(true);` | Two |
-| `MyEnums.Three.Transform(false);` | Third enum |
-| `MyEnums.OnTheGo.Transform();` | On The Go |
-| `MyEnums.ReadHTMLPage.Transform();` | Read HTML Page |
+| `MyEnums.One.Wordify();` | First enum |
+| `MyEnums.Two.Wordify();` | Second enum |
+| `MyEnums.Two.Wordify(true);` | Two |
+| `MyEnums.Three.Wordify(false);` | Third enum |
+| `MyEnums.OnTheGo.Wordify();` | On The Go |
+| `MyEnums.ReadHTMLPage.Wordify();` | Read HTML Page |
 
 ## Pluralization
 
@@ -167,15 +167,15 @@ Use the `WrapInQuotes()` and `WrapInSingleQuotes()` methods to wrap a string or 
 
 ## Formatting Collections
 
-Use the `Join()` extension method to combine a collection of items into a string.
+Use the `Wordify()` extension method to combine a collection of items into a string.
 
 | Code | Output |
 |---|---|
-| `(new[] { 1, 2, 3 }).Join();` | 1, 2 and 3 |
-| `(new[] { 1, 2, 3 }).Join(JoinOption.AndConjunction);` | 1, 2 and 3 |
-| `(new[] { 1, 2, 3 }).Join(JoinOption.OrConjunction);` | 1, 2 or 3 |
-| `(new[] { 1, 2, 3 }).Join(JoinOption.OxfordComma);` | 1, 2, and 3 |
-| `(new[] { 1, 2, 3 }).Join(JoinOption.OrConjunction \| JoinOption.OxfordComma);` | 1, 2, or 3 |
+| `(new[] { 1, 2, 3 }).Wordify();` | 1, 2 and 3 |
+| `(new[] { 1, 2, 3 }).Wordify(CollectionOption.AndConjunction);` | 1, 2 and 3 |
+| `(new[] { 1, 2, 3 }).Wordify(CollectionOption.OrConjunction);` | 1, 2 or 3 |
+| `(new[] { 1, 2, 3 }).Wordify(CollectionOption.OxfordComma);` | 1, 2, and 3 |
+| `(new[] { 1, 2, 3 }).Wordify(CollectionOption.OrConjunction \| JoinOption.OxfordComma);` | 1, 2, or 3 |
 
 ## Displaying Memory Size
 

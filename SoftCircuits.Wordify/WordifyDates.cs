@@ -6,248 +6,251 @@ using System.Diagnostics;
 
 namespace SoftCircuits.Wordify
 {
+    [Flags]
+    public enum DateTimeOptions
+    {
+        None = 0,
+        UseWords,
+    }
+
     public static partial class Wordify
     {
         private const double DaysPerYear = 365;
         private const double DaysPerMonth = 30.437;
 
-        //private class TimeSpanPart
-        //{
-        //    public PartType PartType { get; set; }
-        //    public double Value { get; set; }
+        #region PartType
 
-        //    public TimeSpanPart(PartType partType, double value)
-        //    {
-        //        PartType = partType;
-        //        Value = value;
-        //    }
-        //}
+        private enum PartType
+        {
+            Year,
+            Month,
+            Day,
+            Hour,
+            Minute,
+            Second,
+            Millisecond
+        };
 
-        //private enum PartType
-        //{
-        //    Year,
-        //    Month,
-        //    Day,
-        //    Hour,
-        //    Minute,
-        //    Second,
-        //    Millisecond
-        //};
+        private class TimeSpanPart
+        {
+            public PartType PartType { get; set; }
+            public double Value { get; set; }
+            //public double TotalValue { get; set; }
 
-        //// TODO: Support DateTimeOffset, DateOnly, TimeOnly
 
-        ///// <summary>
-        ///// 
-        ///// </summary>
-        ///// <param name="dateTime"></param>
-        ///// <param name="useUtc"></param>
-        ///// <returns></returns>
-        //public static string Transform(DateTime dateTime, int precision = 1, bool useUtc = false) =>
-        //    Transform(dateTime, useUtc ? DateTime.UtcNow : DateTime.Now, precision);
+            public TimeSpanPart(PartType partType, double value/*, double totalValue*/)
+            {
+                PartType = partType;
+                Value = value;
+                //TotalValue = totalValue;
+            }
+        }
 
-        ///// <summary>
-        ///// 
-        ///// </summary>
-        ///// <param name="dateTime"></param>
-        ///// <param name="relativeTo"></param>
-        ///// <param name="precision"></param>
-        ///// <returns></returns>
-        //public static string Transform(this DateTime dateTime, DateTime relativeTo, int precision = 1)
-        //{
-        //    TimeSpan span = dateTime - relativeTo;
+        #endregion
 
-        //    // TODO: Need precision 1 - 7 (default = 1)
+        // TODO: Support DateOnly (.NET 6.0 or greater)
+        // TODO: Support TimeOnly (.NET 6.0 or greater)
 
-        //    // What constitutes now ???
-        //    // - 7 - milliseconds
-        //    // - 6 - seconds
-        //    // - 5 - minutes
-        //    // - 4 - hours
-        //    // - 3 - days
+        // TODO: Support DateTimeOffset
 
-        //    string.Join
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="dateTime"></param>
+        /// <param name="useUtc"></param>
+        /// <returns></returns>
+        public static string Transform(DateTime dateTime, bool useUtc = false, int precision = 1) =>
+            Transform(dateTime, useUtc ? DateTime.UtcNow : DateTime.Now, precision);
 
-        //    if (span.TotalSeconds < 1.0)    // Precision ???
-        //        return "now";
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="dateTime"></param>
+        /// <param name="relativeTo"></param>
+        /// <param name="precision"></param>
+        /// <returns></returns>
+        public static string Transform(this DateTime dateTime, DateTime relativeTo, int precision = 1)
+        {
+            TimeSpan timeSpan = dateTime - relativeTo;
 
-        //    if (span >= TimeSpan.Zero)
-        //    {
-        //        // In the future
+            if (timeSpan.TotalSeconds < 1.0)
+                return "now";
 
-        //        foreach ((string Unit, double Value) item in GetTimeSpanParts(span))
-        //        {
+            Debug.Assert(dateTime != relativeTo);
+            bool inPast = (dateTime < relativeTo);
+            //Debug.Assert(timeSpan != TimeSpan.Zero);
+            //bool inPast = timeSpan < TimeSpan.Zero;
 
-        //        }
-        //    }
-        //    else
-        //    {
-        //        // In the past
+            List<string> terms = new();
 
-        //        // TODO: Need to pass positive span
-        //        span = span.Duration();
+            foreach (TimeSpanPart part in GetTimeSpanParts(timeSpan))
+            {
+                int count = (precision == 1) ? (int)Math.Round(part.Value) : (int)Math.Truncate(part.Value);
+                terms.Add($"{count} {part.PartType.ToString().ToLower().Pluralize(count)}");
+                if (--precision == 0)
+                    break;
+            }
 
-        //        foreach ((string Unit, double Value) item in GetTimeSpanParts(span))
-        //        {
+            return $"{terms.Wordify()} {((dateTime < relativeTo) ? "ago" : "from now")}";
 
+            // if (inPast)
+            // + " ago"
+            // else
+            // + " from now"
 
+            // Handle yesterday
+            // Handle tomorrow
 
+            //DateTime.UtcNow.AddHours(30).Humanize() => "tomorrow"
+            //DateTime.UtcNow.AddHours(2).Humanize() => "2 hours from now"
 
 
 
-        //        }
-        //    }
 
 
 
+            //if (timeSpan >= TimeSpan.Zero)
+            //{
+            //    List<string> xxx = new();
 
+            //    // In the future
+            //    foreach (TimeSpanPart part in GetTimeSpanParts(timeSpan))
+            //    {
 
-        //    if (dateTime > relativeTo)
-        //    {
-        //        // TODO: If precision limits to months, we should round month. Otherwise, we only count complete months
+            //        xxx.Add($"{part.Value} {part.PartType.ToString().ToLower().Capitalize().Pluralize(part.Value)}   ");
 
-        //        //if ()
+            //    }
+            //}
+            //else
+            //{
+            //    // In the past
 
-        //    }
-        //    else
-        //    {
+            //    // TODO: Need to pass positive span
+            //    timeSpan = timeSpan.Duration();
 
-        //    }
+            //    foreach ((string Unit, double Value) item in GetTimeSpanParts(timeSpan))
+            //    {
 
+            //    }
+            //}
 
-        //    //You can Humanize an instance of DateTime or DateTimeOffset and get back a string telling how far back or forward in time that is:
 
-        //    //DateTime.UtcNow.AddHours(-30).Humanize() => "yesterday"
-        //    //DateTime.UtcNow.AddHours(-2).Humanize() => "2 hours ago"
 
-        //    //DateTime.UtcNow.AddHours(30).Humanize() => "tomorrow"
-        //    //DateTime.UtcNow.AddHours(2).Humanize() => "2 hours from now"
+            //You can Humanize an instance of DateTime or DateTimeOffset and get back a string telling how far back or forward in time that is:
 
-        //    //DateTimeOffset.UtcNow.AddHours(1).Humanize() => "an hour from now"
-        //    //Humanizer supports both local and UTC dates as well as dates with offset(DateTimeOffset). You could also provide the date you want the input date to be compared against.If null, it will use the current date as comparison base.Also, culture to use can be specified explicitly.If it is not, current thread's current UI culture is used. Here is the API signature:
+            //DateTime.UtcNow.AddHours(-30).Humanize() => "yesterday"
+            //DateTime.UtcNow.AddHours(-2).Humanize() => "2 hours ago"
 
-        //    //public static string Humanize(this DateTime input, bool utcDate = true, DateTime? dateToCompareAgainst = null, CultureInfo culture = null)
-        //    //public static string Humanize(this DateTimeOffset input, DateTimeOffset? dateToCompareAgainst = null, CultureInfo culture = null)
+            //DateTime.UtcNow.AddHours(30).Humanize() => "tomorrow"
+            //DateTime.UtcNow.AddHours(2).Humanize() => "2 hours from now"
 
-        //    return string.Empty;
-        //}
+            //DateTimeOffset.UtcNow.AddHours(1).Humanize() => "an hour from now"
+            //Humanizer supports both local and UTC dates as well as dates with offset(DateTimeOffset). You could also provide the date you want the input date to be compared against.If null, it will use the current date as comparison base.Also, culture to use can be specified explicitly.If it is not, current thread's current UI culture is used. Here is the API signature:
 
-        ///// <summary>
-        ///// 
-        ///// </summary>
-        ///// <param name="timeSpan"></param>
-        ///// <param name="precision"></param>
-        ///// <returns></returns>
-        //public static string Transform(this TimeSpan timeSpan, int precision = 1)
-        //{
-        //    List<TimeSpanPart> parts = GetTimeSpanParts(timeSpan.Duration(), precision);
+            //public static string Humanize(this DateTime input, bool utcDate = true, DateTime? dateToCompareAgainst = null, CultureInfo culture = null)
+            //public static string Humanize(this DateTimeOffset input, DateTimeOffset? dateToCompareAgainst = null, CultureInfo culture = null)
 
-        //    for (int i = 0; i < parts.Count; i++)
-        //    {
-        //        if (i + 1 >= parts.Count)
-        //        {
+            return string.Empty;
+        }
 
-        //        }
-        //        else
-        //        {
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="timeSpan"></param>
+        /// <param name="precision"></param>
+        /// <returns></returns>
+        public static string Transform(this TimeSpan timeSpan, int precision = 1)
+        {
+            //List<TimeSpanPart> parts = GetTimeSpanParts(timeSpan.Duration(), precision);
 
-        //        }
-        //    }
+            //for (int i = 0; i < parts.Count; i++)
+            //{
+            //    if (i + 1 >= parts.Count)
+            //    {
 
+            //    }
+            //    else
+            //    {
 
+            //    }
+            //}
 
-        //    foreach ((PartType Part, double Value) part in GetTimeSpanParts(timeSpan.Duration()))
-        //    {
 
-        //        precision--;
 
+            //foreach ((PartType Part, double Value) part in GetTimeSpanParts(timeSpan.Duration()))
+            //{
 
-        //        if (lastItem)
-        //            part.Value = Math.Round(part.Value);
+            //    precision--;
 
-        //        parts.Add($"{part.Value} {part.Part.ToString().ToLower().Pluralize(part.Value)}");
 
+            //    if (lastItem)
+            //        part.Value = Math.Round(part.Value);
 
+            //    parts.Add($"{part.Value} {part.Part.ToString().ToLower().Pluralize(part.Value)}");
 
 
 
 
-        //    }
 
-        //    // There is an optional precision parameter for TimeSpan.Humanize which allows you to specify the precision of the returned
-        //    // value. The default value of precision is 1 which means only the largest time unit is returned like you saw in
-        //    // TimeSpan.FromDays(16).Humanize().Here is a few examples of specifying precision:
 
-        //    // TimeSpan.FromDays(1).Humanize(precision: 2) => "1 day" // no difference when there is only one unit in the provided TimeSpan
-        //    // TimeSpan.FromDays(16).Humanize(2) => "2 weeks, 2 days"
+            //}
 
-        //    // // the same TimeSpan value with different precision returns different results
-        //    // TimeSpan.FromMilliseconds(1299630020).Humanize() => "2 weeks"
-        //    // TimeSpan.FromMilliseconds(1299630020).Humanize(3) => "2 weeks, 1 day, 1 hour"
-        //    // TimeSpan.FromMilliseconds(1299630020).Humanize(4) => "2 weeks, 1 day, 1 hour, 30 seconds"
-        //    // TimeSpan.FromMilliseconds(1299630020).Humanize(5) => "2 weeks, 1 day, 1 hour, 30 seconds, 20 milliseconds"
+            // There is an optional precision parameter for TimeSpan.Humanize which allows you to specify the precision of the returned
+            // value. The default value of precision is 1 which means only the largest time unit is returned like you saw in
+            // TimeSpan.FromDays(16).Humanize().Here is a few examples of specifying precision:
 
-        //    return string.Empty;
-        //}
+            // TimeSpan.FromDays(1).Humanize(precision: 2) => "1 day" // no difference when there is only one unit in the provided TimeSpan
+            // TimeSpan.FromDays(16).Humanize(2) => "2 weeks, 2 days"
 
-        //private static List<TimeSpanPart> GetTimeSpanParts(TimeSpan timeSpan, int precision)
-        //{
-        //    Debug.Assert(timeSpan >= TimeSpan.Zero);
-        //    List<TimeSpanPart> parts = new();
+            // // the same TimeSpan value with different precision returns different results
+            // TimeSpan.FromMilliseconds(1299630020).Humanize() => "2 weeks"
+            // TimeSpan.FromMilliseconds(1299630020).Humanize(3) => "2 weeks, 1 day, 1 hour"
+            // TimeSpan.FromMilliseconds(1299630020).Humanize(4) => "2 weeks, 1 day, 1 hour, 30 seconds"
+            // TimeSpan.FromMilliseconds(1299630020).Humanize(5) => "2 weeks, 1 day, 1 hour, 30 seconds, 20 milliseconds"
 
-        //    if (timeSpan.TotalDays >= DaysPerYear)
-        //    {
-        //        double years = timeSpan.TotalDays / DaysPerYear;
-        //        parts.Add(new(PartType.Year, years));
-        //        if (--precision <= 0)
-        //            return parts;
-        //        timeSpan.Subtract(TimeSpan.FromDays(Math.Truncate(years) * DaysPerYear));
-        //    }
+            return string.Empty;
+        }
 
-        //    if (timeSpan.TotalDays >= DaysPerMonth)
-        //    {
-        //        double months = timeSpan.TotalDays / DaysPerMonth;
-        //        parts.Add(new(PartType.Month, months));
-        //        if (--precision <= 0)
-        //            return parts;
-        //        timeSpan.Subtract(TimeSpan.FromDays(Math.Truncate(months) * DaysPerMonth));
-        //    }
+        /// <summary>
+        /// Returns the non-zero parts of the given <see cref="TimeSpan"/> in the order of largest units first.
+        /// </summary>
+        private static IEnumerable<TimeSpanPart> GetTimeSpanParts(TimeSpan timeSpan)
+        {
+            timeSpan = timeSpan.Duration();
+            Debug.Assert(timeSpan >= TimeSpan.Zero);
 
-        //    if (timeSpan.TotalDays > 0)
-        //    {
-        //        parts.Add(new(PartType.Day, timeSpan.TotalDays));
-        //        if (--precision <= 0)
-        //            return parts;
-        //        timeSpan.Subtract(TimeSpan.FromDays(Math.Truncate(timeSpan.TotalDays)));
-        //    }
+            if (timeSpan.Days >= DaysPerYear)
+            {
 
-        //    if (timeSpan.TotalHours > 0)
-        //    {
-        //        parts.Add(new(PartType.Hour, timeSpan.TotalHours));
-        //        if (--precision <= 0)
-        //            return parts;
-        //        timeSpan.Subtract(TimeSpan.FromHours(Math.Truncate(timeSpan.TotalHours)));
-        //    }
+                // If last precision, we should round to nearest year
+                // Otherwise, just show complete years
 
-        //    if (timeSpan.TotalMinutes > 0)
-        //    {
-        //        parts.Add(new(PartType.Minute, timeSpan.TotalMinutes));
-        //        if (--precision <= 0)
-        //            return parts;
-        //        timeSpan.Subtract(TimeSpan.FromMinutes(Math.Truncate(timeSpan.TotalMinutes)));
-        //    }
+                double years = timeSpan.Days / DaysPerYear;
+                yield return new(PartType.Year, years);
+                timeSpan = timeSpan.Subtract(TimeSpan.FromDays(Math.Truncate(years) * DaysPerYear));
+            }
 
-        //    if (timeSpan.TotalSeconds > 0)
-        //    {
-        //        parts.Add(new(PartType.Second, timeSpan.TotalSeconds));
-        //        if (--precision <= 0)
-        //            return parts;
-        //        timeSpan.Subtract(TimeSpan.FromMinutes(Math.Truncate(timeSpan.TotalSeconds)));
-        //    }
+            if (timeSpan.Days >= DaysPerMonth)
+            {
+                double months = timeSpan.Days / DaysPerMonth;
+                yield return new(PartType.Month, months);
+                timeSpan = timeSpan.Subtract(TimeSpan.FromDays(Math.Truncate(months) * DaysPerMonth));
+            }
 
-        //    if (timeSpan.TotalMilliseconds > 0)
-        //        parts.Add(new(PartType.Millisecond, timeSpan.TotalMilliseconds));
+            if (timeSpan.Days > 0)
+                yield return new(PartType.Day, timeSpan.Days);
 
-        //    return parts;
-        //}
+            if (timeSpan.Hours > 0)
+                yield return new(PartType.Hour, timeSpan.Hours);
+
+            if (timeSpan.Minutes > 0)
+                yield return new(PartType.Minute, timeSpan.Minutes);
+
+            if (timeSpan.Seconds > 0)
+                yield return new(PartType.Second, timeSpan.Seconds);
+
+            if (timeSpan.Milliseconds > 0)
+                yield return new(PartType.Millisecond, timeSpan.Milliseconds);
+        }
     }
 }

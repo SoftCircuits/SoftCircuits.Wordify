@@ -7,7 +7,7 @@ using System.Reflection;
 
 namespace SoftCircuits.Wordify
 {
-    public static partial class Wordify
+    public static partial class WordifyExtensions
     {
         /// <summary>
         /// Converts an enum value to a string.
@@ -17,7 +17,7 @@ namespace SoftCircuits.Wordify
         /// <param name="ignoreDescription">By default, the description from the <see cref="DescriptionAttribute"/>
         /// associated with the value will be returned if one is available. Set this parameter to true to prevent that.</param>
         /// <returns>The transformed string.</returns>
-        public static string Transform<T>(T value, bool ignoreDescription = false) where T : Enum
+        public static string Wordify<T>(this T value, bool ignoreDescription = false) where T : Enum
         {
             string valueString = value.ToString();
 
@@ -31,7 +31,7 @@ namespace SoftCircuits.Wordify
                         return attribute.Description;
                 }
             }
-            return Transform(valueString, TransformOption.AutoDetect);
+            return Wordify(valueString, TransformOption.AutoDetect);
         }
     }
 }

@@ -6,6 +6,9 @@ using SoftCircuits.Wordify;
 
 namespace WordifyTests
 {
+    /// <summary>
+    /// Tests for private <see cref="StringEditor"/> utility class.
+    /// </summary>
     [TestClass]
     public class TestStringEditor
     {
@@ -103,10 +106,6 @@ namespace WordifyTests
             Assert.AreEqual("abcd12345j@#$%opqrstuvabcd", editor);
         }
 
-
-
-
-
         [TestMethod]
         public void TestIndexOf()
         {
@@ -174,9 +173,6 @@ namespace WordifyTests
             Assert.IsTrue(editor.MatchesEndingAt(2, "ABC", true));
             Assert.IsFalse(editor.MatchesEndingAt(23, "abcd"));
         }
-
-
-
 
         [TestMethod]
         public void TestEdit()

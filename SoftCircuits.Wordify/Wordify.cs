@@ -6,7 +6,7 @@ using System.Text;
 
 namespace SoftCircuits.Wordify
 {
-    public partial class Wordify
+    public partial class WordifyExtensions
     {
         /// <summary>
         /// Converts a string to text by attempting to insert spaces between words.
@@ -14,7 +14,7 @@ namespace SoftCircuits.Wordify
         /// <param name="s">The string to transform.</param>
         /// <param name="option">The transformation method.</param>
         /// <returns>The transformed string.</returns>
-        public static string Transform(this string? s, TransformOption option = TransformOption.AutoDetect)
+        public static string Wordify(this string? s, TransformOption option = TransformOption.AutoDetect)
         {
             if (s == null || s.Length == 0)
                 return string.Empty;

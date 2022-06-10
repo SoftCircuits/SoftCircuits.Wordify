@@ -24,20 +24,20 @@ namespace WordifyTests
         [TestMethod]
         public void Test()
         {
-            Assert.AreEqual("First enum", Wordify.Transform(MyEnums.One));
-            Assert.AreEqual("One", Wordify.Transform(MyEnums.One, true));
+            Assert.AreEqual("First enum", MyEnums.One.Wordify());
+            Assert.AreEqual("One", MyEnums.One.Wordify(true));
 
-            Assert.AreEqual("Second enum", Wordify.Transform(MyEnums.Two));
-            Assert.AreEqual("Two", Wordify.Transform(MyEnums.Two, true));
+            Assert.AreEqual("Second enum", MyEnums.Two.Wordify());
+            Assert.AreEqual("Two", MyEnums.Two.Wordify(true));
 
-            Assert.AreEqual("Third enum", Wordify.Transform(MyEnums.Three));
-            Assert.AreEqual("Three", Wordify.Transform(MyEnums.Three, true));
+            Assert.AreEqual("Third enum", MyEnums.Three.Wordify());
+            Assert.AreEqual("Three", MyEnums.Three.Wordify(true));
 
-            Assert.AreEqual("On The Go", Wordify.Transform(MyEnums.OnTheGo));
-            Assert.AreEqual("On The Go", Wordify.Transform(MyEnums.OnTheGo, true));
+            Assert.AreEqual("On The Go", MyEnums.OnTheGo.Wordify());
+            Assert.AreEqual("On The Go", MyEnums.OnTheGo.Wordify(true));
 
-            Assert.AreEqual("Read HTML Page", Wordify.Transform(MyEnums.ReadHTMLPage));
-            Assert.AreEqual("Read HTML Page", Wordify.Transform(MyEnums.ReadHTMLPage, true));
+            Assert.AreEqual("Read HTML Page", MyEnums.ReadHTMLPage.Wordify());
+            Assert.AreEqual("Read HTML Page", MyEnums.ReadHTMLPage.Wordify(true));
         }
     }
 }

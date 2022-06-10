@@ -4,7 +4,7 @@
 
 namespace SoftCircuits.Wordify
 {
-    public static partial class Wordify
+    public static partial class WordifyExtensions
     {
         /// <summary>
         /// Words that are the same for both singular and plural.

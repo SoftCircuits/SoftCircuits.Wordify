@@ -85,7 +85,7 @@ namespace WordifyTests
             };
 
             foreach ((int input, string output) in data)
-                Assert.AreEqual(output, Wordify.MakeOrdinal(input));
+                Assert.AreEqual(output, input.MakeOrdinal());
         }
 
         [TestMethod]
@@ -163,7 +163,7 @@ namespace WordifyTests
             };
 
             foreach ((int input, string output) in data)
-                Assert.AreEqual(output, Wordify.MakeOrdinalDigits(input));
+                Assert.AreEqual(output, input.MakeOrdinalDigits());
         }
 
         [TestMethod]
@@ -242,7 +242,7 @@ namespace WordifyTests
             };
 
             foreach ((string? input, string output) in data)
-                Assert.AreEqual(output, Wordify.MakeOrdinalDigits(input));
+                Assert.AreEqual(output, input.MakeOrdinalDigits());
         }
     }
 }

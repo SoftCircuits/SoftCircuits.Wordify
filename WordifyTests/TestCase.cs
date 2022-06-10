@@ -12,65 +12,65 @@ namespace WordifyTests
         [TestMethod]
         public void TestUpper()
         {
-            Assert.AreEqual("", Wordify.SetCase(null, CaseOption.Upper));
-            Assert.AreEqual("", Wordify.SetCase("", CaseOption.Upper));
-            Assert.AreEqual("ABC", Wordify.SetCase("abc", CaseOption.Upper));
-            Assert.AreEqual("ABC", Wordify.SetCase("ABC", CaseOption.Upper));
-            Assert.AreEqual("ABC", Wordify.SetCase("Abc", CaseOption.Upper));
-            Assert.AreEqual("ABC", Wordify.SetCase("aBC", CaseOption.Upper));
+            Assert.AreEqual("", ((string)null!).SetCase(CaseOption.Upper));
+            Assert.AreEqual("", "".SetCase(CaseOption.Upper));
+            Assert.AreEqual("ABC", "abc".SetCase(CaseOption.Upper));
+            Assert.AreEqual("ABC", "ABC".SetCase(CaseOption.Upper));
+            Assert.AreEqual("ABC", "Abc".SetCase(CaseOption.Upper));
+            Assert.AreEqual("ABC", "aBC".SetCase(CaseOption.Upper));
         }
 
         [TestMethod]
         public void TestLower()
         {
-            Assert.AreEqual("", Wordify.SetCase(null, CaseOption.Lower));
-            Assert.AreEqual("", Wordify.SetCase("", CaseOption.Lower));
-            Assert.AreEqual("abc", Wordify.SetCase("abc", CaseOption.Lower));
-            Assert.AreEqual("abc", Wordify.SetCase("ABC", CaseOption.Lower));
-            Assert.AreEqual("abc", Wordify.SetCase("Abc", CaseOption.Lower));
-            Assert.AreEqual("abc", Wordify.SetCase("aBC", CaseOption.Lower));
+            Assert.AreEqual("", ((string)null!).SetCase(CaseOption.Lower));
+            Assert.AreEqual("", "".SetCase(CaseOption.Lower));
+            Assert.AreEqual("abc", "abc".SetCase(CaseOption.Lower));
+            Assert.AreEqual("abc", "ABC".SetCase(CaseOption.Lower));
+            Assert.AreEqual("abc", "Abc".SetCase(CaseOption.Lower));
+            Assert.AreEqual("abc", "aBC".SetCase(CaseOption.Lower));
         }
 
         [TestMethod]
         public void TestCapitalizeFirstLetter()
         {
-            Assert.AreEqual("", Wordify.SetCase(null, CaseOption.Capitalize));
-            Assert.AreEqual("", Wordify.SetCase("", CaseOption.Capitalize));
-            Assert.AreEqual("Abc", Wordify.SetCase("abc", CaseOption.Capitalize));
-            Assert.AreEqual("ABC", Wordify.SetCase("ABC", CaseOption.Capitalize));
-            Assert.AreEqual("Abc", Wordify.SetCase("Abc", CaseOption.Capitalize));
-            Assert.AreEqual("ABC", Wordify.SetCase("aBC", CaseOption.Capitalize));
+            Assert.AreEqual("", ((string)null!).SetCase(CaseOption.Capitalize));
+            Assert.AreEqual("", string.Empty.SetCase(CaseOption.Capitalize));
+            Assert.AreEqual("Abc", "abc".SetCase(CaseOption.Capitalize));
+            Assert.AreEqual("ABC", "ABC".SetCase(CaseOption.Capitalize));
+            Assert.AreEqual("Abc", "Abc".SetCase(CaseOption.Capitalize));
+            Assert.AreEqual("ABC", "aBC".SetCase(CaseOption.Capitalize));
 
-            Assert.AreEqual(" This is a test! ", Wordify.SetCase(" this is a test! ", CaseOption.Capitalize));
-            Assert.AreEqual("  Abc  ", Wordify.SetCase("  Abc  ", CaseOption.Capitalize));
-            Assert.AreEqual(" !@#$%Abc&* ", Wordify.SetCase(" !@#$%abc&* ", CaseOption.Capitalize));
-            Assert.AreEqual("123456789Z123456789", Wordify.SetCase("123456789z123456789", CaseOption.Capitalize));
-            Assert.AreEqual("123", Wordify.SetCase("123", CaseOption.Capitalize));
+            Assert.AreEqual(" This is a test! ", " this is a test! ".SetCase(CaseOption.Capitalize));
+            Assert.AreEqual("  Abc  ", "  Abc  ".SetCase(CaseOption.Capitalize));
+            Assert.AreEqual(" !@#$%Abc&* ", " !@#$%abc&* ".SetCase(CaseOption.Capitalize));
+            Assert.AreEqual("123456789Z123456789", "123456789z123456789".SetCase(CaseOption.Capitalize));
+            Assert.AreEqual("123", "123".SetCase(CaseOption.Capitalize));
         }
 
         [TestMethod]
         public void TestSentence()
         {
-            Assert.AreEqual("", Wordify.SetCase(null, CaseOption.Sentence));
-            Assert.AreEqual("", Wordify.SetCase("", CaseOption.Sentence));
-            Assert.AreEqual("Abc", Wordify.SetCase("abc", CaseOption.Sentence));
-            Assert.AreEqual("This is a test. This is only a test.", Wordify.SetCase("this is a test. this is only a test.", CaseOption.Sentence));
-            Assert.AreEqual("What? Me worry? Not very likely!", Wordify.SetCase("what? me worry? not very likely!", CaseOption.Sentence));
-            Assert.AreEqual(" This . Is ? A ! Test: Of abc.5 def. ", Wordify.SetCase(" this . is ? a ! test: of abc.5 def. ", CaseOption.Sentence));
-            Assert.AreEqual(" @@@@Abc@@@@ ", Wordify.SetCase(" @@@@abc@@@@ ", CaseOption.Sentence));
-            Assert.AreEqual(" This is another test. ", Wordify.SetCase(" this is another test. ", CaseOption.Sentence));
-            Assert.AreEqual("123", Wordify.SetCase("123", CaseOption.Sentence));
+            Assert.AreEqual("", ((string)null!).SetCase(CaseOption.Sentence));
+            Assert.AreEqual("", "".SetCase(CaseOption.Sentence));
+            Assert.AreEqual("Abc", "abc".SetCase(CaseOption.Sentence));
+            Assert.AreEqual("This is a test. This is only a test.", "this is a test. this is only a test.".SetCase(CaseOption.Sentence));
+            Assert.AreEqual("What? Me worry? Not very likely!", "what? me worry? not very likely!".SetCase(CaseOption.Sentence));
+            Assert.AreEqual(" This . Is ? A ! Test: Of abc.5 def. ", " this . is ? a ! test: of abc.5 def. ".SetCase(CaseOption.Sentence));
+            Assert.AreEqual(" @@@@Abc@@@@ ", " @@@@abc@@@@ ".SetCase(CaseOption.Sentence));
+            Assert.AreEqual(" This is another test. ", " this is another test. ".SetCase(CaseOption.Sentence));
+            Assert.AreEqual("123", "123".SetCase(CaseOption.Sentence));
         }
 
         [TestMethod]
         public void TestTitle()
         {
-            Assert.AreEqual("", Wordify.SetCase(null, CaseOption.Title));
-            Assert.AreEqual("", Wordify.SetCase("", CaseOption.Title));
-            Assert.AreEqual(" The End ", Wordify.SetCase(" the end ", CaseOption.Title));
-            Assert.AreEqual(" Cat in the Hat ", Wordify.SetCase(" cat in the hat ", CaseOption.Title));
-            Assert.AreEqual(" Cat in the Hat . What Do You Think about that ? ", Wordify.SetCase(" cat in the hat . what do you think about that ? ", CaseOption.Title));
-            Assert.AreEqual("Now is the Time for All Good Men to Come to the Aid of the Party", Wordify.SetCase("now is the time for all good men to come to the aid of the party", CaseOption.Title));
+            Assert.AreEqual("", ((string)null!).SetCase(CaseOption.Title));
+            Assert.AreEqual("", string.Empty.SetCase(CaseOption.Title));
+            Assert.AreEqual(" The End ", " the end ".SetCase(CaseOption.Title));
+            Assert.AreEqual(" Cat in the Hat ", " cat in the hat ".SetCase(CaseOption.Title));
+            Assert.AreEqual(" Cat in the Hat . What Do You Think about that ? ", " cat in the hat . what do you think about that ? ".SetCase(CaseOption.Title));
+            Assert.AreEqual("Now is the Time for All Good Men to Come to the Aid of the Party", "now is the time for all good men to come to the aid of the party".SetCase(CaseOption.Title));
         }
     }
 }

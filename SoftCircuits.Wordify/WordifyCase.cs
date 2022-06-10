@@ -4,7 +4,7 @@
 
 namespace SoftCircuits.Wordify
 {
-    public static partial class Wordify
+    public static partial class WordifyExtensions
     {
         /// <summary>
         /// Sets the case of this string's characters using the specified option.
