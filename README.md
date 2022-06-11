@@ -258,6 +258,30 @@ Use the `ParseRomanNumerals()` extension method to convert a string of Roman num
 | `"MMXXII".ParseRomanNumerals();` | 2022 |
 | `"  V  ".ParseRomanNumerals();` | 5 |
 
+## Spreadsheet Column Names
+
+Support is also provided for generating and parsing spreadsheet column names.
+
+| Code | Output |
+|---|---|
+| `1.ToSpreadsheetColumn();` | A |
+| `2.ToSpreadsheetColumn();` | B |
+| `3.ToSpreadsheetColumn();` | C |
+| `26.ToSpreadsheetColumn();` | Z |
+| `27.ToSpreadsheetColumn();` | AA |
+| `28.ToSpreadsheetColumn();` | AB |
+
+Use the `ParseSpreadsheetColumn()` extension method to convert a spreadsheet column name back to an integer. This method throws an exception if the string cannot be converted. You can also use the `TryParseSpreadsheetColumn()` method to instead return false when a string cannot be converted.
+
+| Code | Output |
+|---|---|
+| `"A".ParseSpreadsheetColumn();` | 1 |
+| `"B".ParseSpreadsheetColumn();` | 2 |
+| `" C ".ParseSpreadsheetColumn();` | 3 |
+| `" z ".ParseSpreadsheetColumn();` | 26 |
+| `" aa ".ParseSpreadsheetColumn();` | 27 |
+| `"ab".ParseSpreadsheetColumn();` | 28 |
+
 ## Miscellaneous
 
 The library also includes a number of helper extension methods that don't really fall into any other category. The examples below assume a variable `s` of type `string`.
