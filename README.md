@@ -16,26 +16,26 @@ The library can be used to convert numbers to words.
 
 | Code | Output |
 |---|---|
-| `Wordify.Wordify(1);` | one |
-| `Wordify.Wordify(123);` | one hundred twenty-three |
-| `Wordify.Wordify(12345);` | twelve thousand three hundred forty-five |
+| `1.Wordify();` | one |
+| `123.Wordify();` | one hundred twenty-three |
+| `12345.Wordify();` | twelve thousand three hundred forty-five |
 
 The `Wordify()` method has many overloads. The one that accepts floating point values also takes a `FractionOption` argument that specifies how to format the fractional part.
 
 | Code | Output |
 |---|---|
-| `Wordify.Wordify(345.67, FractionOption.Round);` | three hundred forty-six |
-| `Wordify.Wordify(345.67, FractionOption.Truncate);` | three hundred forty-five |
-| `Wordify.Wordify(345.67, FractionOption.Decimal);` | three hundred forty-five and .7 |
-| `Wordify.Wordify(345.67, FractionOption.Fraction);` | three hundred forty-five and 67/100 |
-| `Wordify.Wordify(345.67, FractionOption.Check);` | three hundred forty-five and 67/100 |
-| `Wordify.Wordify(345.67, FractionOption.Words);` | three hundred forty-five and sixty-seven one hundredths |
-| `Wordify.Wordify(345.67, FractionOption.UsCurrency);` | three hundred forty-five dollars and sixty-seven cents |
+| `345.67.Wordify(FractionOption.Round);` | three hundred forty-six |
+| `345.67.Wordify(FractionOption.Truncate);` | three hundred forty-five |
+| `345.67.Wordify(FractionOption.Decimal);` | three hundred forty-five and .7 |
+| `345.67.Wordify(FractionOption.Fraction);` | three hundred forty-five and 67/100 |
+| `345.67.Wordify(FractionOption.Check);` | three hundred forty-five and 67/100 |
+| `345.67.Wordify(FractionOption.Words);` | three hundred forty-five and sixty-seven one hundredths |
+| `345.67.Wordify(FractionOption.UsCurrency);` | three hundred forty-five dollars and sixty-seven cents |
 
 Because this method can return a string, it's easy to perform additional modifications to it.
 
 ```cs
-Wordify.Wordify(345.67, FractionOption.Decimal)
+345.67.Wordify(FractionOption.Decimal)
     .Capitalize();
 ```
 
@@ -158,7 +158,7 @@ And use the `Singularize()` extension method to make a plural word singular.
 | `"sheep".Singularize();` | sheep |
 | `" dogs! ".Singularize();` | dog! |
 
-*Note: The English language is complex. It is not possible for the library to handle every word perfectly. We are looking to make this functionality more extensible in the future.*
+*Note: The English language is complex. It is not possible for the library to handle every word perfectly. We are looking to make this functionality extensible in the future.*
 
 ## Truncating
 
@@ -270,5 +270,3 @@ The library also includes a number of helper extension methods that don't really
 | `s.NullIfEmpty();` | If `s` is an empty string, then `null` is returned. Otherwise, `s` is returned. |
 | `s.EmptyIfNullOrWhiteSpace();` | If `s` is `null`, an empty string or only contains whitespace, then an empty string is returned. Otherwise, `s` is returned. |
 | `s.NullIfEmptyOrWhiteSpace();` | If `s` is `null`, an empty string or only contains whitespace, then `null` is returned. Otherwise, `s` is returned. |
-
-

@@ -76,7 +76,7 @@ namespace SoftCircuits.Wordify
             IEnumerator<Difference> enumerator = GetDifferenceParts(timeSpan).GetEnumerator();
 
             if (!enumerator.MoveNext())
-                return "0 milliseconds";    // ???
+                return "0 milliseconds";
 
             List<string> parts = new();
 
