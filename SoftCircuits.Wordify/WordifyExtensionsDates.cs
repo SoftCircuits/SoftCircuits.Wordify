@@ -145,9 +145,10 @@ namespace SoftCircuits.Wordify
             // Weeks
             if (timeSpan.Days > 7)
             {
-                int weeks = (timeSpan.Days / 7);
+                int weeks = (timeSpan.Days / DaysPerWeek);
                 yield return new(DifferenceKind.Week, weeks);
-                timeSpan = new TimeSpan(timeSpan.Days - (weeks * 7), timeSpan.Hours, timeSpan.Minutes, timeSpan.Seconds, timeSpan.Milliseconds);
+                timeSpan = new TimeSpan(timeSpan.Days - (weeks * DaysPerWeek), timeSpan.Hours, timeSpan.Minutes,
+                    timeSpan.Seconds, timeSpan.Milliseconds);
             }
 
             if (timeSpan.Days > 0)
