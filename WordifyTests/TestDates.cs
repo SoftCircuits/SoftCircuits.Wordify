@@ -88,47 +88,34 @@ namespace WordifyTests
             Assert.AreEqual("a minute ago", now.Offset(minutes: -1).Wordify(now, DateTimeOption.UseWords));
             Assert.AreEqual("a second ago", now.Offset(seconds: -1).Wordify(now, DateTimeOption.UseWords));
             Assert.AreEqual("now", now.Offset(milliseconds: -1).Wordify(now, DateTimeOption.UseWords));
-
-
-            // Rounding
-            //Assert.AreEqual("1 year from now", Wordify.Transform(now.AddMonths(11), now, 1));
-
-            //// Same date
-            //Assert.AreEqual("now", now.Wordify(now));
-            //Assert.AreEqual("now", now.Wordify(now.Offset(milliseconds: 80)));
-
-            //// In the future
-            //Assert.AreEqual("13 seconds from now", now.Offset(seconds: 13).Wordify(now, 10));
-            //Assert.AreEqual("24 minutes and 13 seconds from now", now.Offset(minutes: 24, seconds: 13).Wordify(now, 10));
-            //Assert.AreEqual("1 day, 24 minutes and 13 seconds from now", now.Offset(hours: 24, minutes: 24, seconds: 13).Wordify(now, 10));
-            //Assert.AreEqual("2 years, 1 day, 24 minutes and 13 seconds from now", now.Offset(years: 2, hours: 24, minutes: 24, seconds: 13).Wordify(now, 10));
-
-            //Assert.AreEqual("2 years from now", now.Offset(years: 2, hours: 24, minutes: 24, seconds: 13).Wordify(now, 1));
-            //Assert.AreEqual("2 years and 1 day from now", now.Offset(years: 2, hours: 24, minutes: 24, seconds: 13).Wordify(now, 2));
-            //Assert.AreEqual("2 years, 1 day and 24 minutes from now", now.Offset(years: 2, hours: 24, minutes: 24, seconds: 13).Wordify(now, 3));
-            //Assert.AreEqual("2 years, 1 day, 24 minutes and 13 seconds from now", now.Offset(years: 2, hours: 24, minutes: 24, seconds: 13).Wordify(now, 4));
-
-            //// In the past
-            //Assert.AreEqual("13 seconds ago", now.Offset(seconds: -13).Wordify(now, 10));
-            //Assert.AreEqual("24 minutes and 13 seconds ago", now.Offset(minutes: -24, seconds: -13).Wordify(now, 10));
-            //Assert.AreEqual("1 day, 24 minutes and 13 seconds ago", now.Offset(hours: -24, minutes: -24, seconds: -13).Wordify(now, 10));
-            //Assert.AreEqual("2 years, 1 day, 24 minutes and 13 seconds ago", now.Offset(years: -2, hours: -24, minutes: -24, seconds: -13).Wordify(now, 10));
-
-            //Assert.AreEqual("2 years ago", now.Offset(years: -2, hours: -24, minutes: -24, seconds: -13).Wordify(now, 1));
-            //Assert.AreEqual("2 years and 1 day ago", now.Offset(years: -2, hours: -24, minutes: -24, seconds: -13).Wordify(now, 2));
-            //Assert.AreEqual("2 years, 1 day and 24 minutes ago", now.Offset(years: -2, hours: -24, minutes: -24, seconds: -13).Wordify(now, 3));
-            //Assert.AreEqual("2 years, 1 day, 24 minutes and 13 seconds ago", now.Offset(years: -2, hours: -24, minutes: -24, seconds: -13).Wordify(now, 4));
-
-            //// Rounding
-            ////Assert.AreEqual("1 year from now", Wordify.Transform(now.AddMonths(11), now, 1));
-
         }
-
 
         [TestMethod]
         public void TestTimeSpan()
         {
+            DateTime now = DateTime.Now;
 
+            Assert.AreEqual("0 milliseconds", (now - now).Wordify(10));
+
+            Assert.AreEqual("20 seconds", (now.Offset(seconds: 20) - now).Wordify(10));
+            Assert.AreEqual("23 minutes and 20 seconds", (now.Offset( minutes: 23, seconds: 20) - now).Wordify(10));
+            Assert.AreEqual("2 hours, 23 minutes and 20 seconds", (now.Offset(hours: 2, minutes: 23, seconds: 20) - now).Wordify(10));
+            Assert.AreEqual("2 weeks and 4 days", (now.Offset(days: 18) - now).Wordify(10));
+            Assert.AreEqual("2 weeks, 4 days and 4 hours", (now.Offset(days: 18, hours: 4) - now).Wordify(10));
+            Assert.AreEqual("4 weeks and 2 days", (now.Offset(months: 1) - now).Wordify(10));
+            Assert.AreEqual("104 weeks and 3 days", (now.Offset(years: 2) - now).Wordify(10));
+
+            Assert.AreEqual("twenty seconds", (now.Offset(seconds: 20) - now).Wordify(10, DateTimeOption.UseWords));
+            Assert.AreEqual("twenty-three minutes and twenty seconds", (now.Offset(minutes: 23, seconds: 20) - now).Wordify(10, DateTimeOption.UseWords));
+            Assert.AreEqual("two hours, twenty-three minutes and twenty seconds", (now.Offset(hours: 2, minutes: 23, seconds: 20) - now).Wordify(10, DateTimeOption.UseWords));
+
+            Assert.AreEqual("2 hours", (now.Offset(hours: 2, minutes: 23, seconds: 20) - now).Wordify(1));
+            Assert.AreEqual("2 hours and 23 minutes", (now.Offset(hours: 2, minutes: 23, seconds: 20) - now).Wordify(2));
+            Assert.AreEqual("2 hours, 23 minutes and 20 seconds", (now.Offset(hours: 2, minutes: 23, seconds: 20) - now).Wordify(3));
+
+            Assert.AreEqual("two hours", (now.Offset(hours: 2, minutes: 23, seconds: 20) - now).Wordify(1, DateTimeOption.UseWords));
+            Assert.AreEqual("two hours and twenty-three minutes", (now.Offset(hours: 2, minutes: 23, seconds: 20) - now).Wordify(2, DateTimeOption.UseWords));
+            Assert.AreEqual("two hours, twenty-three minutes and twenty seconds", (now.Offset(hours: 2, minutes: 23, seconds: 20) - now).Wordify(3, DateTimeOption.UseWords));
         }
     }
 }

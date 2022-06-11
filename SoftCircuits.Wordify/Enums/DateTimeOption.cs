@@ -16,7 +16,7 @@ namespace SoftCircuits.Wordify
         None = 0,
 
         /// <summary>
-        /// Use words instead of digits for numbers.
+        /// Represent numbers with words instead of digits.
         /// </summary>
         UseWords,
     }
