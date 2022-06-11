@@ -1,5 +1,11 @@
 # SoftCircuits.Wordify
 
+[![NuGet version (SoftCircuits.Wordify)](https://img.shields.io/nuget/v/SoftCircuits.Wordify.svg?style=flat-square)](https://www.nuget.org/packages/SoftCircuits.Wordify/)
+
+```
+Install-Package SoftCircuits.Wordify
+```
+
 `Wordify` is a static class that contains extension methods to create and modify text. It includes methods to convert numbers and dates to text, insert spaces into camel-case strings, pluralize strings, truncate strings, convert Roman numerals, create memory size strings and much more.
 
 Note: `Wordify` methods that accept a `string` parameter always correctly handle when that parameter is null. And all methods that return a `string` ensure the return value is never null.
