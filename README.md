@@ -32,12 +32,7 @@ The `Wordify()` method has many overloads. The one that accepts floating point v
 | `345.67.Wordify(FractionOption.Words);` | three hundred forty-five and sixty-seven one hundredths |
 | `345.67.Wordify(FractionOption.UsCurrency);` | three hundred forty-five dollars and sixty-seven cents |
 
-Because this method can return a string, it's easy to perform additional modifications to it.
-
-```cs
-345.67.Wordify(FractionOption.Decimal)
-    .Capitalize();
-```
+Note: Because most of these methods return strings, it's easy to chain extension method calls. For example, `123.Wordify(FractionOption.Decimal).Capitalize();`.
 
 ## Ordinals
 
