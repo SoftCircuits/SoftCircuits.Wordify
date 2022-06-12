@@ -169,7 +169,7 @@ namespace SoftCircuits.Wordify
             StringEditor editor = new(s);
             if (!editor.FindLastWord(out int startIndex, out int endIndex))
                 return s;
-            string lastWord = editor.Substring(startIndex, endIndex - startIndex);
+            string lastWord = editor[startIndex..endIndex];
 
             if (DefectiveNounsLookup.Contains(lastWord))
                 return s;
@@ -211,7 +211,7 @@ namespace SoftCircuits.Wordify
             StringEditor editor = new(s);
             if (!editor.FindLastWord(out int startIndex, out int endIndex))
                 return s;
-            string lastWord = editor.Substring(startIndex, endIndex - startIndex);
+            string lastWord = editor[startIndex..endIndex];
 
             if (DefectiveNounsLookup.Contains(lastWord))
                 return s;

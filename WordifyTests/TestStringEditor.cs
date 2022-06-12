@@ -28,27 +28,6 @@ namespace WordifyTests
         }
 
         [TestMethod]
-        public void TestDelete()
-        {
-            StringEditor editor = new("abcdefghijklmnopqrstuvwxyz");
-
-            editor.Delete(editor.Length, 1000);
-            Assert.AreEqual("abcdefghijklmnopqrstuvwxyz", editor);
-
-            editor.Delete(editor.Length - 1, 1000);
-            Assert.AreEqual("abcdefghijklmnopqrstuvwxy", editor);
-
-            editor.Delete(0, 1);
-            Assert.AreEqual("bcdefghijklmnopqrstuvwxy", editor);
-
-            editor.Delete(6, 5);
-            Assert.AreEqual("bcdefgmnopqrstuvwxy", editor);
-
-            editor.Delete(3, 1000);
-            Assert.AreEqual("bcd", editor);
-        }
-
-        [TestMethod]
         public void TestInsert()
         {
             StringEditor editor = new("abc");
@@ -89,6 +68,45 @@ namespace WordifyTests
 
             editor.Insert(7, "...", 8);
             Assert.AreEqual("ab123hi...rstuvwxyz", editor);
+        }
+
+        [TestMethod]
+        public void TestDelete()
+        {
+            StringEditor editor = new("abcdefghijklmnopqrstuvwxyz");
+
+            editor.Delete(editor.Length, 1000);
+            Assert.AreEqual("abcdefghijklmnopqrstuvwxyz", editor);
+
+            editor.Delete(editor.Length - 1, 1000);
+            Assert.AreEqual("abcdefghijklmnopqrstuvwxy", editor);
+
+            editor.Delete(0, 1);
+            Assert.AreEqual("bcdefghijklmnopqrstuvwxy", editor);
+
+            editor.Delete(6, 5);
+            Assert.AreEqual("bcdefgmnopqrstuvwxy", editor);
+
+            editor.Delete(3, 1000);
+            Assert.AreEqual("bcd", editor);
+        }
+
+        [TestMethod]
+        public void TestMove()
+        {
+            StringEditor editor = new("abcdefghijklmnopqrstuvwxyz");
+
+            editor.Move(0, 8, 4);
+            Assert.AreEqual("abcdefghabcdmnopqrstuvwxyz", editor);
+
+            editor.Move(8, 0, 4);
+            Assert.AreEqual("abcdefghabcdmnopqrstuvwxyz", editor);
+
+            editor.Move(25, 2, 7);
+            Assert.AreEqual("abzdefghabcdmnopqrstuvwxyz", editor);
+
+            editor.Move(3, 25, 7);
+            Assert.AreEqual("abzdefghabcdmnopqrstuvwxyd", editor);
         }
 
         [TestMethod]
@@ -148,15 +166,15 @@ namespace WordifyTests
         {
             StringEditor editor = new("Now is the time");
             Assert.IsTrue(editor.FindFirstWord(out int startIndex, out int endIndex));
-            Assert.AreEqual("Now", editor.Substring(startIndex, endIndex - startIndex));
+            Assert.AreEqual("Now", editor[startIndex..endIndex]);
             Assert.IsTrue(editor.FindLastWord(out startIndex, out endIndex));
-            Assert.AreEqual("time", editor.Substring(startIndex, endIndex - startIndex));
+            Assert.AreEqual("time", editor[startIndex..endIndex]);
 
             editor = new(">>>Now is the time!<<<");
             Assert.IsTrue(editor.FindFirstWord(out startIndex, out endIndex));
-            Assert.AreEqual("Now", editor.Substring(startIndex, endIndex - startIndex));
+            Assert.AreEqual("Now", editor[startIndex..endIndex]);
             Assert.IsTrue(editor.FindLastWord(out startIndex, out endIndex));
-            Assert.AreEqual("time", editor.Substring(startIndex, endIndex - startIndex));
+            Assert.AreEqual("time", editor[startIndex..endIndex]);
 
             editor = new(">>>!<<<");
             Assert.IsFalse(editor.FindFirstWord(out _, out _));

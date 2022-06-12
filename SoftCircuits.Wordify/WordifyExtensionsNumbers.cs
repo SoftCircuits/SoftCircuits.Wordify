@@ -51,19 +51,19 @@ namespace SoftCircuits.Wordify
         /// <returns>The converted string.</returns>
         public static string Wordify(this decimal value, FractionOption format)
         {
-            string? fraction = FormatFraction(ref value, format);
+            string? decimalPart = FormatFraction(ref value, format);
+            decimal wholePart = Math.Floor(value);
 
-            decimal dollars = Math.Floor(value);
-            StringBuilder builder = new(FormatNumber(dollars.ToString()));
+            StringBuilder builder = new(FormatNumber(wholePart.ToString()));
             if (format == FractionOption.UsCurrency)
             {
                 builder.Append(' ');
-                builder.Append(Pluralize("dollar", dollars));
+                builder.Append(Pluralize("dollar", wholePart));
             }
-            if (fraction != null)
+            if (decimalPart != null)
             {
                 builder.Append(" and ");
-                builder.Append(fraction);
+                builder.Append(decimalPart);
             }
             return builder.ToString();
         }
@@ -286,7 +286,7 @@ namespace SoftCircuits.Wordify
                     break;
 
                 case FractionOption.Decimal:
-                    fraction = fractionalPart.ToString(".0");
+                    fraction = fractionalPart.ToString(".0##");
                     break;
 
                 case FractionOption.Fraction:

@@ -35,9 +35,7 @@ namespace SoftCircuits.Wordify
         /// <param name="s"></param>
         public void Append(string s)
         {
-            Debug.Assert(s != null);
-
-            if (s.Length == 0)
+            if (string.IsNullOrEmpty(s))
                 return;
 
             // Resize array
@@ -49,40 +47,13 @@ namespace SoftCircuits.Wordify
         }
 
         /// <summary>
-        /// Deletes the specified number of characters at the specified index.
-        /// </summary>
-        /// <param name="index">The starting index where characters should be deleted.</param>
-        /// <param name="count">The number of characters to delete.</param>
-        public void Delete(int index, int count)
-        {
-            // Ensure valid index
-            int length = Length;
-            if (index > length)
-            {
-                Debug.Assert(false);
-                return;
-            }
-
-            if (count > length - index)
-                count = length - index;
-
-            // Shift characters
-            Copy(index + count, index, length - index - count);
-
-            // Resize array
-            Resize(length - count);
-        }
-
-        /// <summary>
         /// Inserts the specified string at the specified index.
         /// </summary>
         /// <param name="index">The index where the string should be inserted.</param>
         /// <param name="s">The string to insert.</param>
         public void Insert(int index, string s)
         {
-            Debug.Assert(s != null);
-
-            if (s.Length == 0)
+            if (string.IsNullOrEmpty(s))
                 return;
 
             // Ensure valid index
@@ -94,8 +65,8 @@ namespace SoftCircuits.Wordify
             Resize(length + s.Length);
 
             // Shift characters
-            if (index + s.Length < Length)
-                Copy(index, index + s.Length, length - index);
+            if (index < length)
+                Move(index, index + s.Length, length - index);
 
             // Copy string
             Copy(s, index);
@@ -109,14 +80,15 @@ namespace SoftCircuits.Wordify
         /// <param name="replaceCount">The number of characters to replace.</param>
         public void Insert(int index, string s, int replaceCount)
         {
-            Debug.Assert(s != null);
+            if (string.IsNullOrEmpty(s))
+                return;
 
             // Ensure valid index
             int length = Length;
             if (index > length)
                 index = length;
 
-            // Ensure valid replaceChars
+            // Ensure valid replacement character count
             if (replaceCount < 0)
                 replaceCount = 0;
             else if (replaceCount > length - index)
@@ -126,12 +98,12 @@ namespace SoftCircuits.Wordify
             int delta = s.Length - replaceCount;
             if (delta > 0)
             {
-                // Resize array
+                // Grow array
                 Resize(length + delta);
 
                 // Shift characters
                 if (index + s.Length < Length)
-                    Copy(index, index + delta, length - index);
+                    Move(index, index + delta, length - index);
             }
             else if (delta < 0)
             {
@@ -139,10 +111,10 @@ namespace SoftCircuits.Wordify
                 if (index + s.Length < Length)
                 {
                     int offset = index + replaceCount;
-                    Copy(offset, offset + delta, length - index - replaceCount);
+                    Move(offset, offset + delta, length - index - replaceCount);
                 }
 
-                // Resize array
+                // Shrink array
                 Resize(length + delta);
             }
 
@@ -151,14 +123,36 @@ namespace SoftCircuits.Wordify
         }
 
         /// <summary>
+        /// Deletes the specified number of characters at the specified index.
+        /// </summary>
+        /// <param name="index">The starting index where characters should be deleted.</param>
+        /// <param name="count">The number of characters to delete.</param>
+        public void Delete(int index, int count)
+        {
+            int length = Length;
+            if (index >= length || count <= 0)
+                return;
+
+            int maxCount = length - index;
+            if (count > maxCount)
+                count = maxCount;
+
+            // Shift characters
+            Move(index + count, index, length - index - count);
+
+            // Resize array
+            Resize(length - count);
+        }
+
+        /// <summary>
         /// Copies characters from one part of the array to another.
         /// </summary>
         /// <param name="sourceIndex">Starting index of where characters are copied from.</param>
         /// <param name="targetIndex">Starting index of where characters are copied to.</param>
         /// <param name="count">The number of characters to copy.</param>
-        public void Copy(int sourceIndex, int targetIndex, int count)
+        public void Move(int sourceIndex, int targetIndex, int count)
         {
-            int maxCount = Length - Math.Min(sourceIndex, targetIndex);
+            int maxCount = Length - Math.Max(sourceIndex, targetIndex);
             if (count > maxCount)
                 count = maxCount;
 
@@ -204,7 +198,9 @@ namespace SoftCircuits.Wordify
         /// </summary>
         public override string ToString() => (InternalArray != null) ? new(InternalArray, 0, Length) : Original;
 
-        public string Substring(int startIndex, int length) => (InternalArray != null) ? new string(InternalArray, startIndex, length) : Original.Substring(startIndex, length);
+        public string Substring(int startIndex, int length) => (InternalArray != null) ?
+            new string(InternalArray, startIndex, length) :
+            Original.Substring(startIndex, length);
 
         #region Character Access
 
@@ -227,13 +223,9 @@ namespace SoftCircuits.Wordify
         {
             get
             {
-                if (InternalArray != null)
-                {
-                    int startIndex = range.Start.GetOffset(Length);
-                    int length = range.End.GetOffset(Length) - startIndex;
-                    return new(InternalArray, startIndex, length);
-                }
-                else return Original[range];
+                int startIndex = range.Start.GetOffset(Length);
+                int length = range.End.GetOffset(Length) - startIndex;
+                return Substring(startIndex, length);
             }
         }
 
@@ -245,6 +237,9 @@ namespace SoftCircuits.Wordify
 
         #region IndexOf / Contains
 
+        /// <summary>
+        /// Returns the index of the first character that matches <paramref name="c"/>, or -1 if no match was found.
+        /// </summary>
         public int IndexOf(char c, int startIndex = -1)
         {
             if (startIndex < 0)
@@ -258,6 +253,9 @@ namespace SoftCircuits.Wordify
             return -1;
         }
 
+        /// <summary>
+        /// Returns the index of the first character sequence that matches <paramref name="s"/>, or -1 if no match was found.
+        /// </summary>
         public int IndexOf(string s, int startIndex = -1)
         {
             if (startIndex < 0)
@@ -277,6 +275,10 @@ namespace SoftCircuits.Wordify
             return -1;
         }
 
+        /// <summary>
+        /// Returns the index of the first character that causes <paramref name="predicate"/> to return true,
+        /// or -1 if no match not found.
+        /// </summary>
         public int IndexOf(Func<char, bool> predicate, int startIndex = -1)
         {
             if (startIndex < 0)
@@ -290,6 +292,9 @@ namespace SoftCircuits.Wordify
             return -1;
         }
 
+        /// <summary>
+        /// Returns the index of the last character that matches <paramref name="c"/>, or -1 if no match was found.
+        /// </summary>
         public int LastIndexOf(char c, int startIndex = -1)
         {
             if (startIndex < 0)
@@ -303,6 +308,9 @@ namespace SoftCircuits.Wordify
             return -1;
         }
 
+        /// <summary>
+        /// Returns the index of the last character sequence that matches <paramref name="s"/>, or -1 if no match was found.
+        /// </summary>
         public int LastIndexOf(string s, int startIndex = -1)
         {
             if (startIndex < 0)
@@ -322,6 +330,10 @@ namespace SoftCircuits.Wordify
             return -1;
         }
 
+        /// <summary>
+        /// Returns the index of the last character that causes <paramref name="predicate"/> to return true,
+        /// or -1 if no match not found.
+        /// </summary>
         public int LastIndexOf(Func<char, bool> predicate, int startIndex = -1)
         {
             if (startIndex < 0)
@@ -335,16 +347,30 @@ namespace SoftCircuits.Wordify
             return -1;
         }
 
+        /// <summary>
+        /// Returns true if this string contains the specified character.
+        /// </summary>
         public bool Contains(char c) => IndexOf(c) >= 0;
 
+        /// <summary>
+        /// Returns true if this string contains the specified string.
+        /// </summary>
         public bool Contains(string s) => IndexOf(s) >= 0;
 
+        /// <summary>
+        /// Returns true if any character causes <paramref name="predicate"/> to return true.
+        /// </summary>
+        /// <param name="predicate"></param>
+        /// <returns></returns>
         public bool Contains(Func<char, bool> predicate) => IndexOf(predicate) >= 0;
 
         #endregion
 
         #region Find First/Last Word / Matching
 
+        /// <summary>
+        /// Gets the start and end index of the first contiguous sequence of letters.
+        /// </summary>
         public bool FindFirstWord(out int startIndex, out int endIndex)
         {
             startIndex = IndexOf(char.IsLetter);
@@ -359,6 +385,9 @@ namespace SoftCircuits.Wordify
             return false;
         }
 
+        /// <summary>
+        /// Gets the start and end index of the last contiguous sequence of letters.
+        /// </summary>
         public bool FindLastWord(out int startIndex, out int endIndex)
         {
             endIndex = LastIndexOf(char.IsLetter);
@@ -464,18 +493,15 @@ namespace SoftCircuits.Wordify
             get
             {
                 if (InternalArray == null)
-                {
                     Resize(Original.Length);
-                    for (int i = 0; i < Original.Length; i++)
-                        InternalArray[i] = Original[i];
-                }
                 Debug.Assert(InternalArray != null);
                 return InternalArray;
             }
         }
 
         /// <summary>
-        /// Resizes this <see cref="StringEditor"/> object.
+        /// Resizes this <see cref="StringEditor"/> object. Initial resize copies characters
+        /// from original string.
         /// </summary>
         /// <param name="size">Specifies the new size.</param>
         [MemberNotNull(nameof(InternalArray))]
