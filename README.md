@@ -277,6 +277,18 @@ Use the `ParseSpreadsheetColumn()` extension method to convert a spreadsheet col
 | `" aa ".ParseSpreadsheetColumn();` | 27 |
 | `"ab".ParseSpreadsheetColumn();` | 28 |
 
+## Formatting Data
+
+The `FormatPhoneNumber()` extension method can be used to convert a string of digits as a phone number.
+
+| Code | Output |
+|---|---|
+| `"1234567".FormatPhoneNumber();` | 123-4567 |
+| `"1234567890".FormatPhoneNumber();` | 123-456-7890 |
+| `"1234567890".FormatPhoneNumber(PhoneOption.AreaCodeParentheses);` | (123) 456-7890 |
+| `"12345678901".FormatPhoneNumber();` | 1-234-567-8901 |
+| `"12345678901".FormatPhoneNumber(PhoneOption.InternationalPlusSign);` | +1-234-567-8901 |
+
 ## Miscellaneous
 
 The library also includes a number of helper extension methods that don't really fall into any other category. The examples below assume a variable `s` of type `string`.
