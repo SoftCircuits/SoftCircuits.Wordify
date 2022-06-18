@@ -288,6 +288,7 @@ The `FormatPhoneNumber()` extension method can be used to convert a string of di
 | `"1234567890".FormatPhoneNumber(PhoneOption.AreaCodeParentheses);` | (123) 456-7890 |
 | `"12345678901".FormatPhoneNumber();` | 1-234-567-8901 |
 | `"12345678901".FormatPhoneNumber(PhoneOption.InternationalPlusSign);` | +1-234-567-8901 |
+| `"  1 2 3 4 5 6 7  ".FormatPhoneNumber();` | 123-4567 |
 
 ## Miscellaneous
 
