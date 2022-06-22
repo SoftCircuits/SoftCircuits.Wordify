@@ -145,7 +145,7 @@ And use the `Singularize()` extension method to make a plural word singular.
 
 | Code | Output |
 |---|---|
-| `"cats".Singularize();` | cas |
+| `"cats".Singularize();` | cat |
 | `"boys".Singularize();` | boy |
 | `"crosses".Singularize();` | cross |
 | `"parties".Singularize();` | party |
