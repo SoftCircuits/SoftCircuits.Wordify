@@ -290,6 +290,27 @@ The `FormatPhoneNumber()` extension method can be used to convert a string of di
 | `"12345678901".FormatPhoneNumber(PhoneOption.InternationalPlusSign);` | +1-234-567-8901 |
 | `"  1 2 3 4 5 6 7  ".FormatPhoneNumber();` | 123-4567 |
 
+The library includes several other methods that are not extension methods that make it easy to format other data.
+
+| Code | Output |
+|---|---|
+| `Wordify.FormatName("John");` | John |
+| `Wordify.FormatName("John", "Van Dyk");` | John Van Dyk |
+| `Wordify.FormatName("John", "Van Dyk", "W.", "Dr.", "III");` | Dr. John W. Van Dyk III |
+
+| Code | Output |
+|---|---|
+| `Wordify.FormatAddress("123 Elm");` | 123 Elm |
+| `Wordify.FormatAddress("123 Elm", "Apt 3", delimiter: "-");` | 123 Elm-Apt 3 |
+| `Wordify.FormatAddress("123 Elm", "Apt 3", "Small Town", "UT", "84084", "United States", delimiter: "-");` | 123 Elm-Apt 3-Small Town, UT 84084-United States |
+
+
+| Code | Output |
+|---|---|
+| `Wordify.FormatCityStateZip("Small Town");` | Small Town |
+| `Wordify.FormatCityStateZip("Small Town", "UT");` | Small Town, UT |
+| `Wordify.FormatCityStateZip("Small Town", "UT", "84084");` | Small Town, UT 84084 |
+
 ## Miscellaneous
 
 The library also includes a number of helper extension methods that don't really fall into any other category. The examples below assume a variable `s` of type `string`.
