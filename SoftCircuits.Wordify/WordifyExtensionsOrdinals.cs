@@ -2,6 +2,8 @@
 // Licensed under the MIT license.
 //
 
+using SoftCircuits.Wordify.Helpers;
+
 namespace SoftCircuits.Wordify
 {
     public static partial class WordifyExtensions

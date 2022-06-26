@@ -4,7 +4,7 @@
 // This code was derived from Stackoverflow at https://stackoverflow.com/questions/5124743/algorithm-for-simplifying-decimal-to-fractions
 //
 
-namespace SoftCircuits.Wordify
+namespace SoftCircuits.Wordify.Helpers
 {
     /// <summary>
     /// Class to hold a fraction. Includes methods to convert a floating point value to a fraction.

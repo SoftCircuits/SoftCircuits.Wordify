@@ -8,7 +8,7 @@ using System.Runtime.CompilerServices;
 
 [assembly: InternalsVisibleTo("WordifyTests")]
 
-namespace SoftCircuits.Wordify
+namespace SoftCircuits.Wordify.Helpers
 {
     /// <summary>
     /// Class that makes it easy to edit a string. Exposes the string as a writable array and includes

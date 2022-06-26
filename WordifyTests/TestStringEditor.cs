@@ -2,7 +2,7 @@
 // Licensed under the MIT license.
 //
 
-using SoftCircuits.Wordify;
+using SoftCircuits.Wordify.Helpers;
 
 namespace WordifyTests
 {

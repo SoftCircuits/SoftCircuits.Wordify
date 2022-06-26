@@ -2,6 +2,7 @@
 // Licensed under the MIT license.
 //
 
+using SoftCircuits.Wordify.Helpers;
 using System.Diagnostics;
 using System.Text;
 
