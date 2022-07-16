@@ -16,18 +16,242 @@ namespace SoftCircuits.Wordify.Helpers
     /// </summary>
     internal class StringEditor
     {
-        private readonly string Original;
-
         /// <summary>
         /// Constructs a new <see cref="StringEditor"/> instance.
         /// </summary>
         /// <param name="s">Initial string value.</param>
         public StringEditor(string? s)
         {
-            Original = s ?? string.Empty;
-            InternalArray = null;
-            Length = Original.Length;
+            Initialize(s);
         }
+
+        #region Primatives
+
+        /// <summary>
+        /// Internal string. This is the initial value for this string. Once the string is modified, then the value for this string
+        /// will be copied to <see cref="InternalArray"/>.
+        /// </summary>
+        private string InternalString;
+
+        /// <summary>
+        /// Gets the current length of this object's string.
+        /// </summary>
+        public int Length { get; private set; }
+
+        /// <summary>
+        /// Internal character array. Initially set to null. Holds the string value after this object has been modified.
+        /// </summary>
+        private char[]? InternalArray = null;
+
+        /// <summary>
+        /// Current size of internal array.
+        /// </summary>
+        private int InternalCapacity;
+
+        // These functions change depending on whether or not the string has been modified.
+        private Func<int, char> GetAt;
+        private Action<int, char> SetAt;
+        private Func<string> GetString;
+        private Func<int, int, string> Substring;
+        private Func<char[]> GetArray;
+
+        /// <summary>
+        /// Indicates if the current string is in a modified state.
+        /// </summary>
+        [MemberNotNullWhen(true, nameof(InternalArray))]
+        private bool IsModified => InternalArray != null;
+
+        /// <summary>
+        /// Initializes this object with a new string. Any changes to the current string are discarded.
+        /// </summary>
+        /// <param name="s">The new string value.</param>
+        [MemberNotNull(nameof(InternalString))]
+        [MemberNotNull(nameof(GetAt))]
+        [MemberNotNull(nameof(SetAt))]
+        [MemberNotNull(nameof(GetString))]
+        [MemberNotNull(nameof(Substring))]
+        [MemberNotNull(nameof(GetArray))]
+        public void Initialize(string? s)
+        {
+            InternalString = s ?? string.Empty;
+            Length = InternalString.Length;
+            InternalArray = null;
+            InternalCapacity = 0;
+            SetUnmodifiedMode();
+        }
+
+        /// <summary>
+        /// Resizes Resizes this <see cref="StringEditor"/> object. Initial resize copies characters
+        /// from original string.
+        /// </summary>
+        /// <param name="length">Specifies the new length.</param>
+        public void Resize(int length)
+        {
+            bool copyInternalString = false;
+
+            if (InternalCapacity < length || InternalArray == null)
+            {
+                // To reduce the number of reallocations, we double the requested size
+                InternalCapacity = Math.Max(InternalCapacity * 2, length);
+
+                if (InternalArray == null)
+                {
+                    InternalArray = new char[InternalCapacity];
+                    SetModifiedMode();
+                    copyInternalString = true;
+                }
+                else Array.Resize(ref InternalArray, InternalCapacity);
+            }
+
+            Length = length;
+
+            // Must do this after updating Length
+            if (copyInternalString)
+                Copy(InternalString, 0);
+        }
+
+        #region Unmodified String Functions
+
+        [MemberNotNull(nameof(GetAt))]
+        [MemberNotNull(nameof(SetAt))]
+        [MemberNotNull(nameof(GetString))]
+        [MemberNotNull(nameof(Substring))]
+        [MemberNotNull(nameof(GetArray))]
+        private void SetUnmodifiedMode()
+        {
+            Debug.Assert(!IsModified);
+            GetAt = String_GetAt;
+            SetAt = String_SetAt;
+            GetString = String_GetString;
+            Substring = String_Substring;
+            GetArray = String_GetArray;
+        }
+
+        private char String_GetAt(int index)
+        {
+            Debug.Assert(!IsModified);
+            return InternalString[index];
+        }
+        private void String_SetAt(int index, char value)
+        {
+            Debug.Assert(!IsModified);
+            char[] array = GetArray();
+            array[index] = value;
+        }
+
+        private string String_GetString()
+        {
+            Debug.Assert(!IsModified);
+            return InternalString;
+        }
+
+        private string String_Substring(int offset, int length)
+        {
+            Debug.Assert(!IsModified);
+            return InternalString.Substring(offset, length);
+        }
+
+        private char[] String_GetArray()
+        {
+            Debug.Assert(!IsModified);
+            Resize(Length);
+            Debug.Assert(IsModified);
+            return InternalArray;
+        }
+
+        #endregion
+
+        #region Modified String Functions
+
+        [MemberNotNull(nameof(GetAt))]
+        [MemberNotNull(nameof(SetAt))]
+        [MemberNotNull(nameof(GetString))]
+        [MemberNotNull(nameof(Substring))]
+        [MemberNotNull(nameof(GetArray))]
+        private void SetModifiedMode()
+        {
+            Debug.Assert(IsModified);
+            GetAt = Array_GetAt;
+            SetAt = Array_SetAt;
+            GetString = Array_GetString;
+            Substring = Array_Substring;
+            GetArray = Array_GetArray;
+        }
+
+        private char Array_GetAt(int index)
+        {
+            Debug.Assert(IsModified);
+            return InternalArray[index];
+        }
+
+        private void Array_SetAt(int index, char value)
+        {
+            Debug.Assert(IsModified);
+            InternalArray[index] = value;
+        }
+
+        private string Array_GetString()
+        {
+            Debug.Assert(IsModified);
+            return new(InternalArray, 0, Length);
+        }
+
+        private string Array_Substring(int offset, int length)
+        {
+            Debug.Assert(IsModified);
+            return new(InternalArray, offset, length);
+        }
+
+        private char[] Array_GetArray()
+        {
+            Debug.Assert(IsModified);
+            return InternalArray;
+        }
+
+        #endregion
+
+        #endregion
+
+        #region Content Access
+
+        /// <summary>
+        /// Gets or sets the character at the specified index.
+        /// </summary>
+        public char this[int index]
+        {
+            get => GetAt(index);
+            set => SetAt(index, value);
+        }
+
+        /// <summary>
+        /// Gets or sets the character at the specified index.
+        /// </summary>
+        public char this[Index index]
+        {
+            get => GetAt(index.GetOffset(Length));
+            set => SetAt(index.GetOffset(Length), value);
+        }
+
+        /// <summary>
+        /// Returns the specified range.
+        /// </summary>
+        public string this[Range range]
+        {
+            get
+            {
+                (int offset, int length) = range.GetOffsetAndLength(Length);
+                return Substring(offset, length);
+            }
+        }
+
+        /// <summary>
+        /// Returns the current value as a regular <see cref="String"/>.
+        /// </summary>
+        public override string ToString() => GetString();
+
+        #endregion
+
+        #region String Modification
 
         /// <summary>
         /// Appends the specified string to this object.
@@ -35,15 +259,15 @@ namespace SoftCircuits.Wordify.Helpers
         /// <param name="s"></param>
         public void Append(string s)
         {
-            if (string.IsNullOrEmpty(s))
+            if (s == null || s.Length == 0)
                 return;
 
             // Resize array
-            int length = Length;
-            Resize(length + s.Length);
+            int oldLength = Length;
+            Resize(oldLength + s.Length);
 
             // Copy string
-            Copy(s, length);
+            Copy(s, oldLength);
         }
 
         /// <summary>
@@ -53,20 +277,20 @@ namespace SoftCircuits.Wordify.Helpers
         /// <param name="s">The string to insert.</param>
         public void Insert(int index, string s)
         {
-            if (string.IsNullOrEmpty(s))
+            if (s == null || s.Length == 0)
                 return;
 
             // Ensure valid index
-            int length = Length;
-            if (index > length)
-                index = length;
+            int oldLength = Length;
+            if (index > oldLength)
+                index = oldLength;
 
             // Resize array
-            Resize(length + s.Length);
+            Resize(oldLength + s.Length);
 
             // Shift characters
-            if (index < length)
-                Move(index, index + s.Length, length - index);
+            if (index < oldLength)
+                Move(index, index + s.Length, oldLength - index);
 
             // Copy string
             Copy(s, index);
@@ -80,30 +304,30 @@ namespace SoftCircuits.Wordify.Helpers
         /// <param name="replaceCount">The number of characters to replace.</param>
         public void Insert(int index, string s, int replaceCount)
         {
-            if (string.IsNullOrEmpty(s))
+            if (s == null || s.Length == 0)
                 return;
 
             // Ensure valid index
-            int length = Length;
-            if (index > length)
-                index = length;
+            int oldLength = Length;
+            if (index > oldLength)
+                index = oldLength;
 
             // Ensure valid replacement character count
             if (replaceCount < 0)
                 replaceCount = 0;
-            else if (replaceCount > length - index)
-                replaceCount = length - index;
+            else if (replaceCount > oldLength - index)
+                replaceCount = oldLength - index;
 
             // Determine if string grows or shrinks
             int delta = s.Length - replaceCount;
             if (delta > 0)
             {
                 // Grow array
-                Resize(length + delta);
+                Resize(oldLength + delta);
 
                 // Shift characters
                 if (index + s.Length < Length)
-                    Move(index, index + delta, length - index);
+                    Move(index, index + delta, oldLength - index);
             }
             else if (delta < 0)
             {
@@ -111,11 +335,11 @@ namespace SoftCircuits.Wordify.Helpers
                 if (index + s.Length < Length)
                 {
                     int offset = index + replaceCount;
-                    Move(offset, offset + delta, length - index - replaceCount);
+                    Move(offset, offset + delta, oldLength - index - replaceCount);
                 }
 
                 // Shrink array
-                Resize(length + delta);
+                Resize(oldLength + delta);
             }
 
             // Copy string
@@ -129,19 +353,20 @@ namespace SoftCircuits.Wordify.Helpers
         /// <param name="count">The number of characters to delete.</param>
         public void Delete(int index, int count)
         {
-            int length = Length;
-            if (index >= length || count <= 0)
+            int oldLength = Length;
+            if (index >= oldLength || count <= 0)
                 return;
 
-            int maxCount = length - index;
+            int maxCount = oldLength - index;
             if (count > maxCount)
                 count = maxCount;
 
             // Shift characters
-            Move(index + count, index, length - index - count);
+            if (index + count < oldLength)
+                Move(index + count, index, oldLength - index - count);
 
             // Resize array
-            Resize(length - count);
+            Resize(oldLength - count);
         }
 
         /// <summary>
@@ -160,7 +385,7 @@ namespace SoftCircuits.Wordify.Helpers
                 return;
 
             // Copy characters
-            char[] array = Array;
+            char[] array = GetArray();
             if (sourceIndex > targetIndex)
             {
                 for (int i = 0; i < count; i++)
@@ -174,12 +399,15 @@ namespace SoftCircuits.Wordify.Helpers
         }
 
         /// <summary>
-        /// Copies the given string to this <see cref="StringEditor"/> object, starting at the specified index.
+        /// Copies the given string to this <see cref="StringEditor_Old"/> object, starting at the specified index.
         /// </summary>
         /// <param name="s">The string to copy.</param>
         /// <param name="targetIndex">The starting index where the string should be copied.</param>
         public void Copy(string s, int targetIndex)
         {
+            if (targetIndex >= Length)
+                return;
+
             int count = s.Length;
             if (count > Length - targetIndex)
                 count = Length - targetIndex;
@@ -188,350 +416,9 @@ namespace SoftCircuits.Wordify.Helpers
                 return;
 
             // Copy characters
-            char[] array = Array;
+            char[] array = GetArray();
             for (int i = 0; i < count; i++)
                 array[targetIndex + i] = s[i];
-        }
-
-        /// <summary>
-        /// Converts this object to a string.
-        /// </summary>
-        public override string ToString() => (InternalArray != null) ? new(InternalArray, 0, Length) : Original;
-
-        public string Substring(int startIndex, int length) => (InternalArray != null) ?
-            new string(InternalArray, startIndex, length) :
-            Original.Substring(startIndex, length);
-
-        #region Character Access
-
-        /// <summary>
-        /// Gets or sets the character at the specified index.
-        /// </summary>
-        public char this[int index]
-        {
-            get => GetAt(index);
-            set => SetAt(index, value);
-        }
-
-        public char this[Index index]
-        {
-            get => GetAt(index.GetOffset(Length));
-            set => SetAt(index.GetOffset(Length), value);
-        }
-
-        public string this[Range range]
-        {
-            get
-            {
-                int startIndex = range.Start.GetOffset(Length);
-                int length = range.End.GetOffset(Length) - startIndex;
-                return Substring(startIndex, length);
-            }
-        }
-
-        private char GetAt(int index) => (InternalArray != null) ? InternalArray[index] : Original[index];
-
-        private void SetAt(int index, char c) => Array[index] = c;
-
-        #endregion
-
-        #region IndexOf / Contains
-
-        /// <summary>
-        /// Returns the index of the first character that matches <paramref name="c"/>, or -1 if no match was found.
-        /// </summary>
-        public int IndexOf(char c, int startIndex = -1)
-        {
-            if (startIndex < 0)
-                startIndex = 0;
-
-            for (int i = startIndex; i < Length; i++)
-            {
-                if (GetAt(i) == c)
-                    return i;
-            }
-            return -1;
-        }
-
-        /// <summary>
-        /// Returns the index of the first character sequence that matches <paramref name="s"/>, or -1 if no match was found.
-        /// </summary>
-        public int IndexOf(string s, int startIndex = -1)
-        {
-            if (startIndex < 0)
-                startIndex = 0;
-
-            for (int i = startIndex; i < Length - (s.Length - 1); i++)
-            {
-                int j = 0;
-                for (; j < s.Length; j++)
-                {
-                    if (GetAt(i + j) != s[j])
-                        break;
-                }
-                if (j == s.Length)
-                    return i;
-            }
-            return -1;
-        }
-
-        /// <summary>
-        /// Returns the index of the first character that causes <paramref name="predicate"/> to return true,
-        /// or -1 if no match not found.
-        /// </summary>
-        public int IndexOf(Func<char, bool> predicate, int startIndex = -1)
-        {
-            if (startIndex < 0)
-                startIndex = 0;
-
-            for (int i = startIndex; i < Length; i++)
-            {
-                if (predicate(GetAt(i)))
-                    return i;
-            }
-            return -1;
-        }
-
-        /// <summary>
-        /// Returns the index of the last character that matches <paramref name="c"/>, or -1 if no match was found.
-        /// </summary>
-        public int LastIndexOf(char c, int startIndex = -1)
-        {
-            if (startIndex < 0)
-                startIndex = Length - 1;
-
-            for (int i = startIndex; i >= 0; i--)
-            {
-                if (GetAt(i) == c)
-                    return i;
-            }
-            return -1;
-        }
-
-        /// <summary>
-        /// Returns the index of the last character sequence that matches <paramref name="s"/>, or -1 if no match was found.
-        /// </summary>
-        public int LastIndexOf(string s, int startIndex = -1)
-        {
-            if (startIndex < 0)
-                startIndex = Length - 1;
-
-            for (int i = startIndex - (s.Length - 1); i >= 0; i--)
-            {
-                int j = 0;
-                for (; j < s.Length; j++)
-                {
-                    if (GetAt(i + j) != s[j])
-                        break;
-                }
-                if (j == s.Length)
-                    return i;
-            }
-            return -1;
-        }
-
-        /// <summary>
-        /// Returns the index of the last character that causes <paramref name="predicate"/> to return true,
-        /// or -1 if no match not found.
-        /// </summary>
-        public int LastIndexOf(Func<char, bool> predicate, int startIndex = -1)
-        {
-            if (startIndex < 0)
-                startIndex = Length - 1;
-
-            for (int i = startIndex; i >= 0; i--)
-            {
-                if (predicate(GetAt(i)))
-                    return i;
-            }
-            return -1;
-        }
-
-        /// <summary>
-        /// Returns true if this string contains the specified character.
-        /// </summary>
-        public bool Contains(char c) => IndexOf(c) >= 0;
-
-        /// <summary>
-        /// Returns true if this string contains the specified string.
-        /// </summary>
-        public bool Contains(string s) => IndexOf(s) >= 0;
-
-        /// <summary>
-        /// Returns true if any character causes <paramref name="predicate"/> to return true.
-        /// </summary>
-        /// <param name="predicate"></param>
-        /// <returns></returns>
-        public bool Contains(Func<char, bool> predicate) => IndexOf(predicate) >= 0;
-
-        #endregion
-
-        #region Find First/Last Word / Matching
-
-        /// <summary>
-        /// Gets the start and end index of the first contiguous sequence of letters.
-        /// </summary>
-        public bool FindFirstWord(out int startIndex, out int endIndex)
-        {
-            startIndex = IndexOf(char.IsLetter);
-            if (startIndex >= 0)
-            {
-                endIndex = IndexOf(c => !char.IsLetter(c), startIndex + 1);
-                if (endIndex < 0)
-                    endIndex = Length;
-                return true;
-            }
-            endIndex = -1;
-            return false;
-        }
-
-        /// <summary>
-        /// Gets the start and end index of the last contiguous sequence of letters.
-        /// </summary>
-        public bool FindLastWord(out int startIndex, out int endIndex)
-        {
-            endIndex = LastIndexOf(char.IsLetter);
-            if (endIndex >= 0)
-            {
-                startIndex = LastIndexOf(c => !char.IsLetter(c), endIndex - 1);
-                if (startIndex < 0)
-                    startIndex = 0;
-                else
-                    startIndex++;
-                endIndex++;
-                return true;
-            }
-            startIndex = -1;
-            return false;
-        }
-
-
-        //public bool MatchesAt(int index, string s, bool ignoreCase)
-        //{
-
-        //}
-
-        public bool MatchesEndingAt(int index, string s, bool ignoreCase = false)
-        {
-            Debug.Assert(s != null && s.Length > 0);
-
-            index -= s.Length - 1;
-            if (index < 0)
-                return false;
-
-            if (ignoreCase)
-            {
-                for (int i = 0; i < s.Length; i++)
-                {
-                    if (char.ToLower(GetAt(index + i)) != char.ToLower(s[i]))
-                        return false;
-                }
-            }
-            else
-            {
-                for (int i = 0; i < s.Length; i++)
-                {
-                    if (GetAt(index + i) != s[i])
-                        return false;
-                }
-            }
-            return true;
-        }
-
-        #endregion
-
-        #region Character classification
-
-        public bool IsWordCharacter(int pos)
-        {
-            Debug.Assert(pos < Length);
-            char c = GetAt(pos);
-            return char.IsLetterOrDigit(c) ||
-                c == '\'' ||
-                (c == '.' && pos < Length - 1 && char.IsDigit(GetAt(pos + 1)));
-        }
-
-        public bool IsEndOfSentenceCharacter(int pos)
-        {
-            Debug.Assert(pos < Length);
-            char c = GetAt(pos);
-            return c == '!' ||
-                c == '?' ||
-                c == ':' ||
-                (c == '.' && !(pos < (Length - 1) && char.IsDigit(GetAt(pos + 1))));
-        }
-
-        #endregion
-
-        #region Character array primatives
-
-        /// <summary>
-        /// Array growth granularity.
-        /// </summary>
-        private const int GrowBy = 16;
-
-        /// <summary>
-        /// Internal character array.
-        /// </summary>
-        private char[]? InternalArray = null;
-
-        /// <summary>
-        /// Internal character array size.
-        /// </summary>
-        private int InternalSize;
-
-        /// <summary>
-        /// Gets the current length of this object's string.
-        /// </summary>
-        public int Length { get; private set; }
-
-        /// <summary>
-        /// Returns a modifiable array with the characters from this string.
-        /// </summary>
-        public char[] Array
-        {
-            get
-            {
-                if (InternalArray == null)
-                    Resize(Original.Length);
-                Debug.Assert(InternalArray != null);
-                return InternalArray;
-            }
-        }
-
-        /// <summary>
-        /// Resizes this <see cref="StringEditor"/> object. Initial resize copies characters
-        /// from original string.
-        /// </summary>
-        /// <param name="size">Specifies the new size.</param>
-        [MemberNotNull(nameof(InternalArray))]
-        public void Resize(int size)
-        {
-            if (InternalArray == null)
-            {
-                InternalSize = RoundUpSize(size);
-                InternalArray = new char[InternalSize];
-                int minSize = Math.Min(InternalSize, Original.Length);
-                for (int i = 0; i < minSize; i++)
-                    InternalArray[i] = Original[i];
-            }
-            else if (size > InternalSize)
-            {
-                InternalSize = RoundUpSize(size);
-                System.Array.Resize(ref InternalArray, InternalSize);
-            }
-            Length = size;
-        }
-
-        /// <summary>
-        /// Rounds up the given size to the nearest multiple of <see cref="GrowBy"/>.
-        /// </summary>
-        private static int RoundUpSize(int size)
-        {
-            int mod = size % GrowBy;
-            if (mod != 0)
-                size = size + GrowBy - mod;
-            return size;
         }
 
         #endregion

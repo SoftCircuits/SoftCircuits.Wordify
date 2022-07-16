@@ -102,7 +102,7 @@ namespace WordifyTests
             Assert.AreEqual("2 hours, 23 minutes and 20 seconds", (now.Offset(hours: 2, minutes: 23, seconds: 20) - now).Wordify(10));
             Assert.AreEqual("2 weeks and 4 days", (now.Offset(days: 18) - now).Wordify(10));
             Assert.AreEqual("2 weeks, 4 days and 4 hours", (now.Offset(days: 18, hours: 4) - now).Wordify(10));
-            Assert.AreEqual("4 weeks and 2 days", (now.Offset(months: 1) - now).Wordify(10));
+            //Assert.AreEqual("4 weeks and 2 days", (now.Offset(months: 1) - now).Wordify(10)); // Depends on length of month
             Assert.AreEqual("104 weeks and 3 days", (now.Offset(years: 2) - now).Wordify(10));
 
             Assert.AreEqual("twenty seconds", (now.Offset(seconds: 20) - now).Wordify(10, DateTimeOption.UseWords));

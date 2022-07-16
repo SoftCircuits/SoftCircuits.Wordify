@@ -2,7 +2,7 @@
 // Licensed under the MIT license.
 //
 
-namespace SoftCircuits.Wordify.Helpers
+namespace SoftCircuits.Wordify.Extensions
 {
     internal static class StringExtensions
     {

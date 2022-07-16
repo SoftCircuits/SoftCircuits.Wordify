@@ -2,6 +2,7 @@
 // Licensed under the MIT license.
 //
 
+using SoftCircuits.Wordify.Extensions;
 using SoftCircuits.Wordify.Helpers;
 
 namespace SoftCircuits.Wordify
@@ -184,11 +185,11 @@ namespace SoftCircuits.Wordify
             {
                 editor.Insert(endIndex - 1, "ies", 1);
             }
-            else if (editor.MatchesEndingAt(endIndex - 1, "s", true) ||
-                editor.MatchesEndingAt(endIndex - 1, "x", true) ||
-                editor.MatchesEndingAt(endIndex - 1, "z", true) ||
-                editor.MatchesEndingAt(endIndex - 1, "sh", true) ||
-                editor.MatchesEndingAt(endIndex - 1, "ch", true))
+            else if (editor.MatchesEndingAt("s", endIndex - 1, true) ||
+                editor.MatchesEndingAt("x", endIndex - 1, true) ||
+                editor.MatchesEndingAt("z", endIndex - 1, true) ||
+                editor.MatchesEndingAt("sh", endIndex - 1, true) ||
+                editor.MatchesEndingAt("ch", endIndex - 1, true))
             {
                 editor.Insert(endIndex, "es");
             }
@@ -232,22 +233,22 @@ namespace SoftCircuits.Wordify
             {
                 editor.Insert(startIndex, char.IsUpper(lastWord[0]) ? replacement.Capitalize() : replacement, endIndex - startIndex);
             }
-            else if (editor.MatchesEndingAt(endIndex - 1, "ies", true))
+            else if (editor.MatchesEndingAt("ies", endIndex - 1, true))
             {
                 editor.Insert(endIndex - 3, "y", 3);
             }
-            else if (editor.MatchesEndingAt(endIndex - 1, "ses", true) ||
-                editor.MatchesEndingAt(endIndex - 1, "xes", true) ||
-                editor.MatchesEndingAt(endIndex - 1, "zes", true))
+            else if (editor.MatchesEndingAt("ses", endIndex - 1, true) ||
+                editor.MatchesEndingAt("xes", endIndex - 1, true) ||
+                editor.MatchesEndingAt("zes", endIndex - 1, true))
             {
                 editor.Delete(endIndex - 2, 2);
             }
-            else if (editor.MatchesEndingAt(endIndex - 1, "shes", true) ||
-                editor.MatchesEndingAt(endIndex - 1, "ches", true))
+            else if (editor.MatchesEndingAt("shes", endIndex - 1, true) ||
+                editor.MatchesEndingAt("ches", endIndex - 1, true))
             {
                 editor.Delete(endIndex - 2, 2);
             }
-            else if (editor.MatchesEndingAt(endIndex - 1, "s", true))
+            else if (editor.MatchesEndingAt("s", endIndex - 1, true))
             {
                 editor.Delete(endIndex - 1, 1);
             }
