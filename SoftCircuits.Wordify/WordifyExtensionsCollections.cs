@@ -11,7 +11,7 @@ namespace SoftCircuits.Wordify
         private const string AndConjunction = " and ";
         private const string OrConjunction = " or ";
         private const string Comma = ", ";
-        private const char CommaNoSpace = ',';
+        private const char CommaChar = ',';
 
         /// <summary>
         /// Combines a collection of items into a common string format. Empty and null values are discarded.
@@ -47,7 +47,7 @@ namespace SoftCircuits.Wordify
                 if (isLast)
                 {
                     if (options.HasFlag(CollectionOption.OxfordComma))
-                        builder.Append(CommaNoSpace);
+                        builder.Append(CommaChar);
                     builder.Append(options.HasFlag(CollectionOption.OrConjunction) ? OrConjunction : AndConjunction);
                 }
                 else

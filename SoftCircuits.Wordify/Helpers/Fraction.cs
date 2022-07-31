@@ -7,7 +7,7 @@
 namespace SoftCircuits.Wordify.Helpers
 {
     /// <summary>
-    /// Class to hold a fraction. Includes methods to convert a floating point value to a fraction.
+    /// Class to hold a fraction. Includes code to convert a floating point value to a fraction.
     /// </summary>
     internal class Fraction
     {
