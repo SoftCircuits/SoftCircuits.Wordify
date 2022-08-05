@@ -65,5 +65,17 @@ namespace WordifyTests
                 Assert.AreEqual(item.Original, item.Plural.Singularize());
             }
         }
+
+        [TestMethod]
+        public void TestCustomWords()
+        {
+            Assert.AreEqual("cats", "cat".Pluralize());
+            Assert.IsTrue(Wordify.AddIrregularNoun("cat", "coots"));
+            Assert.AreEqual("coots", "cat".Pluralize());
+
+            Assert.AreEqual("pigs", "pig".Pluralize());
+            Assert.IsTrue(Wordify.AddDefectiveNoun("pig"));
+            Assert.AreEqual("pig", "pig".Pluralize());
+        }
     }
 }

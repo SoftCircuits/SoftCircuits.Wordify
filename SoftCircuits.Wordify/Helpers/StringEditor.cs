@@ -399,7 +399,7 @@ namespace SoftCircuits.Wordify.Helpers
         }
 
         /// <summary>
-        /// Copies the given string to this <see cref="StringEditor_Old"/> object, starting at the specified index.
+        /// Copies the given string to this <see cref="StringEditor"/> object, starting at the specified index.
         /// </summary>
         /// <param name="s">The string to copy.</param>
         /// <param name="targetIndex">The starting index where the string should be copied.</param>

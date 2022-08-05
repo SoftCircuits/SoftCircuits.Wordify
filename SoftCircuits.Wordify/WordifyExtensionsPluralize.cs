@@ -7,62 +7,55 @@ using SoftCircuits.Wordify.Helpers;
 
 namespace SoftCircuits.Wordify
 {
-    public static partial class WordifyExtensions
+    public static partial class Wordify
     {
-        #region Private Data
+        /// <summary>
+        /// Adds an irregular noun to the pluralizer. An irregular noun is a word that has unpredictable rules
+        /// for converting it to the plural form. For example, goose/geese.
+        /// </summary>
+        /// <param name="singular">The singular form of the word.</param>
+        /// <param name="plural">The plural form of the word.</param>
+        /// <returns>True if the word was added. Returns false if the word is null, empty, contains spaces or
+        /// was already in the list.</returns>
+        public static bool AddIrregularNoun(string singular, string plural)
+        {
+            if (string.IsNullOrWhiteSpace(singular) || string.IsNullOrWhiteSpace(plural))
+                return false;
+            singular = singular.Trim();
+            plural = plural.Trim();
+            if (singular.Contains(' ') || plural.Contains(' '))
+                return false;
+            if (WordifyExtensions.IrregularNounsLookup.ContainsKey(singular))
+                return false;
+            WordifyExtensions.IrregularNounsLookup.Add(singular, plural);
+            return true;
+        }
 
         /// <summary>
-        /// Words that are the same for both singular and plural.
+        /// Adds a defective noun to the pluralizer. A defective noun is a word that uses the same word for the
+        /// singular and plural form. For example, sheep.
         /// </summary>
-        private static readonly HashSet<string> DefectiveNounsLookup = new(StringComparer.OrdinalIgnoreCase)
+        /// <param name="noun">The defective noun to add.</param>
+        /// <returns>True if <paramref name="noun"/> was added. Returns false if the word is null, empty, contains
+        /// spaces or was already in the list.</returns>
+        public static bool AddDefectiveNoun(string noun)
         {
-            "aircraft",
-            "binoculars",
-            "bison",
-            "bourgeois",
-            "buffalo",
-            "carps",
-            "chassis",
-            "clothes",
-            "cod",
-            "corps",
-            "deer",
-            "dice",
-            "elk",
-            "fish",
-            "fruit",
-            "gallows",
-            "glass",
-            "glasses",
-            "goggles",
-            "goldfish",
-            "grouse",
-            "halibut",
-            "means",
-            "moose",
-            "offspring",
-            "pajamas",
-            "pants",
-            "pas", // faux pas
-            "reindeer",
-            "rendezvous",
-            "salmon",
-            "scissors",
-            "series",
-            "scissors",
-            "shrimp",
-            "sheep",
-            "shellfish",
-            "shorts",
-            "species",
-            "squid",
-            "swine",
-            "trout",
-            "tuna",
-            "tweezers",
-        };
+            if (string.IsNullOrWhiteSpace(noun))
+                return false;
+            noun = noun.Trim();
+            if (noun.Contains(' '))
+                return false;
 
-        private static readonly Dictionary<string, string> IrregularNounsLookup = new(StringComparer.OrdinalIgnoreCase)
+            return WordifyExtensions.DefectiveNounsLookup.Add(noun);
+        }
+    }
+
+    public static partial class WordifyExtensions
+    {
+
+        #region Private Data
+
+        internal static readonly Dictionary<string, string> IrregularNounsLookup = new(StringComparer.OrdinalIgnoreCase)
         {
             ["addendum"] = "addenda",
             ["alga"] = "algae",
@@ -154,6 +147,57 @@ namespace SoftCircuits.Wordify
             ["tomato"] = "tomatoes",
             ["torpedo"] = "torpedoes",
             ["veto"] = "vetoes",
+        };
+
+        /// <summary>
+        /// Words that are the same for both singular and plural.
+        /// </summary>
+        internal static readonly HashSet<string> DefectiveNounsLookup = new(StringComparer.OrdinalIgnoreCase)
+        {
+            "aircraft",
+            "binoculars",
+            "bison",
+            "bourgeois",
+            "buffalo",
+            "carps",
+            "chassis",
+            "clothes",
+            "cod",
+            "corps",
+            "deer",
+            "dice",
+            "elk",
+            "fish",
+            "fruit",
+            "gallows",
+            "glass",
+            "glasses",
+            "goggles",
+            "goldfish",
+            "grouse",
+            "halibut",
+            "means",
+            "moose",
+            "offspring",
+            "pajamas",
+            "pants",
+            "pas", // faux pas
+            "reindeer",
+            "rendezvous",
+            "salmon",
+            "scissors",
+            "series",
+            "scissors",
+            "shrimp",
+            "sheep",
+            "shellfish",
+            "shorts",
+            "species",
+            "squid",
+            "swine",
+            "trout",
+            "tuna",
+            "tweezers",
         };
 
         #endregion

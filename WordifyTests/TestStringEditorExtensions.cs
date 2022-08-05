@@ -8,7 +8,7 @@ using SoftCircuits.Wordify.Helpers;
 namespace WordifyTests
 {
     /// <summary>
-    /// Tests for private <see cref="StringEditor_Old"/> utility class.
+    /// Tests for private <see cref="StringEditor"/> utility class.
     /// </summary>
     [TestClass]
     public class TestStringEditorExtensions
