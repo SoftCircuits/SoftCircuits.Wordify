@@ -2,35 +2,65 @@
 // Licensed under the MIT license.
 //
 
+using SoftCircuits.Wordify.Enums;
+
 namespace SoftCircuits.Wordify
 {
     public static partial class WordifyExtensions
     {
-        private const long Kilobyte = 1024;
-        private static readonly string[] Suffixes = { "B", "KB", "MB", "GB", "TB", "PB", "EB", "ZB", "YB" };
+        private const ulong Kilobyte = 1000;
+        private const ulong Kibibyte = 1024;
+
+        private static readonly (string Decimal, string Binary)[] Suffixes =
+        {
+            ("B", "B"),
+            ("KB", "KiB"),
+            ("MB", "MiB"),
+            ("GB", "GiB"),
+            ("TB", "TiB"),
+            ("PB", "PiB"),
+            ("EB", "EiB"),
+            ("ZB", "ZiB"),
+            ("YB", "YiB")
+        };
 
         /// <summary>
         /// Converts an integer value to a memory size in the form "850 bytes", "1.67 MB", etc.
         /// </summary>
         /// <param name="sizeInBytes">The integer value to convert.</param>
+        /// <param name="options">Specifies the format method.</param>
         /// <param name="numberFormat">Optional format specifier used to format the numeric portion
         /// of the resulting string.</param>
         /// <returns>The resulting memory size string.</returns>
-        public static string ToMemorySize(this ulong sizeInBytes, string numberFormat = "#,0.##")
+        public static string ToMemorySize(this int sizeInBytes, MemorySizeOption options = MemorySizeOption.Decimal, string numberFormat = "#,0.##") =>
+            ToMemorySize((ulong)sizeInBytes, options, numberFormat);
+
+        /// <summary>
+        /// Converts an integer value to a memory size in the form "850 bytes", "1.67 MB", etc.
+        /// </summary>
+        /// <param name="sizeInBytes">The integer value to convert.</param>
+        /// <param name="options">Specifies the format method.</param>
+        /// <param name="numberFormat">Optional format specifier used to format the numeric portion
+        /// of the resulting string.</param>
+        /// <returns>The resulting memory size string.</returns>
+        public static string ToMemorySize(this ulong sizeInBytes, MemorySizeOption options = MemorySizeOption.Decimal, string numberFormat = "#,0.##")
         {
             double size = sizeInBytes;
-            int suffixIndex = 0;
+            int index = 0;
+            ulong kb = options.HasFlag(MemorySizeOption.Binary) ? Kibibyte : Kilobyte;
 
-            while (size >= Kilobyte)
+            while (size >= kb)
             {
-                suffixIndex++;
-                size /= Kilobyte;
+                index++;
+                size /= kb;
             }
-            return $"{size.ToString(numberFormat)} {Suffixes[suffixIndex]}";
+
+            string suffix = options.HasFlag(MemorySizeOption.Binary) ? Suffixes[index].Binary : Suffixes[index].Decimal;
+            return $"{size.ToString(numberFormat)} {suffix}";
         }
 
         /// <summary>
-        /// Converts a memory size string (e.g., "1.5 MB") to the corresponding integer value.
+        /// Converts a memory size string (e.g., "1.5 MB" or "5 GiB") to the corresponding integer value.
         /// </summary>
         /// <param name="s">The memory size string to convert.</param>
         /// <returns>The integer value of the memory size string.</returns>
@@ -60,24 +90,26 @@ namespace SoftCircuits.Wordify
 
                     if (pos > startIndex)
                     {
-                        string suffix = s[startIndex..pos].ToUpper();
-                        int suffixIndex = -1;
+                        string suffix = s[startIndex..pos];
+
                         for (int i = 0; i < Suffixes.Length; i++)
                         {
-                            if (suffix == Suffixes[i])
+                            if (suffix.Equals(Suffixes[i].Decimal, StringComparison.OrdinalIgnoreCase))
                             {
-                                suffixIndex = i;
+                                size *= Math.Pow(Kilobyte, i);
+                                break;
+                            }
+                            if (suffix.Equals(Suffixes[i].Binary, StringComparison.OrdinalIgnoreCase))
+                            {
+                                size *= Math.Pow(Kibibyte, i);
                                 break;
                             }
                         }
-
-                        if (suffixIndex > 0)
-                            size *= Math.Pow(Kilobyte, suffixIndex);
                     }
                     return (ulong)Math.Round(size);
                 }
             }
-            return 0;
+            return 0UL;
         }
     }
 }
