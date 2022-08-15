@@ -141,11 +141,11 @@ namespace SoftCircuits.Wordify
 
             if (OrdinalReplacementLookup.TryGetValue(lastWord, out string? replacement))
             {
-                editor.Insert(startIndex, replacement, lastWord.Length);
+                editor.Replace(startIndex, replacement, lastWord.Length);
             }
             else if (lastWord[^1] == 'y')
             {
-                editor.Insert(endIndex - 1, "ieth", 1);
+                editor.Replace(endIndex - 1, "ieth", 1);
             }
             else
             {

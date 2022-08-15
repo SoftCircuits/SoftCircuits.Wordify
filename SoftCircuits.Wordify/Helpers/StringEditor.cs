@@ -302,10 +302,13 @@ namespace SoftCircuits.Wordify.Helpers
         /// <param name="index">The index where the string should be inserted.</param>
         /// <param name="s">The string to insert.</param>
         /// <param name="replaceCount">The number of characters to replace.</param>
-        public void Insert(int index, string s, int replaceCount)
+        public void Replace(int index, string s, int replaceCount)
         {
             if (s == null || s.Length == 0)
+            {
+                Delete(index, replaceCount);
                 return;
+            }
 
             // Ensure valid index
             int oldLength = Length;

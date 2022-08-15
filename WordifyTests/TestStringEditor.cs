@@ -59,31 +59,38 @@ namespace WordifyTests
 
             editor.Insert(7, "abcdefghijklmnopqrstuvwxyz");
             Assert.AreEqual("123a@#$abcdefghijklmnopqrstuvwxyzbcxyz", editor);
+        }
 
-            editor = new("abc");
+        [TestMethod]
+        public void TestReplace()
+        {
+            StringEditor editor = new("abc");
 
-            editor.Insert(1000, "xyz", 1);
+            editor.Replace(1000, "xyz", 1);
             Assert.AreEqual("abcxyz", editor);
 
-            editor.Insert(0, "123", 2);
+            editor.Replace(0, "123", 2);
             Assert.AreEqual("123cxyz", editor);
 
-            editor.Insert(4, "@#$", 0);
+            editor.Replace(4, "@#$", 0);
             Assert.AreEqual("123c@#$xyz", editor);
 
-            editor.Insert(7, "abcdefghijklmnopqrstuvwxyz", 1000);
+            editor.Replace(7, "abcdefghijklmnopqrstuvwxyz", 1000);
             Assert.AreEqual("123c@#$abcdefghijklmnopqrstuvwxyz", editor);
 
-            editor.Insert(0, "abc", 1000);
+            editor.Replace(0, "abc", 1000);
             Assert.AreEqual("abc", editor);
 
             editor = (StringEditor)"abcdefghijklmnopqrstuvwxyz";
 
-            editor.Insert(2, "123", 5);
+            editor.Replace(2, "123", 5);
             Assert.AreEqual("ab123hijklmnopqrstuvwxyz", editor);
 
-            editor.Insert(7, "...", 8);
+            editor.Replace(7, "...", 8);
             Assert.AreEqual("ab123hi...rstuvwxyz", editor);
+
+            editor.Replace(7, "", 8);
+            Assert.AreEqual("ab123hiwxyz", editor);
         }
 
         [TestMethod]

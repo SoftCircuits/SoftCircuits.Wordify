@@ -223,11 +223,11 @@ namespace SoftCircuits.Wordify
 
             if (IrregularNounsLookup.TryGetValue(lastWord, out string? replacement))
             {
-                editor.Insert(startIndex, char.IsUpper(lastWord[0]) ? replacement.Capitalize() : replacement, endIndex - startIndex);
+                editor.Replace(startIndex, char.IsUpper(lastWord[0]) ? replacement.Capitalize() : replacement, endIndex - startIndex);
             }
             else if (char.ToLower(editor[endIndex - 1]) == 'y' && endIndex >= 2 && editor[endIndex - 2].IsConsonant())
             {
-                editor.Insert(endIndex - 1, "ies", 1);
+                editor.Replace(endIndex - 1, "ies", 1);
             }
             else if (editor.MatchesEndingAt("s", endIndex - 1, true) ||
                 editor.MatchesEndingAt("x", endIndex - 1, true) ||
@@ -275,11 +275,11 @@ namespace SoftCircuits.Wordify
 
             if (replacement != null)
             {
-                editor.Insert(startIndex, char.IsUpper(lastWord[0]) ? replacement.Capitalize() : replacement, endIndex - startIndex);
+                editor.Replace(startIndex, char.IsUpper(lastWord[0]) ? replacement.Capitalize() : replacement, endIndex - startIndex);
             }
             else if (editor.MatchesEndingAt("ies", endIndex - 1, true))
             {
-                editor.Insert(endIndex - 3, "y", 3);
+                editor.Replace(endIndex - 3, "y", 3);
             }
             else if (editor.MatchesEndingAt("ses", endIndex - 1, true) ||
                 editor.MatchesEndingAt("xes", endIndex - 1, true) ||
