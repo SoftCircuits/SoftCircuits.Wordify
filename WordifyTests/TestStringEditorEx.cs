@@ -11,7 +11,7 @@ namespace WordifyTests
     /// Tests for private <see cref="StringEditor"/> utility class.
     /// </summary>
     [TestClass]
-    public class TestStringEditorExtensions
+    public class TestStringEditorEx
     {
         [TestMethod]
         public void TestCharacterTypes()

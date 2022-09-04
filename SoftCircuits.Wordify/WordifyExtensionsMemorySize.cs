@@ -43,6 +43,17 @@ namespace SoftCircuits.Wordify
         /// <param name="numberFormat">Optional format specifier used to format the numeric portion
         /// of the resulting string.</param>
         /// <returns>The resulting memory size string.</returns>
+        public static string ToMemorySize(this long sizeInBytes, MemorySizeOption options = MemorySizeOption.Decimal, string numberFormat = "#,0.##") =>
+            ToMemorySize((ulong)sizeInBytes, options, numberFormat);
+
+        /// <summary>
+        /// Converts an integer value to a memory size in the form "850 bytes", "1.67 MB", etc.
+        /// </summary>
+        /// <param name="sizeInBytes">The integer value to convert.</param>
+        /// <param name="options">Specifies the format method.</param>
+        /// <param name="numberFormat">Optional format specifier used to format the numeric portion
+        /// of the resulting string.</param>
+        /// <returns>The resulting memory size string.</returns>
         public static string ToMemorySize(this ulong sizeInBytes, MemorySizeOption options = MemorySizeOption.Decimal, string numberFormat = "#,0.##")
         {
             double size = sizeInBytes;

@@ -14,7 +14,7 @@ namespace SoftCircuits.Wordify.Helpers
     /// Class that makes it easy to edit a string. Exposes the string as a writable array and includes
     /// methods for inserting, deleting, copying, etc. characters.
     /// </summary>
-    internal class StringEditor
+    internal partial class StringEditor
     {
         /// <summary>
         /// Constructs a new <see cref="StringEditor"/> instance.
@@ -49,11 +49,11 @@ namespace SoftCircuits.Wordify.Helpers
         private int InternalCapacity;
 
         // These functions change depending on whether or not the string has been modified.
-        private Func<int, char> GetAt;
-        private Action<int, char> SetAt;
-        private Func<string> GetString;
-        private Func<int, int, string> Substring;
-        private Func<char[]> GetArray;
+        protected Func<int, char> GetAt;
+        protected Action<int, char> SetAt;
+        protected Func<string> GetString;
+        protected Func<int, int, string> Substring;
+        protected Func<char[]> GetArray;
 
         /// <summary>
         /// Indicates if the current string is in a modified state.

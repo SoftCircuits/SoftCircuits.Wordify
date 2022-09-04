@@ -2,43 +2,45 @@
 // Licensed under the MIT license.
 //
 
-using SoftCircuits.Wordify.Helpers;
 using System.Diagnostics;
 
-namespace SoftCircuits.Wordify.Extensions
+namespace SoftCircuits.Wordify.Helpers
 {
-    internal static class StringEditorExtensions
+    /// <summary>
+    /// Adds additional functionality to the <see cref="StringEditor"/> class.
+    /// </summary>
+    internal partial class StringEditor
     {
-        public static bool IsWordCharacter(this StringEditor se, int pos)
+        public bool IsWordCharacter(int pos)
         {
-            Debug.Assert(pos < se.Length);
-            char c = se[pos];
+            Debug.Assert(pos < Length);
+            char c = GetAt(pos);
             return char.IsLetterOrDigit(c) ||
                 c == '\'' ||
-                (c == '.' && pos < se.Length - 1 && char.IsDigit(se[pos + 1]));
+                (c == '.' && pos < Length - 1 && char.IsDigit(GetAt(pos + 1)));
         }
 
-        public static bool IsEndOfSentenceCharacter(this StringEditor se, int pos)
+        public bool IsEndOfSentenceCharacter(int pos)
         {
-            Debug.Assert(pos < se.Length);
-            char c = se[pos];
+            Debug.Assert(pos < Length);
+            char c = GetAt(pos);
             return c == '!' ||
                 c == '?' ||
                 c == ':' ||
-                (c == '.' && !(pos < (se.Length - 1) && char.IsDigit(se[pos + 1])));
+                (c == '.' && !(pos < (Length - 1) && char.IsDigit(GetAt(pos + 1))));
         }
 
         /// <summary>
         /// Gets the start and end index of the first contiguous sequence of letters.
         /// </summary>
-        public static bool FindFirstWord(this StringEditor se, out int startIndex, out int endIndex)
+        public bool FindFirstWord(out int startIndex, out int endIndex)
         {
-            startIndex = se.IndexOf(char.IsLetter);
+            startIndex = IndexOf(char.IsLetter);
             if (startIndex >= 0)
             {
-                endIndex = se.IndexOf(c => !char.IsLetter(c), startIndex + 1);
+                endIndex = IndexOf(c => !char.IsLetter(c), startIndex + 1);
                 if (endIndex < 0)
-                    endIndex = se.Length;
+                    endIndex = Length;
                 return true;
             }
             endIndex = -1;
@@ -48,12 +50,12 @@ namespace SoftCircuits.Wordify.Extensions
         /// <summary>
         /// Gets the start and end index of the last contiguous sequence of letters.
         /// </summary>
-        public static bool FindLastWord(this StringEditor se, out int startIndex, out int endIndex)
+        public bool FindLastWord(out int startIndex, out int endIndex)
         {
-            endIndex = se.LastIndexOf(char.IsLetter);
+            endIndex = LastIndexOf(char.IsLetter);
             if (endIndex >= 0)
             {
-                startIndex = se.LastIndexOf(c => !char.IsLetter(c), endIndex - 1);
+                startIndex = LastIndexOf(c => !char.IsLetter(c), endIndex - 1);
                 if (startIndex < 0)
                     startIndex = 0;
                 else
@@ -72,13 +74,13 @@ namespace SoftCircuits.Wordify.Extensions
         /// <param name="startIndex">The starting index. Use -1 to start at the start of the string.</param>
         /// <param name="ignoreCase">Set to true for case-insensitive search.</param>
         /// <returns>The index of the first match, or -1 if no match was found.</returns>
-        public static int IndexOf(this StringEditor se, char c, int startIndex = -1, bool ignoreCase = false)
+        public int IndexOf(char c, int startIndex = -1, bool ignoreCase = false)
         {
             IComparer<char> comparer = CharComparer.GetComparer(ignoreCase);
 
-            for (int i = Math.Max(startIndex, 0); i < se.Length; i++)
+            for (int i = Math.Max(startIndex, 0); i < Length; i++)
             {
-                if (comparer.Compare(c, se[i]) == 0)
+                if (comparer.Compare(c, GetAt(i)) == 0)
                     return i;
             }
             return -1;
@@ -91,13 +93,13 @@ namespace SoftCircuits.Wordify.Extensions
         /// <param name="startIndex">The starting index. Use -1 to start at the start of the string.</param>
         /// <param name="ignoreCase">Set to true for case-insensitive search.</param>
         /// <returns>The index of the first match, or -1 if no match was found.</returns>
-        public static int IndexOf(this StringEditor se, string s, int startIndex = -1, bool ignoreCase = false)
+        public int IndexOf(string s, int startIndex = -1, bool ignoreCase = false)
         {
             IComparer<char> comparer = CharComparer.GetComparer(ignoreCase);
 
-            for (int i = Math.Max(startIndex, 0); i < se.Length - (s.Length - 1); i++)
+            for (int i = Math.Max(startIndex, 0); i < Length - (s.Length - 1); i++)
             {
-                if (se.MatchesAt(s, i, comparer))
+                if (MatchesAt(s, i, comparer))
                     return i;
             }
             return -1;
@@ -109,11 +111,11 @@ namespace SoftCircuits.Wordify.Extensions
         /// <param name="predicate">Predicate that returns true for the character being sought.</param>
         /// <param name="startIndex">The starting index. Use -1 to start at the start of the string.</param>
         /// <returns>The index of the first match, or -1 if no match was found.</returns>
-        public static int IndexOf(this StringEditor se, Func<char, bool> predicate, int startIndex = -1)
+        public int IndexOf(Func<char, bool> predicate, int startIndex = -1)
         {
-            for (int i = Math.Max(startIndex, 0); i < se.Length; i++)
+            for (int i = Math.Max(startIndex, 0); i < Length; i++)
             {
-                if (predicate(se[i]))
+                if (predicate(GetAt(i)))
                     return i;
             }
             return -1;
@@ -126,16 +128,16 @@ namespace SoftCircuits.Wordify.Extensions
         /// <param name="startIndex">The starting index. Use -1 to start at the end of the string.</param>
         /// <param name="ignoreCase">Set to true for case-insensitive search.</param>
         /// <returns>The index of the first match, or -1 if no match was found.</returns>
-        public static int LastIndexOf(this StringEditor se, char c, int startIndex = -1, bool ignoreCase = false)
+        public int LastIndexOf(char c, int startIndex = -1, bool ignoreCase = false)
         {
             IComparer<char> comparer = CharComparer.GetComparer(ignoreCase);
 
             if (startIndex < 0)
-                startIndex = se.Length - 1;
+                startIndex = Length - 1;
 
             for (int i = startIndex; i >= 0; i--)
             {
-                if (comparer.Compare(c, se[i]) == 0)
+                if (comparer.Compare(c, GetAt(i)) == 0)
                     return i;
             }
             return -1;
@@ -148,16 +150,16 @@ namespace SoftCircuits.Wordify.Extensions
         /// <param name="startIndex">The starting index. Use -1 to start at the end of the string.</param>
         /// <param name="ignoreCase">Set to true for case-insensitive search.</param>
         /// <returns>The index of the first match, or -1 if no match was found.</returns>
-        public static int LastIndexOf(this StringEditor se, string s, int startIndex = -1, bool ignoreCase = false)
+        public int LastIndexOf(string s, int startIndex = -1, bool ignoreCase = false)
         {
             IComparer<char> comparer = CharComparer.GetComparer(ignoreCase);
 
             if (startIndex < 0)
-                startIndex = se.Length - 1;
+                startIndex = Length - 1;
 
             for (int i = startIndex - (s.Length - 1); i >= 0; i--)
             {
-                if (se.MatchesAt(s, i, comparer))
+                if (MatchesAt(s, i, comparer))
                     return i;
             }
             return -1;
@@ -167,14 +169,14 @@ namespace SoftCircuits.Wordify.Extensions
         /// Returns the index of the last character that causes <paramref name="predicate"/> to return true,
         /// or -1 if no match not found.
         /// </summary>
-        public static int LastIndexOf(this StringEditor se, Func<char, bool> predicate, int startIndex = -1)
+        public int LastIndexOf(Func<char, bool> predicate, int startIndex = -1)
         {
             if (startIndex < 0)
-                startIndex = se.Length - 1;
+                startIndex = Length - 1;
 
             for (int i = startIndex; i >= 0; i--)
             {
-                if (predicate(se[i]))
+                if (predicate(GetAt(i)))
                     return i;
             }
             return -1;
@@ -185,17 +187,37 @@ namespace SoftCircuits.Wordify.Extensions
         /// </summary>
         /// <param name="index">The index to test at.</param>
         /// <param name="s">The string compare to.</param>
-        /// <param name="comparer">The <see cref="IComparer{char}"/> to compare characters.</param>
         /// <returns>True if the characters match, false otherwise.</returns>
-        public static bool MatchesAt(this StringEditor se, string s, int index, IComparer<char> comparer)
+        public bool MatchesAt(string s, int index)
         {
             // Abort if no room for string
-            if (se.Length - index < s.Length)
+            if (Length - index < s.Length)
                 return false;
 
             for (int i = 0; i < s.Length; i++)
             {
-                if (comparer.Compare(s[i], se[index + i]) != 0)
+                if (s[i] != GetAt(index + i))
+                    return false;
+            }
+            return true;
+        }
+
+        /// <summary>
+        /// Determines if the characters at the specified index match the specified string.
+        /// </summary>
+        /// <param name="index">The index to test at.</param>
+        /// <param name="s">The string compare to.</param>
+        /// <param name="comparer">The <see cref="IComparer{char}"/> to compare characters.</param>
+        /// <returns>True if the characters match, false otherwise.</returns>
+        public bool MatchesAt(string s, int index, IComparer<char> comparer)
+        {
+            // Abort if no room for string
+            if (Length - index < s.Length)
+                return false;
+
+            for (int i = 0; i < s.Length; i++)
+            {
+                if (comparer.Compare(s[i], GetAt(index + i)) != 0)
                     return false;
             }
             return true;
@@ -208,13 +230,12 @@ namespace SoftCircuits.Wordify.Extensions
         /// <param name="s">The string compare to.</param>
         /// <param name="ignoreCase">True if characters should be matched using case-insensitive compariso.</param>
         /// <returns>True if the characters match, false otherwise.</returns>
-        public static bool MatchesAt(this StringEditor se, string s, int index, bool ignoreCase = false)
+        public bool MatchesAt(string s, int index, bool ignoreCase = false)
         {
-            IComparer<char> comparer = CharComparer.GetComparer(ignoreCase);
-            return se.MatchesAt(s, index, comparer);
+            return MatchesAt(s, index, CharComparer.GetComparer(ignoreCase));
         }
 
-        public static bool MatchesEndingAt(this StringEditor se, string s, int index, IComparer<char> comparer)
+        public bool MatchesEndingAt(string s, int index, IComparer<char> comparer)
         {
             Debug.Assert(s != null && s.Length > 0);
 
@@ -222,13 +243,13 @@ namespace SoftCircuits.Wordify.Extensions
             if (index < 0)
                 return false;
 
-            return se.MatchesAt(s, index, comparer);
+            return MatchesAt(s, index, comparer);
         }
 
         /// <summary>
         /// Compares the given string 
         /// </summary>
-        public static bool MatchesEndingAt(this StringEditor se, string s, int index, bool ignoreCase = false)
+        public bool MatchesEndingAt(string s, int index, bool ignoreCase = false)
         {
             Debug.Assert(s != null && s.Length > 0);
 
@@ -236,24 +257,25 @@ namespace SoftCircuits.Wordify.Extensions
             if (index < 0)
                 return false;
 
-            return se.MatchesAt(s, index, ignoreCase);
+            return MatchesAt(s, index, ignoreCase);
         }
 
         /// <summary>
         /// Returns true if this string contains the specified character.
         /// </summary>
-        public static bool Contains(this StringEditor se, char c) => se.IndexOf(c) >= 0;
+        public bool Contains(char c) => IndexOf(c) >= 0;
 
         /// <summary>
         /// Returns true if this string contains the specified string.
         /// </summary>
-        public static bool Contains(this StringEditor se, string s) => se.IndexOf(s) >= 0;
+        public bool Contains(string s) => IndexOf(s) >= 0;
 
         /// <summary>
         /// Returns true if any character causes <paramref name="predicate"/> to return true.
         /// </summary>
         /// <param name="predicate"></param>
         /// <returns></returns>
-        public static bool Contains(this StringEditor se, Func<char, bool> predicate) => se.IndexOf(predicate) >= 0;
+        public bool Contains(Func<char, bool> predicate) => IndexOf(predicate) >= 0;
+
     }
 }
