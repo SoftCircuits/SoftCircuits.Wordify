@@ -39,17 +39,16 @@ namespace SoftCircuits.Wordify.Helpers
         /// <param name="count">The number of characters to take.</param>
         public ReadOnlySpan<char> Slice(int count)
         {
-            if (Remaining > 0 && count > 0)
-            {
-                if (count > Remaining)
-                    count = Remaining;
+            if (Remaining <= 0 || count <= 0)
+                return ReadOnlySpan<char>.Empty;
 
-                ReadOnlySpan<char> result = String.AsSpan(Index, count);
+            if (count > Remaining)
+                count = Remaining;
 
-                Index += count;
-                return result;
-            }
-            return ReadOnlySpan<char>.Empty;
+            ReadOnlySpan<char> result = String.AsSpan(Index, count);
+
+            Index += count;
+            return result;
         }
     }
 }

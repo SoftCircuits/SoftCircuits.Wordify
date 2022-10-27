@@ -14,20 +14,15 @@ namespace SoftCircuits.Wordify.Helpers
         public bool IsWordCharacter(int pos)
         {
             Debug.Assert(pos < Length);
-            char c = GetAt(pos);
-            return char.IsLetterOrDigit(c) ||
-                c == '\'' ||
-                (c == '.' && pos < Length - 1 && char.IsDigit(GetAt(pos + 1)));
+            char c = CharArray[pos];
+            return char.IsLetterOrDigit(c) || c == '\'' || (c == '.' && pos < Length - 1 && char.IsDigit(CharArray[pos + 1]));
         }
 
         public bool IsEndOfSentenceCharacter(int pos)
         {
             Debug.Assert(pos < Length);
-            char c = GetAt(pos);
-            return c == '!' ||
-                c == '?' ||
-                c == ':' ||
-                (c == '.' && !(pos < (Length - 1) && char.IsDigit(GetAt(pos + 1))));
+            char c = CharArray[pos];
+            return c == '!' || c == '?' || c == ':' || (c == '.' && !(pos < (Length - 1) && char.IsDigit(CharArray[pos + 1])));
         }
 
         /// <summary>
@@ -80,7 +75,7 @@ namespace SoftCircuits.Wordify.Helpers
 
             for (int i = Math.Max(startIndex, 0); i < Length; i++)
             {
-                if (comparer.Compare(c, GetAt(i)) == 0)
+                if (comparer.Compare(c, CharArray[i]) == 0)
                     return i;
             }
             return -1;
@@ -115,7 +110,7 @@ namespace SoftCircuits.Wordify.Helpers
         {
             for (int i = Math.Max(startIndex, 0); i < Length; i++)
             {
-                if (predicate(GetAt(i)))
+                if (predicate(CharArray[i]))
                     return i;
             }
             return -1;
@@ -137,7 +132,7 @@ namespace SoftCircuits.Wordify.Helpers
 
             for (int i = startIndex; i >= 0; i--)
             {
-                if (comparer.Compare(c, GetAt(i)) == 0)
+                if (comparer.Compare(c, CharArray[i]) == 0)
                     return i;
             }
             return -1;
@@ -176,7 +171,7 @@ namespace SoftCircuits.Wordify.Helpers
 
             for (int i = startIndex; i >= 0; i--)
             {
-                if (predicate(GetAt(i)))
+                if (predicate(CharArray[i]))
                     return i;
             }
             return -1;
@@ -196,7 +191,7 @@ namespace SoftCircuits.Wordify.Helpers
 
             for (int i = 0; i < s.Length; i++)
             {
-                if (s[i] != GetAt(index + i))
+                if (s[i] != CharArray[index + i])
                     return false;
             }
             return true;
@@ -217,7 +212,7 @@ namespace SoftCircuits.Wordify.Helpers
 
             for (int i = 0; i < s.Length; i++)
             {
-                if (comparer.Compare(s[i], GetAt(index + i)) != 0)
+                if (comparer.Compare(s[i], CharArray[index + i]) != 0)
                     return false;
             }
             return true;
@@ -276,6 +271,5 @@ namespace SoftCircuits.Wordify.Helpers
         /// <param name="predicate"></param>
         /// <returns></returns>
         public bool Contains(Func<char, bool> predicate) => IndexOf(predicate) >= 0;
-
     }
 }

@@ -68,7 +68,7 @@ namespace WordifyTests
             Assert.AreEqual(11, startIndex);
             Assert.AreEqual(15, endIndex);
 
-            editor.Initialize(" ");
+            editor.Reset(" ");
             Assert.IsFalse(editor.FindFirstWord(out _, out _));
             Assert.IsFalse(editor.FindLastWord(out _, out _));
         }
@@ -171,7 +171,7 @@ namespace WordifyTests
             StringEditor editor = new(null);
             foreach (TestInfo test in tests)
             {
-                editor.Initialize(test.Text);
+                editor.Reset(test.Text);
                 for (int i = 0; i < test.Text.Length; i++)
                 {
                     bool match = test.Matches.Contains(i);
