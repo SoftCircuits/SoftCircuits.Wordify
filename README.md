@@ -27,8 +27,8 @@ The `Wordify()` method has many overloads. The one that accepts floating point v
 | `345.67.Wordify(FractionOption.Round);` | three hundred forty-six |
 | `345.67.Wordify(FractionOption.Truncate);` | three hundred forty-five |
 | `345.67.Wordify(FractionOption.Decimal);` | three hundred forty-five and .7 |
-| `345.67.Wordify(FractionOption.Fraction);` | three hundred forty-five and 67/100 |
-| `345.67.Wordify(FractionOption.Check);` | three hundred forty-five and 67/100 |
+| `345.1.Wordify(FractionOption.Fraction);` | three hundred forty-five and 1/10 |
+| `345.1.Wordify(FractionOption.Check);` | three hundred forty-five and 10/100 |
 | `345.67.Wordify(FractionOption.Words);` | three hundred forty-five and sixty-seven one hundredths |
 | `345.67.Wordify(FractionOption.UsCurrency);` | three hundred forty-five dollars and sixty-seven cents |
 
@@ -280,18 +280,16 @@ Use the `ParseSpreadsheetColumn()` extension method to convert a spreadsheet col
 
 ## Formatting Data
 
-The `FormatPhoneNumber()` extension method can be used to convert a string of digits as a phone number.
+The library includes several static methods that make it easy to format various types of data.
 
 | Code | Output |
 |---|---|
-| `"1234567".FormatPhoneNumber();` | 123-4567 |
-| `"1234567890".FormatPhoneNumber();` | 123-456-7890 |
-| `"1234567890".FormatPhoneNumber(PhoneOption.AreaCodeParentheses);` | (123) 456-7890 |
-| `"12345678901".FormatPhoneNumber();` | 1-234-567-8901 |
-| `"12345678901".FormatPhoneNumber(PhoneOption.InternationalPlusSign);` | +1-234-567-8901 |
-| `"  1 2 3 4 5 6 7  ".FormatPhoneNumber();` | 123-4567 |
-
-The library includes several other methods that are not extension methods that make it easy to format other data.
+| `Wordify.FormatPhoneNumber("1234567");` | 123-4567 |
+| `Wordify.FormatPhoneNumber("1234567890");` | 123-456-7890 |
+| `Wordify.FormatPhoneNumber("1234567890", PhoneOption.AreaCodeParentheses);` | (123) 456-7890 |
+| `Wordify.FormatPhoneNumber("12345678901");` | 1-234-567-8901 |
+| `Wordify.FormatPhoneNumber("12345678901", PhoneOption.InternationalPlusSign);` | +1-234-567-8901 |
+| `Wordify.FormatPhoneNumber("  1 2 3 4 5 6 7  ");` | 123-4567 |
 
 | Code | Output |
 |---|---|

@@ -8,8 +8,8 @@ namespace SoftCircuits.Wordify
 {
     public static partial class WordifyExtensions
     {
-        public const string DefaultColumnName = "A";
         private const int AlphabetLength = 26;
+        private const string DefaultColumnName = "A";
 
         /// <summary>
         /// Converts an integer value to a spreadsheet column name. (For example, 2 would be converted

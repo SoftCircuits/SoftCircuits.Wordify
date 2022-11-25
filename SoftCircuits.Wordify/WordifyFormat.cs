@@ -2,7 +2,6 @@
 // Licensed under the MIT license.
 //
 
-using SoftCircuits.Wordify.Helpers;
 using System.Text;
 
 namespace SoftCircuits.Wordify
@@ -104,54 +103,58 @@ namespace SoftCircuits.Wordify
         /// <returns>Returns the formatted string.</returns>
         public static string FormatPhoneNumber(this string? digits, PhoneOption options = PhoneOption.None)
         {
-            if (digits != null)
+            if (digits == null)
+                return string.Empty;
+
+            StringBuilder builder = new();
+
+            digits = string.Concat(digits.Where(c => char.IsDigit(c)));
+            int index = 0;
+            int length = digits.Length - index - 10;
+            if (length > 0)
             {
-                if (digits.Any(c => !char.IsDigit(c)))
-                    digits = string.Concat(digits.Where(c => char.IsDigit(c)));
+                // International code
+                if (options.HasFlag(PhoneOption.InternationalPlusSign))
+                    builder.Append('+');
+                builder.Append(digits, index, length);
+                index += length;
+            }
 
-                StringSlicer slicer = new(digits);
-                StringBuilder builder = new();
-
-                if (slicer.Remaining > 10)
+            length = digits.Length - index - 7;
+            if (length > 0)
+            {
+                // Area code
+                if (options.HasFlag(PhoneOption.AreaCodeParentheses))
                 {
-                    // International code
-                    if (options.HasFlag(PhoneOption.InternationalPlusSign))
-                        builder.Append('+');
-                    builder.Append(slicer.Slice(slicer.Remaining - 10));
-                }
-
-                if (slicer.Remaining > 7)
-                {
-                    // Area code
-                    if (options.HasFlag(PhoneOption.AreaCodeParentheses))
-                    {
-                        if (builder.Length > 0)
-                            builder.Append(' ');
-                        builder.Append('(');
-                        builder.Append(slicer.Slice(slicer.Remaining - 7));
-                        builder.Append(')');
+                    if (builder.Length > 0)
                         builder.Append(' ');
-                    }
-                    else
-                    {
-                        if (builder.Length > 0)
-                            builder.Append('-');
-                        builder.Append(slicer.Slice(slicer.Remaining - 7));
-                        builder.Append('-');
-                    }
+                    builder.Append('(');
+                    builder.Append(digits, index, length);
+                    builder.Append(')');
+                    builder.Append(' ');
                 }
-
-                if (slicer.Remaining > 4)
+                else
                 {
-                    builder.Append(slicer.Slice(slicer.Remaining - 4));
+                    if (builder.Length > 0)
+                        builder.Append('-');
+                    builder.Append(digits, index, length);
                     builder.Append('-');
                 }
-
-                builder.Append(slicer.Slice(slicer.Remaining));
-
-                return builder.ToString();
+                index += length;
             }
-            return string.Empty;
+
+            length = digits.Length - index - 4;
+            if (length > 0)
+            {
+                builder.Append(digits, index, length);
+                builder.Append('-');
+                index += length;
+            }
+
+            length = digits.Length - index;
+            builder.Append(digits, index, length);
+
+            return builder.ToString();
         }
     }
 }

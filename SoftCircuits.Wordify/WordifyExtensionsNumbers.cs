@@ -155,11 +155,10 @@ namespace SoftCircuits.Wordify
         private static string FormatNumber(string number)
         {
             Debug.Assert(number != null);
-            Debug.Assert(!number.Contains('.'));
-            Debug.Assert(!number.Contains(' '));
+            Debug.Assert(number.All(c => char.IsDigit(c) || c == '-'));
 
-            ColumnState columnState = ColumnState.SetHundreds | ColumnState.SetTens;
             StringBuilder builder = new();
+            ColumnState columnState = ColumnState.SetHundreds | ColumnState.SetTens;
             int[] values;
             int length;
 

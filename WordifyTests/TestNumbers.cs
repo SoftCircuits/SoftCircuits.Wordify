@@ -230,6 +230,9 @@ namespace WordifyTests
             new(FractionOption.Fraction, new()
             {
                 new(0.0m, "zero"),
+                new(0.001m, "zero and 1/1000"),
+                new(0.01m, "zero and 1/100"),
+                new(0.1m, "zero and 1/10"),
                 new(0.5m, "zero and 1/2"),
                 new(0.25m, "zero and 1/4"),
                 new(0.75m, "zero and 3/4"),
@@ -250,6 +253,7 @@ namespace WordifyTests
                 new(0.0m, "zero and 00/100"),
                 new(0.001m, "zero and 00/100"),
                 new(0.01m, "zero and 01/100"),
+                new(0.1m, "zero and 10/100"),
                 new(0.5m, "zero and 50/100"),
                 new(0.25m, "zero and 25/100"),
                 new(0.75m, "zero and 75/100"),

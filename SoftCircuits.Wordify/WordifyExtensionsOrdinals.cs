@@ -2,7 +2,6 @@
 // Licensed under the MIT license.
 //
 
-using SoftCircuits.Wordify.Extensions;
 using SoftCircuits.Wordify.Helpers;
 
 namespace SoftCircuits.Wordify
@@ -79,7 +78,7 @@ namespace SoftCircuits.Wordify
             if (string.IsNullOrEmpty(s))
                 return string.Empty;
 
-            StringEditor editor = new(s);
+            MutableString editor = new(s);
             int lastDigitIndex = editor.LastIndexOf(char.IsDigit);
             if (lastDigitIndex < 0)
                 return s;   // No digits
@@ -131,7 +130,7 @@ namespace SoftCircuits.Wordify
             if (s == null)
                 return string.Empty;
 
-            StringEditor editor = new(s);
+            MutableString editor = new(s);
 
             // Find last word
             if (!editor.FindLastWord(out int startIndex, out int endIndex))

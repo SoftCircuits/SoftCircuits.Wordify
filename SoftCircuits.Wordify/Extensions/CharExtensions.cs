@@ -6,8 +6,8 @@ namespace SoftCircuits.Wordify.Extensions
 {
     internal static class CharExtensions
     {
-        private static readonly string Vowels = "aeiou";
-        private static readonly string Consonants = "bcdfghjklmnpqrstvwxyz";
+        private static readonly HashSet<char> Vowels = new("aeiou");
+        private static readonly HashSet<char> Consonants = new("bcdfghjklmnpqrstvwxyz");
 
         public static bool IsVowel(this char c) => Vowels.Contains(char.ToLower(c));
 

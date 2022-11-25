@@ -2,7 +2,6 @@
 // Licensed under the MIT license.
 //
 
-using SoftCircuits.Wordify.Extensions;
 using SoftCircuits.Wordify.Helpers;
 
 namespace SoftCircuits.Wordify
@@ -14,15 +13,15 @@ namespace SoftCircuits.Wordify
         /// <summary>
         /// Returns a copy of this string truncated to the specified length.
         /// </summary>
-        /// <param name="s"></param>
+        /// <param name="s">The string to truncate.</param>
         /// <param name="maxLength">Maximum string length.</param>
-        /// <param name="options">Specifies truncate options.</param>
+        /// <param name="options">Specifies any truncate options.</param>
         /// <returns>The modified string.</returns>
         /// <exception cref="ArgumentOutOfRangeException"></exception>
         public static string Truncate(this string? s, int maxLength, TruncateOption options = TruncateOption.None)
         {
             if (maxLength < 0)
-                throw new ArgumentOutOfRangeException(nameof(maxLength), "Length cannot be less than zero.");
+                throw new ArgumentOutOfRangeException(nameof(maxLength), "Cannot be less than zero.");
 
             if (s == null || maxLength == 0)
                 return string.Empty;
@@ -30,7 +29,7 @@ namespace SoftCircuits.Wordify
             if (s.Length <= maxLength)
                 return s;
 
-            StringEditor editor = new(s);
+            MutableString editor = new(s);
             if (options.HasFlag(TruncateOption.AppendEllipsis))
             {
                 if (maxLength > Ellipsis.Length)

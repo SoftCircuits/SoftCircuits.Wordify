@@ -2,7 +2,6 @@
 // Licensed under the MIT license.
 //
 
-using SoftCircuits.Wordify.Extensions;
 using SoftCircuits.Wordify.Helpers;
 
 namespace SoftCircuits.Wordify
@@ -54,7 +53,7 @@ namespace SoftCircuits.Wordify
         {
             if (s != null && s.Length > 0)
             {
-                StringEditor editor = new(s);
+                MutableString editor = new(s);
                 int firstLetterIndex = editor.IndexOf(char.IsLetter);
                 if (firstLetterIndex != -1)
                 {
@@ -75,7 +74,7 @@ namespace SoftCircuits.Wordify
         {
             bool inSentence = false;
 
-            StringEditor editor = new(s);
+            MutableString editor = new(s);
             for (int i = 0; i < editor.Length; i++)
             {
                 if (editor.IsWordCharacter(i))
@@ -149,7 +148,7 @@ namespace SoftCircuits.Wordify
             int wordStartIndex = -1;
             bool inSentence = false;
 
-            StringEditor editor = new(s);
+            MutableString editor = new(s);
 
             int i = 0;
             for (; i < editor.Length; i++)

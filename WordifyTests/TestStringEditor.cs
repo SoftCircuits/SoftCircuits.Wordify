@@ -7,7 +7,7 @@ using SoftCircuits.Wordify.Helpers;
 namespace WordifyTests
 {
     /// <summary>
-    /// Tests for private <see cref="StringEditor"/> utility class.
+    /// Tests for private <see cref="MutableString"/> utility class.
     /// </summary>
     [TestClass]
     public class TestStringEditor
@@ -15,7 +15,7 @@ namespace WordifyTests
         [TestMethod]
         public void TestGeneral()
         {
-            StringEditor editor = new("abc");
+            MutableString editor = new("abc");
 
             editor[0] = char.ToUpper(editor[0]);
             Assert.AreEqual("Abc", editor);
@@ -31,7 +31,7 @@ namespace WordifyTests
 
         public void TestAppend()
         {
-            StringEditor editor = new("abc");
+            MutableString editor = new("abc");
 
             editor.Append("def");
             Assert.AreEqual("abcdef", editor);
@@ -46,7 +46,7 @@ namespace WordifyTests
         [TestMethod]
         public void TestInsert()
         {
-            StringEditor editor = new("abc");
+            MutableString editor = new("abc");
 
             editor.Insert(1000, "xyz");
             Assert.AreEqual("abcxyz", editor);
@@ -64,7 +64,7 @@ namespace WordifyTests
         [TestMethod]
         public void TestReplace()
         {
-            StringEditor editor = new("abc");
+            MutableString editor = new("abc");
 
             editor.Replace(1000, "xyz", 1);
             Assert.AreEqual("abcxyz", editor);
@@ -81,7 +81,7 @@ namespace WordifyTests
             editor.Replace(0, "abc", 1000);
             Assert.AreEqual("abc", editor);
 
-            editor = (StringEditor)"abcdefghijklmnopqrstuvwxyz";
+            editor = (MutableString)"abcdefghijklmnopqrstuvwxyz";
 
             editor.Replace(2, "123", 5);
             Assert.AreEqual("ab123hijklmnopqrstuvwxyz", editor);
@@ -96,7 +96,7 @@ namespace WordifyTests
         [TestMethod]
         public void TestDelete()
         {
-            StringEditor editor = new("abcdefghijklmnopqrstuvwxyz");
+            MutableString editor = new("abcdefghijklmnopqrstuvwxyz");
 
             editor.Delete(editor.Length, 1000);
             Assert.AreEqual("abcdefghijklmnopqrstuvwxyz", editor);
@@ -117,7 +117,7 @@ namespace WordifyTests
         [TestMethod]
         public void TestMove()
         {
-            StringEditor editor = new("abcdefghijklmnopqrstuvwxyz");
+            MutableString editor = new("abcdefghijklmnopqrstuvwxyz");
 
             editor.Move(0, 8, 4);
             Assert.AreEqual("abcdefghabcdmnopqrstuvwxyz", editor);
@@ -135,7 +135,7 @@ namespace WordifyTests
         [TestMethod]
         public void TestCopy()
         {
-            StringEditor editor = new("abcdefghijklmnopqrstuvwxyz");
+            MutableString editor = new("abcdefghijklmnopqrstuvwxyz");
 
             editor.Copy(editor, editor.Length - 4);
             Assert.AreEqual("abcdefghijklmnopqrstuvabcd", editor);

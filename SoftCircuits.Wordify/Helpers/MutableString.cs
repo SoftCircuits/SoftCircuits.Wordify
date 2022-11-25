@@ -13,7 +13,7 @@ namespace SoftCircuits.Wordify.Helpers
     /// <summary>
     /// Class for editing strings.
     /// </summary>
-    internal partial class StringEditor
+    internal partial class MutableString
     {
         /// <summary>
         /// Array to hold the string characters.
@@ -26,10 +26,10 @@ namespace SoftCircuits.Wordify.Helpers
         public int Length { get; private set; }
 
         /// <summary>
-        /// Constructs a new <see cref="StringEditor"/> instance.
+        /// Constructs a new <see cref="MutableString"/> instance.
         /// </summary>
         /// <param name="s">Initial string value.</param>
-        public StringEditor(string? s)
+        public MutableString(string? s)
         {
             Reset(s);
         }
@@ -49,7 +49,7 @@ namespace SoftCircuits.Wordify.Helpers
         }
 
         /// <summary>
-        /// Resizes this <see cref="StringEditor"/> object.
+        /// Resizes this <see cref="MutableString"/> object.
         /// </summary>
         /// <param name="length">Specifies the new string length.</param>
         [MemberNotNull(nameof(CharArray))]
@@ -57,12 +57,8 @@ namespace SoftCircuits.Wordify.Helpers
         {
             if (CharArray == null || CharArray.Length < length)
             {
-                // To reduce the number of reallocations, double requested size
-                int capacity = Math.Max(length * 2, 32);
-                char[] array = new char[capacity];
-                if (CharArray != null)
-                    Array.Copy(CharArray, array, Length);
-                CharArray = array;
+                // To minimize the number of reallocations, double requested size
+                Array.Resize(ref CharArray, Math.Max(length * 2, 64));
             }
             Length = length;
         }
@@ -254,7 +250,7 @@ namespace SoftCircuits.Wordify.Helpers
         }
 
         /// <summary>
-        /// Copies the given string to this <see cref="StringEditor"/> object at the specified index.
+        /// Copies the given string to this <see cref="MutableString"/> object at the specified index.
         /// Does not grow the string.
         /// </summary>
         /// <param name="s">The string to copy.</param>
@@ -277,8 +273,8 @@ namespace SoftCircuits.Wordify.Helpers
 
         #region Operators
 
-        public static implicit operator string(StringEditor se) => se.ToString();
-        public static explicit operator StringEditor(string s) => new(s);
+        public static implicit operator string(MutableString se) => se.ToString();
+        public static explicit operator MutableString(string s) => new(s);
 
         #endregion
 

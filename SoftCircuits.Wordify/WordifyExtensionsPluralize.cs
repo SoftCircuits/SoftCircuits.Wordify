@@ -21,12 +21,16 @@ namespace SoftCircuits.Wordify
         {
             if (string.IsNullOrWhiteSpace(singular) || string.IsNullOrWhiteSpace(plural))
                 return false;
+
             singular = singular.Trim();
             plural = plural.Trim();
+
             if (singular.Contains(' ') || plural.Contains(' '))
                 return false;
+
             if (WordifyExtensions.IrregularNounsLookup.ContainsKey(singular))
                 return false;
+
             WordifyExtensions.IrregularNounsLookup.Add(singular, plural);
             return true;
         }
@@ -42,7 +46,9 @@ namespace SoftCircuits.Wordify
         {
             if (string.IsNullOrWhiteSpace(noun))
                 return false;
+
             noun = noun.Trim();
+
             if (noun.Contains(' '))
                 return false;
 
@@ -213,7 +219,7 @@ namespace SoftCircuits.Wordify
             if (s == null)
                 return string.Empty;
 
-            StringEditor editor = new(s);
+            MutableString editor = new(s);
             if (!editor.FindLastWord(out int startIndex, out int endIndex))
                 return s;
             string lastWord = editor[startIndex..endIndex];
@@ -255,7 +261,7 @@ namespace SoftCircuits.Wordify
             if (s == null)
                 return string.Empty;
 
-            StringEditor editor = new(s);
+            MutableString editor = new(s);
             if (!editor.FindLastWord(out int startIndex, out int endIndex))
                 return s;
             string lastWord = editor[startIndex..endIndex];

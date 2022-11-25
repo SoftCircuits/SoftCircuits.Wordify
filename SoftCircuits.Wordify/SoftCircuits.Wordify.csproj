@@ -7,12 +7,12 @@
     <LangVersion>10</LangVersion>
     <Copyright>Copyright © 2022 Jonathan Wood</Copyright>
     <RepositoryType>git</RepositoryType>
-    <PackageTags>stringify; wordify; to string; strings; convert; format; text; numbers; format numbers; format dates; memory size; file size; pluralize</PackageTags>
+    <PackageTags>stringify; wordify; to string; strings; convert; format; text; numbers; format numbers; format dates; memory size; file size; pluralize; singularize</PackageTags>
     <Authors>Jonathan Wood</Authors>
     <Company>SoftCircuits</Company>
     <Description>Class library that contains extension methods to create and modify text. It includes methods to convert numbers and dates to text, insert spaces into camel-case strings, pluralize strings, truncate strings, convert Roman numerals, create memory-size strings and much more.</Description>
     <RepositoryUrl>https://github.com/SoftCircuits/SoftCircuits.Wordify</RepositoryUrl>
-    <PackageReleaseNotes>Reworked internal code to be simpler and hopefully more performant.</PackageReleaseNotes>
+    <PackageReleaseNotes>Code optimizations and clean up.</PackageReleaseNotes>
     <PackageLicenseFile>D:\Users\jwood\source\repos\SoftCircuits.Wordify\LICENSE.txt</PackageLicenseFile>
     <PackageRequireLicenseAcceptance>True</PackageRequireLicenseAcceptance>
     <PackageIcon>Logo_64x64.png</PackageIcon>
@@ -21,7 +21,7 @@
     <NeutralLanguage>en-US</NeutralLanguage>
     <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
     <PackageProjectUrl>https://github.com/SoftCircuits/SoftCircuits.Wordify</PackageProjectUrl>
-    <Version>1.0.9</Version>
+    <Version>1.1.0</Version>
   </PropertyGroup>
 
   <ItemGroup>

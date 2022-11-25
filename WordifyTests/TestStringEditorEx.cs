@@ -8,7 +8,7 @@ using SoftCircuits.Wordify.Helpers;
 namespace WordifyTests
 {
     /// <summary>
-    /// Tests for private <see cref="StringEditor"/> utility class.
+    /// Tests for private <see cref="MutableString"/> utility class.
     /// </summary>
     [TestClass]
     public class TestStringEditorEx
@@ -16,7 +16,7 @@ namespace WordifyTests
         [TestMethod]
         public void TestCharacterTypes()
         {
-            StringEditor editor = new(" This is a test! ");
+            MutableString editor = new(" This is a test! ");
 
             Assert.IsFalse(editor.IsWordCharacter(0));
             Assert.IsTrue(editor.IsWordCharacter(1)); // T
@@ -58,7 +58,7 @@ namespace WordifyTests
         [TestMethod]
         public void TestFind()
         {
-            StringEditor editor = new(" This is a test! ");
+            MutableString editor = new(" This is a test! ");
 
             Assert.IsTrue(editor.FindFirstWord(out int startIndex, out int endIndex));
             Assert.AreEqual(1, startIndex);
@@ -76,7 +76,7 @@ namespace WordifyTests
         [TestMethod]
         public void TestIndexOf()
         {
-            StringEditor editor = new(" This is a test! ");
+            MutableString editor = new(" This is a test! ");
 
             Assert.AreEqual(0, editor.IndexOf(' '));
             Assert.AreEqual(1, editor.IndexOf('T'));
@@ -168,7 +168,7 @@ namespace WordifyTests
                 new("TEST", " This is a test! ", Array.Empty<int>(), new[] { 11 }),
             };
 
-            StringEditor editor = new(null);
+            MutableString editor = new(null);
             foreach (TestInfo test in tests)
             {
                 editor.Reset(test.Text);
@@ -192,7 +192,7 @@ namespace WordifyTests
         [TestMethod]
         public void TestContains()
         {
-            StringEditor editor = new(" This is a test! ");
+            MutableString editor = new(" This is a test! ");
 
             Assert.IsTrue(editor.Contains('T'));
             Assert.IsTrue(editor.Contains('t'));

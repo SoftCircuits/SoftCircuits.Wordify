@@ -7,9 +7,9 @@ using System.Diagnostics;
 namespace SoftCircuits.Wordify.Helpers
 {
     /// <summary>
-    /// Adds additional functionality to the <see cref="StringEditor"/> class.
+    /// Adds additional functionality to the <see cref="MutableString"/> class.
     /// </summary>
-    internal partial class StringEditor
+    internal partial class MutableString
     {
         public bool IsWordCharacter(int pos)
         {
@@ -223,13 +223,17 @@ namespace SoftCircuits.Wordify.Helpers
         /// </summary>
         /// <param name="index">The index to test at.</param>
         /// <param name="s">The string compare to.</param>
-        /// <param name="ignoreCase">True if characters should be matched using case-insensitive compariso.</param>
+        /// <param name="ignoreCase">True if characters should be matched using case-insensitive comparison.</param>
         /// <returns>True if the characters match, false otherwise.</returns>
-        public bool MatchesAt(string s, int index, bool ignoreCase = false)
-        {
-            return MatchesAt(s, index, CharComparer.GetComparer(ignoreCase));
-        }
+        public bool MatchesAt(string s, int index, bool ignoreCase = false) => MatchesAt(s, index, CharComparer.GetComparer(ignoreCase));
 
+        /// <summary>
+        /// Determines if the specified string matches the characters at the end of this string.
+        /// </summary>
+        /// <param name="s">The string to compare to.</param>
+        /// <param name="index">The ending index of the characters to compare.</param>
+        /// <param name="comparer">The <see cref="IComparer{char}"/> to compare characters.</param>
+        /// <returns>True if the characters match, false otherwise.</returns>
         public bool MatchesEndingAt(string s, int index, IComparer<char> comparer)
         {
             Debug.Assert(s != null && s.Length > 0);
@@ -242,8 +246,12 @@ namespace SoftCircuits.Wordify.Helpers
         }
 
         /// <summary>
-        /// Compares the given string 
+        /// Determines if the specified string matches the characters at the end of this string.
         /// </summary>
+        /// <param name="s">The string to compare to.</param>
+        /// <param name="index">The ending index of the characters to compare.</param>
+        /// <param name="ignoreCase">True if characters should be matched using case-insensitive comparison.</param>
+        /// <returns>True if the characters match, false otherwise.</returns>
         public bool MatchesEndingAt(string s, int index, bool ignoreCase = false)
         {
             Debug.Assert(s != null && s.Length > 0);
