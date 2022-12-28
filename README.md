@@ -204,7 +204,7 @@ Use the `Wordify()` extension method to combine a collection of items into a str
 
 ## Displaying Memory Size
 
-The `ToMemorySize()` extension method is handy when displaying a number of bytes, such as a file size. This method is overloaded to accept a parameter of type `int` or type `ulong`.
+The `ToMemorySize()` extension method is handy when displaying a number of bytes, such as a file size.
 
 | Code | Output |
 |---|---|
@@ -214,14 +214,14 @@ The `ToMemorySize()` extension method is handy when displaying a number of bytes
 | `1024UL.ToMemorySize(MemorySizeOption.Binary);` | 1 KiB |
 | `1124UL.ToMemorySize(MemorySizeOption.Binary);` | 1.1 KiB |
 
-You can use the `FromMemorySize()` extension method to convert a memory size string back to a `ulong`. This method does not throw any exceptions. It simply parses the string as best it can. If it is unable to parse anything meaningful, this method returns 0.
+You can use the `ParseMemorySize()` extension method to convert a memory size string back to a `ulong`. This method does not throw any exceptions. It simply parses the string as best it can. If it is unable to parse anything meaningful, this method returns 0.
 
 | Code | Output |
 |---|---|
-| `"0 B".FromMemorySize();` | 0UL |
-| `"1b".FromMemorySize();` | 1UL |
-| `"1 kb".FromMemorySize();` | 1000UL |
-| `"1.1 KIB".FromMemorySize();` | 1124UL |
+| `"0 B".ParseMemorySize();` | 0UL |
+| `"1b".ParseMemorySize();` | 1UL |
+| `"1 kb".ParseMemorySize();` | 1000UL |
+| `"1.1 KIB".ParseMemorySize();` | 1124UL |
 
 ## Roman Numerals
 

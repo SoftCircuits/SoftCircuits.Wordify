@@ -81,43 +81,43 @@ namespace WordifyTests
             Assert.AreEqual("1.2 PiB", (Pebibyte + Pebibyte / 5).ToMemorySize(MemorySizeOption.Binary));
             Assert.AreEqual("1.1 PiB", (Pebibyte + Pebibyte / 10).ToMemorySize(MemorySizeOption.Binary));
 
-            Assert.AreEqual(1UL, "1".FromMemorySize());
-            Assert.AreEqual(1UL, "1 b".FromMemorySize());
-            Assert.AreEqual(1UL, "1BYTES".FromMemorySize());
-            Assert.AreEqual(Kilobyte, "1  KB".FromMemorySize());
-            Assert.AreEqual(Megabyte, "1 mb ".FromMemorySize());
-            Assert.AreEqual(Gigabyte, "1gb ".FromMemorySize());
-            Assert.AreEqual(Terabyte, "1 TB".FromMemorySize());
-            Assert.AreEqual(Petabyte, "1PB".FromMemorySize());
-            Assert.AreEqual(Exabyte, "1 eb".FromMemorySize());
-            //Assert.AreEqual(Zettabyte, "1 ZB".FromMemorySize());
-            //Assert.AreEqual(Yottabyte, "1 YB".FromMemorySize());
+            Assert.AreEqual(1UL, "1".ParseMemorySize());
+            Assert.AreEqual(1UL, "1 b".ParseMemorySize());
+            Assert.AreEqual(1UL, "1BYTES".ParseMemorySize());
+            Assert.AreEqual(Kilobyte, "1  KB".ParseMemorySize());
+            Assert.AreEqual(Megabyte, "1 mb ".ParseMemorySize());
+            Assert.AreEqual(Gigabyte, "1gb ".ParseMemorySize());
+            Assert.AreEqual(Terabyte, "1 TB".ParseMemorySize());
+            Assert.AreEqual(Petabyte, "1PB".ParseMemorySize());
+            Assert.AreEqual(Exabyte, "1 eb".ParseMemorySize());
+            //Assert.AreEqual(Zettabyte, "1 ZB".ParseMemorySize());
+            //Assert.AreEqual(Yottabyte, "1 YB".ParseMemorySize());
 
-            Assert.AreEqual(1UL, "1".FromMemorySize());
-            Assert.AreEqual(1UL, "1 b".FromMemorySize());
-            Assert.AreEqual(1UL, "1BYTES".FromMemorySize());
-            Assert.AreEqual(Kibibyte, "1  KiB".FromMemorySize());
-            Assert.AreEqual(Mebibyte, "1 mib ".FromMemorySize());
-            Assert.AreEqual(Gibibyte, "1gib ".FromMemorySize());
-            Assert.AreEqual(Tebibyte, "1 TIB".FromMemorySize());
-            Assert.AreEqual(Pebibyte, "1PIB".FromMemorySize());
-            Assert.AreEqual(Exbibyte, "1 eib".FromMemorySize());
-            //Assert.AreEqual(Zebibyte, "1 ZiB".FromMemorySize());
-            //Assert.AreEqual(Yobibyte, "1 YiB".FromMemorySize());
+            Assert.AreEqual(1UL, "1".ParseMemorySize());
+            Assert.AreEqual(1UL, "1 b".ParseMemorySize());
+            Assert.AreEqual(1UL, "1BYTES".ParseMemorySize());
+            Assert.AreEqual(Kibibyte, "1  KiB".ParseMemorySize());
+            Assert.AreEqual(Mebibyte, "1 mib ".ParseMemorySize());
+            Assert.AreEqual(Gibibyte, "1gib ".ParseMemorySize());
+            Assert.AreEqual(Tebibyte, "1 TIB".ParseMemorySize());
+            Assert.AreEqual(Pebibyte, "1PIB".ParseMemorySize());
+            Assert.AreEqual(Exbibyte, "1 eib".ParseMemorySize());
+            //Assert.AreEqual(Zebibyte, "1 ZiB".ParseMemorySize());
+            //Assert.AreEqual(Yobibyte, "1 YiB".ParseMemorySize());
 
-            Assert.AreEqual(1000UL + 100UL, "1.1 kb".FromMemorySize());
-            Assert.AreEqual(Kilobyte + Kilobyte / 2, "1.5 kb".FromMemorySize());
-            Assert.AreEqual(Megabyte + Megabyte / 2, "   1.5   MB   ".FromMemorySize());
-            Assert.AreEqual(Gigabyte + Gigabyte / 2, "1.5gb".FromMemorySize());
-            Assert.AreEqual(Kilobyte + Kilobyte / 4, "1.25 kb".FromMemorySize());
-            Assert.AreEqual(Megabyte + (Megabyte / 4 * 3), "1.75 MB".FromMemorySize());
+            Assert.AreEqual(1000UL + 100UL, "1.1 kb".ParseMemorySize());
+            Assert.AreEqual(Kilobyte + Kilobyte / 2, "1.5 kb".ParseMemorySize());
+            Assert.AreEqual(Megabyte + Megabyte / 2, "   1.5   MB   ".ParseMemorySize());
+            Assert.AreEqual(Gigabyte + Gigabyte / 2, "1.5gb".ParseMemorySize());
+            Assert.AreEqual(Kilobyte + Kilobyte / 4, "1.25 kb".ParseMemorySize());
+            Assert.AreEqual(Megabyte + (Megabyte / 4 * 3), "1.75 MB".ParseMemorySize());
 
-            Assert.AreEqual(1026UL + 100UL, "1.1 kib".FromMemorySize());
-            Assert.AreEqual(Kibibyte + Kibibyte / 2, "1.5 kib".FromMemorySize());
-            Assert.AreEqual(Mebibyte + Mebibyte / 2, "   1.5   MIB   ".FromMemorySize());
-            Assert.AreEqual(Gibibyte + Gibibyte / 2, "1.5gib".FromMemorySize());
-            Assert.AreEqual(Kibibyte + Kibibyte / 4, "1.25 kib".FromMemorySize());
-            Assert.AreEqual(Mebibyte + (Mebibyte / 4 * 3), "1.75 MIB".FromMemorySize());
+            Assert.AreEqual(1026UL + 100UL, "1.1 kib".ParseMemorySize());
+            Assert.AreEqual(Kibibyte + Kibibyte / 2, "1.5 kib".ParseMemorySize());
+            Assert.AreEqual(Mebibyte + Mebibyte / 2, "   1.5   MIB   ".ParseMemorySize());
+            Assert.AreEqual(Gibibyte + Gibibyte / 2, "1.5gib".ParseMemorySize());
+            Assert.AreEqual(Kibibyte + Kibibyte / 4, "1.25 kib".ParseMemorySize());
+            Assert.AreEqual(Mebibyte + (Mebibyte / 4 * 3), "1.75 MIB".ParseMemorySize());
         }
     }
 }

@@ -75,7 +75,15 @@ namespace SoftCircuits.Wordify
         /// </summary>
         /// <param name="s">The memory size string to convert.</param>
         /// <returns>The integer value of the memory size string.</returns>
-        public static ulong FromMemorySize(this string? s)
+        [Obsolete("This method has been deprecated and will be removed in a future version. Please use ParseMemorySize() instead.")]
+        public static ulong FromMemorySize(this string? s) => ParseMemorySize(s);
+
+        /// <summary>
+        /// Converts a memory size string (e.g., "1.5 MB" or "5 GiB") to the corresponding integer value.
+        /// </summary>
+        /// <param name="s">The memory size string to convert.</param>
+        /// <returns>The integer value of the memory size string.</returns>
+        public static ulong ParseMemorySize(this string? s)
         {
             if (!string.IsNullOrEmpty(s))
             {
