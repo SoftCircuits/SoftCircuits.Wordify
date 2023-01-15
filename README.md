@@ -24,6 +24,7 @@ The `Wordify()` method has many overloads. The one that accepts floating point v
 
 | Code | Output |
 |---|---|
+| `345.67.Wordify();` | three hundred forty-five and 67/100 |
 | `345.67.Wordify(FractionOption.Round);` | three hundred forty-six |
 | `345.67.Wordify(FractionOption.Truncate);` | three hundred forty-five |
 | `345.67.Wordify(FractionOption.Decimal);` | three hundred forty-five and .7 |
@@ -49,33 +50,6 @@ The `MakeOrdinalDigits()` extension method works similarly but outputs digits in
 |---|---|
 | `1.MakeOrdinalDigits();` | 1st |
 | `123.MakeOrdinalDigits();` | 123rd |
-
-## Dates and TimeSpans
-
-The library also provides support for describing the differences between two `DateTime` values. This version of `Wordify()` describes the relationship between the specified date and time with the current date and time. Or, you can supply your own date and time that the description should be relative to.
-
-The following examples assume a `DateTime` variable with the name `now`. (Note that when using the version that automatically gets the current date and time, that it's possible to have a couple of milliseconds pass before it does.)
-
-| Code | Output |
-|---|---|
-| `now.Wordify();` | now |
-| `now.Wordify(now);` | now |
-| `now.AddDays(0).Wordify(now);` | now |
-| `now.AddHours(2).AddMinutes(24).Wordify();` | 2 hours from now |
-| `now.AddDays(4).Wordify(now);` | 4 days from now |
-| `now.AddHours(-2).AddMinutes(-24).Wordify();` | 2 hours ago |
-| `now.AddHours(-2).AddMinutes(-24).Wordify(DateTimeOption.UseWords);` | two hours ago |
-
-Here are examples using the version of `Wordify()` for `TimeSpan` values. This method also takes a `precision` argument. By default, the precision is 1, and only one part of the time span will be described. Pass a larger number to include additional parts.
- 
-| Code | Output |
-|---|---|
-| `TimeSpan.Zero.Wordify();` | 0 milliseconds |
-| `new TimeSpan(4, 7, 44).Wordify();` | 4 hours |
-| `new TimeSpan(4, 7, 44).Wordify(1);` | 4 hours |
-| `new TimeSpan(4, 7, 44).Wordify(2);` | 4 hours and 7 minutes |
-| `new TimeSpan(4, 7, 44).Wordify(3);` | 4 hours, 7 minutes and 44 seconds |
-| `new TimeSpan(4, 7, 44).Wordify(3, DateTimeOption.UseWords);` | four hours, seven minutes and forty-four seconds |
 
 ## Wordifying Strings
 
@@ -127,6 +101,45 @@ enum MyEnums
 | `MyEnums.OnTheGo.Wordify();` | On The Go |
 | `MyEnums.ReadHTMLPage.Wordify();` | Read HTML Page |
 
+## Dates and TimeSpans
+
+The library also provides support for describing the differences between two `DateTime` values. This version of `Wordify()` describes the relationship between the specified date and time with the current date and time. Or, you can supply your own date and time that the description should be relative to.
+
+The following examples assume a `DateTime` variable with the name `now`. (Note that when using the version that automatically gets the current date and time, that it's possible to have a couple of milliseconds pass before it does.)
+
+| Code | Output |
+|---|---|
+| `now.Wordify();` | now |
+| `now.Wordify(now);` | now |
+| `now.AddDays(0).Wordify(now);` | now |
+| `now.AddHours(2).AddMinutes(24).Wordify();` | 2 hours from now |
+| `now.AddDays(4).Wordify(now);` | 4 days from now |
+| `now.AddHours(-2).AddMinutes(-24).Wordify();` | 2 hours ago |
+| `now.AddHours(-2).AddMinutes(-24).Wordify(DateTimeOption.UseWords);` | two hours ago |
+
+Here are examples using the version of `Wordify()` for `TimeSpan` values. This method also takes a `precision` argument. By default, the precision is 1, and only one part of the time span will be described. Pass a larger number to include additional parts.
+ 
+| Code | Output |
+|---|---|
+| `TimeSpan.Zero.Wordify();` | 0 milliseconds |
+| `new TimeSpan(4, 7, 44).Wordify();` | 4 hours |
+| `new TimeSpan(4, 7, 44).Wordify(1);` | 4 hours |
+| `new TimeSpan(4, 7, 44).Wordify(2);` | 4 hours and 7 minutes |
+| `new TimeSpan(4, 7, 44).Wordify(3);` | 4 hours, 7 minutes and 44 seconds |
+| `new TimeSpan(4, 7, 44).Wordify(3, DateTimeOption.UseWords);` | four hours, seven minutes and forty-four seconds |
+
+## Formatting Collections
+
+Use the `Wordify()` extension method to combine a collection of items into a string.
+
+| Code | Output |
+|---|---|
+| `(new[] { 1, 2, 3 }).Wordify();` | 1, 2 and 3 |
+| `(new[] { 1, 2, 3 }).Wordify(CollectionOption.AndConjunction);` | 1, 2 and 3 |
+| `(new[] { 1, 2, 3 }).Wordify(CollectionOption.OrConjunction);` | 1, 2 or 3 |
+| `(new[] { 1, 2, 3 }).Wordify(CollectionOption.OxfordComma);` | 1, 2, and 3 |
+| `(new[] { 1, 2, 3 }).Wordify(CollectionOption.OrConjunction \| CollectionOption.OxfordComma);` | 1, 2, or 3 |
+
 ## Pluralization
 
 The library also provides support for making words plural and then back to singular again. Use the `Pluralize()` extension method to make a word plural.
@@ -155,56 +168,9 @@ And use the `Singularize()` extension method to make a plural word singular.
 
 Note that the English language is complex. It is just not possible for the library to handle every word perfectly. You can use the `Wordify.AddIrregularNoun()` and `Wordify.AddDefectiveNoun()` methods to add additional words that require special handling by the pluralizer.
 
-## Truncating
-
-The library has several methods that help in formatting strings that are too long. The `Truncate()` method wil shorten a string according to the options you specify.
-
-| Code | Output |
-|---|---|
-| `"Another test string".Truncate(16);` | Another test str |
-| `"Another test string".Truncate(16, TruncateOption.None);` | Another test str |
-| `"Another test string".Truncate(16, TruncateOption.AppendEllipsis);` | Another test ... |
-| `"Another test string".Truncate(16, TruncateOption.TrimPartialWords);` | Another test |
-| `"Another test string".Truncate(16, TruncateOption.TrimPartialWords \| TruncateOption.AppendEllipsis);` | Another test... |
-
-## Converting Case
-
-`Wordify` contains several extension methods for setting case of a string. You can use any of the individual methods `SetUpperCase()`, `SetLowerCase()`, `Capitalize()` or `SetTitleCase()`. Or you can pass a `CaseOption` parameter to `SetCase()`.
-
-| Code | Output |
-|---|---|
-| `"this is a test".SetUpperCase();` | THIS IS A TEST |
-| `"THIS IS A TEST".SetLowerCase();` | this is a test |
-| `"this is a test".Capitalize();` | This is a test |
-| `"this is a test".SetTitleCase();` | This is a Test |
-| `"this is a test".SetCase(CaseOption.Capitalize);` | This is a test |
-
-## Quoting Strings
-
-Use the `WrapInQuotes()` and `WrapInSingleQuotes()` methods to wrap a string or character in double or single quotes.
-
-| Code | Output |
-|---|---|
-| `"abc".WrapInQuotes();` | "abc" |
-| `'a'.WrapInQuotes();` | "a" |
-| `"abc".WrapInSingleQuotes();` | 'abc' |
-| `'a'.WrapInSingleQuotes();` | 'a' |
-
-## Formatting Collections
-
-Use the `Wordify()` extension method to combine a collection of items into a string.
-
-| Code | Output |
-|---|---|
-| `(new[] { 1, 2, 3 }).Wordify();` | 1, 2 and 3 |
-| `(new[] { 1, 2, 3 }).Wordify(CollectionOption.AndConjunction);` | 1, 2 and 3 |
-| `(new[] { 1, 2, 3 }).Wordify(CollectionOption.OrConjunction);` | 1, 2 or 3 |
-| `(new[] { 1, 2, 3 }).Wordify(CollectionOption.OxfordComma);` | 1, 2, and 3 |
-| `(new[] { 1, 2, 3 }).Wordify(CollectionOption.OrConjunction \| CollectionOption.OxfordComma);` | 1, 2, or 3 |
-
 ## Displaying Memory Size
 
-The `ToMemorySize()` extension method is handy when displaying a number of bytes, such as a file size.
+The `ToMemorySize()` extension method is handy when displaying a number of bytes, such as the size of a file.
 
 | Code | Output |
 |---|---|
@@ -278,6 +244,31 @@ Use the `ParseSpreadsheetColumn()` extension method to convert a spreadsheet col
 | `" aa ".ParseSpreadsheetColumn();` | 27 |
 | `"ab".ParseSpreadsheetColumn();` | 28 |
 
+## Converting Case
+
+`Wordify` contains several extension methods for setting case of a string. You can use any of the individual methods `SetUpperCase()`, `SetLowerCase()`, `Capitalize()` or `SetTitleCase()`. Or you can pass a `CaseOption` parameter to `SetCase()`.
+
+| Code | Output |
+|---|---|
+| `"this is a test".SetUpperCase();` | THIS IS A TEST |
+| `"THIS IS A TEST".SetLowerCase();` | this is a test |
+| `"this is a test".Capitalize();` | This is a test |
+| `"this is a test".SetTitleCase();` | This is a Test |
+| `"this is a test".SetCase(CaseOption.Capitalize);` | This is a test |
+
+## Truncating
+
+The library has several methods that help in formatting strings that are too long. The `Truncate()` method wil shorten a string according to the options you specify.
+
+| Code | Output |
+|---|---|
+| `"Another test string".Truncate(16);` | Another test str |
+| `"Another test string".Truncate(16, TruncateOption.None);` | Another test str |
+| `"Another test string".Truncate(16, TruncateOption.AppendEllipsis);` | Another test ... |
+| `"Another test string".Truncate(16, TruncateOption.TrimPartialWords);` | Another test |
+| `"Another test string".Truncate(16, TruncateOption.TrimPartialWords \| TruncateOption.AppendEllipsis);` | Another test... |
+
+
 ## Formatting Data
 
 The library includes several static methods that make it easy to format various types of data.
@@ -303,7 +294,6 @@ The library includes several static methods that make it easy to format various 
 | `Wordify.FormatAddress("123 Elm", "Apt 3", delimiter: "-");` | 123 Elm-Apt 3 |
 | `Wordify.FormatAddress("123 Elm", "Apt 3", "Small Town", "UT", "84084", "United States", delimiter: "-");` | 123 Elm-Apt 3-Small Town, UT 84084-United States |
 
-
 | Code | Output |
 |---|---|
 | `Wordify.FormatCityStateZip("Small Town");` | Small Town |
@@ -322,3 +312,12 @@ The library also includes a number of helper extension methods that don't really
 | `s.NullIfEmpty();` | If `s` is an empty string, then `null` is returned. Otherwise, `s` is returned. |
 | `s.EmptyIfNullOrWhiteSpace();` | If `s` is `null`, an empty string or only contains whitespace, then an empty string is returned. Otherwise, `s` is returned. |
 | `s.NullIfEmptyOrWhiteSpace();` | If `s` is `null`, an empty string or only contains whitespace, then `null` is returned. Otherwise, `s` is returned. |
+
+Use the `WrapInQuotes()` and `WrapInSingleQuotes()` methods to wrap a string or character in double or single quotes.
+
+| Code | Output |
+|---|---|
+| `"abc".WrapInQuotes();` | "abc" |
+| `'a'.WrapInQuotes();` | "a" |
+| `"abc".WrapInSingleQuotes();` | 'abc' |
+| `'a'.WrapInSingleQuotes();` | 'a' |

@@ -1,8 +1,9 @@
-﻿// Copyright (c) 2022 Jonathan Wood (www.softcircuits.com)
+﻿// Copyright (c) 2023 Jonathan Wood (www.softcircuits.com)
 // Licensed under the MIT license.
 //
 
 using SoftCircuits.Wordify;
+using System.Threading;
 
 namespace WordifyTests
 {
@@ -280,6 +281,19 @@ namespace WordifyTests
         [TestMethod]
         public void TestFractions()
         {
+            // Default parameter
+
+            Assert.AreEqual("zero", 0.0m.Wordify());
+            Assert.AreEqual("zero and 1/2", 0.5m.Wordify());
+            Assert.AreEqual("zero and 1/4", 0.25m.Wordify());
+            Assert.AreEqual("zero and 3/4", 0.75m.Wordify());
+            Assert.AreEqual("zero and 33/100", 0.33m.Wordify());
+            Assert.AreEqual("zero and 33/50", 0.66m.Wordify());
+
+            Assert.AreEqual("three hundred forty-five and 67/100", 345.67.Wordify());
+            Assert.AreEqual("twelve and 1/10", 12.1.Wordify());
+            Assert.AreEqual("zero and 1/2", .5.Wordify());
+
             foreach (FractionTest test in FractionTests)
             {
                 foreach (FractionResult result in test.Results)

@@ -1,4 +1,4 @@
-﻿// Copyright (c) 2022 Jonathan Wood (www.softcircuits.com)
+﻿// Copyright (c) 2023 Jonathan Wood (www.softcircuits.com)
 // Licensed under the MIT license.
 //
 
@@ -43,14 +43,14 @@ namespace SoftCircuits.Wordify
         /// </summary>
         /// <param name="value">The value to convert.</param>
         /// <returns>The converted string.</returns>
-        public static string Wordify(this double value, FractionOption format) => Wordify((decimal)value, format);
+        public static string Wordify(this double value, FractionOption format = FractionOption.Fraction) => Wordify((decimal)value, format);
 
         /// <summary>
         /// Converts the given value to words.
         /// </summary>
         /// <param name="value">The value to convert.</param>
         /// <returns>The converted string.</returns>
-        public static string Wordify(this decimal value, FractionOption format)
+        public static string Wordify(this decimal value, FractionOption format = FractionOption.Fraction)
         {
             string? decimalPart = FormatFraction(ref value, format);
             decimal wholePart = Math.Floor(value);

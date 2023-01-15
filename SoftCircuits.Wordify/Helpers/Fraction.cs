@@ -1,4 +1,4 @@
-﻿// Copyright (c) 2022 Jonathan Wood (www.softcircuits.com)
+﻿// Copyright (c) 2023 Jonathan Wood (www.softcircuits.com)
 // Licensed under the MIT license.
 //
 // This code was derived from Stackoverflow at https://stackoverflow.com/questions/5124743/algorithm-for-simplifying-decimal-to-fractions
