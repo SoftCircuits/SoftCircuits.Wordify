@@ -8,7 +8,7 @@ Install-Package SoftCircuits.Wordify
 
 `Wordify` is a static class that contains extension methods to create and modify text. It includes methods to convert numbers and dates to text, insert spaces into camel-case strings, pluralize strings, truncate strings, convert Roman numerals, create memory size strings and much more.
 
-Note: `Wordify` methods that accept a `string` parameter always correctly handle when that parameter is null. And all methods that return a `string` ensure the return value is never null.
+Note: `Wordify` methods that accept a `string` parameter always correctly handle when that parameter is null. And all methods that return a `string` ensure the return value is never null (unless otherwise documented).
 
 ## Numbers
 
@@ -20,18 +20,18 @@ The library can be used to convert numbers to words.
 | `123.Wordify();` | one hundred twenty-three |
 | `12345.Wordify();` | twelve thousand three hundred forty-five |
 
-The `Wordify()` method has many overloads. The one that accepts floating point values also takes a `FractionOption` argument that specifies how to format the fractional part.
+The `Wordify()` method has many overloads. The one that accepts floating point values also accepts a `FractionOption` argument that specifies how to format the fractional part.
 
 | Code | Output |
 |---|---|
-| `345.67.Wordify();` | three hundred forty-five and 67/100 |
-| `345.67.Wordify(FractionOption.Round);` | three hundred forty-six |
-| `345.67.Wordify(FractionOption.Truncate);` | three hundred forty-five |
-| `345.67.Wordify(FractionOption.Decimal);` | three hundred forty-five and .7 |
-| `345.1.Wordify(FractionOption.Fraction);` | three hundred forty-five and 1/10 |
-| `345.1.Wordify(FractionOption.Check);` | three hundred forty-five and 10/100 |
-| `345.67.Wordify(FractionOption.Words);` | three hundred forty-five and sixty-seven one hundredths |
-| `345.67.Wordify(FractionOption.UsCurrency);` | three hundred forty-five dollars and sixty-seven cents |
+| `345.7.Wordify();` | three hundred forty-five and 7/10 |
+| `345.7.Wordify(FractionOption.Fraction);` | three hundred forty-five and 7/10 |
+| `345.7.Wordify(FractionOption.Check);` | three hundred forty-five and 70/100 |
+| `345.7.Wordify(FractionOption.Words);` | three hundred forty-five and seven tenths |
+| `345.7.Wordify(FractionOption.UsCurrency);` | three hundred forty-five dollars and seventy cents |
+| `345.7.Wordify(FractionOption.Decimal);` | three hundred forty-five and .7 |
+| `345.7.Wordify(FractionOption.Round);` | three hundred forty-six |
+| `345.7.Wordify(FractionOption.Truncate);` | three hundred forty-five |
 
 Note: Because most of these methods return strings, it's easy to chain extension method calls. For example: `123.67.Wordify(FractionOption.Decimal).Capitalize();`.
 
@@ -162,13 +162,14 @@ Note that the English language is complex. It is just not possible for the libra
 
 ## Converting Case
 
-`Wordify` contains several extension methods for setting case of a string. You can use any of the individual methods `SetUpperCase()`, `SetLowerCase()`, `Capitalize()` or `SetTitleCase()`. Or you can pass a `CaseOption` parameter to `SetCase()`.
+`Wordify` contains several extension methods for setting case of a string. You can use any of the individual methods `SetUpperCase()`, `SetLowerCase()`, `Capitalize()`, `CapitalizeAll()` or `SetTitleCase()`. Or you can pass a `CaseOption` parameter to `SetCase()`.
 
 | Code | Output |
 |---|---|
 | `"this is a test".SetUpperCase();` | THIS IS A TEST |
 | `"THIS IS A TEST".SetLowerCase();` | this is a test |
 | `"this is a test".Capitalize();` | This is a test |
+| `"this is a test".CapitalizeAll();` | This Is A Test |
 | `"this is a test".SetTitleCase();` | This is a Test |
 | `"this is a test".SetCase(CaseOption.Capitalize);` | This is a test |
 

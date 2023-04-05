@@ -2,6 +2,7 @@
 // Licensed under the MIT license.
 //
 
+using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
 using System.Runtime.CompilerServices;
 
@@ -137,7 +138,7 @@ namespace SoftCircuits.Wordify.Helpers
             // Resize array
             Resize(oldLength + s.Length);
 
-            // Shift characters
+            // Shift characters to make room
             if (index < oldLength)
                 Move(index, index + s.Length, oldLength - index);
 
@@ -263,6 +264,8 @@ namespace SoftCircuits.Wordify.Helpers
 
             if (count <= 0)
                 return;
+
+            Debug.Assert(targetIndex + count <= Length);
 
             // Copy characters
             for (int i = 0; i < count; i++)

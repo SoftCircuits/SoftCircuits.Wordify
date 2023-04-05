@@ -12,12 +12,12 @@ namespace WordifyTests
         [TestMethod]
         public void Tests()
         {
-            Assert.AreEqual($"\"\"", ((string)null!).WrapInQuotes());
+            Assert.AreEqual($"\"\"", ((string?)null).WrapInQuotes());
             Assert.AreEqual($"\"\"", "".WrapInQuotes());
             Assert.AreEqual($"\"a\"", "a".WrapInQuotes());
             Assert.AreEqual($"\"abc\"", "abc".WrapInQuotes());
 
-            Assert.AreEqual($"''", ((string)null!).WrapInSingleQuotes());
+            Assert.AreEqual($"''", ((string?)null).WrapInSingleQuotes());
             Assert.AreEqual($"''", "".WrapInSingleQuotes());
             Assert.AreEqual($"'a'", "a".WrapInSingleQuotes());
             Assert.AreEqual($"'abc'", "abc".WrapInSingleQuotes());

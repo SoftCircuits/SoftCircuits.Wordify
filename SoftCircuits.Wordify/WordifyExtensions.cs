@@ -17,8 +17,8 @@ namespace SoftCircuits.Wordify
         /// <returns>The transformed string.</returns>
         public static string Wordify(this string? s, WordifyOption options = WordifyOption.AutoDetect)
         {
-            if (s == null || s.Length == 0)
-                return string.Empty;
+            if (string.IsNullOrWhiteSpace(s))
+                return s ?? string.Empty;
 
             // Auto detect method if needed
             if (options == WordifyOption.AutoDetect)
@@ -137,22 +137,26 @@ namespace SoftCircuits.Wordify
         #region Null and empty strings
 
         /// <summary>
-        /// Returns the specified string, or an empty string if the string is null.
+        /// If the string is null, this method returns an empty string.
+        /// Otherwise, the original string is returned.
         /// </summary>
         public static string EmptyIfNull(this string? s) => s ?? string.Empty;
 
         /// <summary>
-        /// Returns the specified string, or null if the string is empty.
+        /// If the string is empty, this method returns null.
+        /// Otherwise, the original string is returned.
         /// </summary>
         public static string? NullIfEmpty(this string? s) => string.IsNullOrEmpty(s) ? null : s;
 
         /// <summary>
-        /// Returns the specified string, or an empty string if the string is null or contains only whitespace.
+        /// If the string is null or contains only whitespace, this method returns an empty string.
+        /// Otherwise, the original string is returned.
         /// </summary>
         public static string EmptyIfNullOrWhiteSpace(this string? s) => string.IsNullOrWhiteSpace(s) ? string.Empty : s;
 
         /// <summary>
-        /// Returns the specified string, or null if the string is null or contains only whitespace.
+        /// If the string is null or contains only whitespace, this method returns null.
+        /// Otherwise, the original string is returned.
         /// </summary>
         public static string? NullIfEmptyOrWhiteSpace(this string? s) => string.IsNullOrWhiteSpace(s) ? null : s;
 

@@ -25,6 +25,11 @@ namespace SoftCircuits.Wordify
         Capitalize,
 
         /// <summary>
+        /// Convert the first letter of each word to upper case. All other characters are left unchanged.
+        /// </summary>
+        CapitalizeAll,
+
+        /// <summary>
         /// Convert the first letter of each sentence to upper case.
         /// </summary>
         Sentence,

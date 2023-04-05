@@ -98,7 +98,8 @@ namespace SoftCircuits.Wordify
         /// <summary>
         /// Formats the digits in a string as a phone number.
         /// </summary>
-        /// <param name="digits">A string that contains the digits to be formatted.</param>
+        /// <param name="digits">A string that contains the digits to be formatted. Any non-digit characters
+        /// are simply discarded.</param>
         /// <param name="options">Formatting options.</param>
         /// <returns>Returns the formatted string.</returns>
         public static string FormatPhoneNumber(this string? digits, PhoneOption options = PhoneOption.None)

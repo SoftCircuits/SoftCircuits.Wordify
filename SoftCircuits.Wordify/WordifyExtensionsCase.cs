@@ -2,6 +2,7 @@
 // Licensed under the MIT license.
 //
 
+using SoftCircuits.Wordify.Extensions;
 using SoftCircuits.Wordify.Helpers;
 
 namespace SoftCircuits.Wordify
@@ -24,6 +25,7 @@ namespace SoftCircuits.Wordify
                 CaseOption.Lower => s.ToLower(),
                 CaseOption.Upper => s.ToUpper(),
                 CaseOption.Capitalize => Capitalize(s),
+                CaseOption.CapitalizeAll => CapitalizeAll(s),
                 CaseOption.Sentence => SetSentenceCase(s),
                 CaseOption.Title => SetTitleCase(s),
                 _ => s,
@@ -51,20 +53,57 @@ namespace SoftCircuits.Wordify
         /// <returns></returns>
         public static string Capitalize(this string? s)
         {
-            if (s != null && s.Length > 0)
+            if (s == null)
+                return string.Empty;
+
+            int firstLetterIndex = s.IndexOf(char.IsLetter);
+            if (firstLetterIndex != -1 && char.IsLower(s[firstLetterIndex]))
             {
                 MutableString editor = new(s);
-                int firstLetterIndex = editor.IndexOf(char.IsLetter);
-                if (firstLetterIndex != -1)
+                editor[firstLetterIndex] = char.ToUpper(editor[firstLetterIndex]);
+                return editor;
+            }
+
+            return s;
+        }
+
+        /// <summary>
+        /// Capitalizes the first letter of each word in the given string. No other characters are modified.
+        /// </summary>
+        /// <param name="s"></param>
+        /// <returns></returns>
+        public static string CapitalizeAll(this string? s)
+        {
+            if (s == null)
+                return string.Empty;
+
+            int firstLetterIndex = s.IndexOf(char.IsLetter);
+            if (firstLetterIndex != -1)
+            {
+                MutableString editor = new(s);
+                bool inWord = false;
+
+                for (int i = firstLetterIndex; i < s.Length; i++)
                 {
-                    if (char.IsLower(editor[firstLetterIndex]))
+                    if (inWord)
                     {
-                        editor[firstLetterIndex] = char.ToUpper(editor[firstLetterIndex]);
-                        return editor;
+                        //if (char.IsWhiteSpace(s[i]))
+                        if (!char.IsLetter(s[i]) && s[i] != '\'')
+                            inWord = false;
+                    }
+                    else
+                    {
+                        if (char.IsLetter(s[i]))
+                        {
+                            editor[i] = char.ToUpper(s[i]);
+                            inWord = true;
+                        }
                     }
                 }
+                return editor;
             }
-            return s ?? string.Empty;
+
+            return s;
         }
 
         /// <summary>
@@ -72,6 +111,9 @@ namespace SoftCircuits.Wordify
         /// </summary>
         public static string SetSentenceCase(this string? s)
         {
+            if (string.IsNullOrWhiteSpace(s))
+                return s ?? string.Empty;
+
             bool inSentence = false;
 
             MutableString editor = new(s);
@@ -144,6 +186,9 @@ namespace SoftCircuits.Wordify
         public static string SetTitleCase(this string? s)
         {
             // NOTE: Technically, the last word of the title should always be capitalized
+
+            if (string.IsNullOrWhiteSpace(s))
+                return s ?? string.Empty;
 
             int wordStartIndex = -1;
             bool inSentence = false;

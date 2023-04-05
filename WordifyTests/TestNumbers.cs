@@ -290,6 +290,16 @@ namespace WordifyTests
             Assert.AreEqual("zero and 33/100", 0.33m.Wordify());
             Assert.AreEqual("zero and 33/50", 0.66m.Wordify());
 
+            // Readme.md examples
+            Assert.AreEqual("three hundred forty-five and 7/10", 345.7.Wordify());
+            Assert.AreEqual("three hundred forty-five and 7/10", 345.7.Wordify(FractionOption.Fraction));
+            Assert.AreEqual("three hundred forty-five and 70/100", 345.7.Wordify(FractionOption.Check));
+            Assert.AreEqual("three hundred forty-five and seven tenths", 345.7.Wordify(FractionOption.Words));
+            Assert.AreEqual("three hundred forty-six", 345.7.Wordify(FractionOption.Round));
+            Assert.AreEqual("three hundred forty-five", 345.7.Wordify(FractionOption.Truncate));
+            Assert.AreEqual("three hundred forty-five and .7", 345.7.Wordify(FractionOption.Decimal));
+            Assert.AreEqual("three hundred forty-five dollars and seventy cents", 345.7.Wordify(FractionOption.UsCurrency));
+
             Assert.AreEqual("three hundred forty-five and 67/100", 345.67.Wordify());
             Assert.AreEqual("twelve and 1/10", 12.1.Wordify());
             Assert.AreEqual("zero and 1/2", .5.Wordify());

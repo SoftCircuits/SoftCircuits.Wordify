@@ -49,6 +49,27 @@ namespace WordifyTests
         }
 
         [TestMethod]
+        public void TestCapitalizeAll()
+        {
+            Assert.AreEqual("", ((string)null!).SetCase(CaseOption.CapitalizeAll));
+            Assert.AreEqual("", string.Empty.SetCase(CaseOption.CapitalizeAll));
+            Assert.AreEqual("Abc", "abc".SetCase(CaseOption.CapitalizeAll));
+            Assert.AreEqual("ABC", "ABC".SetCase(CaseOption.CapitalizeAll));
+            Assert.AreEqual("Abc", "Abc".SetCase(CaseOption.CapitalizeAll));
+            Assert.AreEqual("ABC", "aBC".SetCase(CaseOption.CapitalizeAll));
+
+            Assert.AreEqual(" This Is A Test! ", " this is a test! ".SetCase(CaseOption.CapitalizeAll));
+            Assert.AreEqual("  Abc  ", "  Abc  ".SetCase(CaseOption.CapitalizeAll));
+            Assert.AreEqual(" !@#$%Abc&* ", " !@#$%abc&* ".SetCase(CaseOption.CapitalizeAll));
+            Assert.AreEqual("123456789Z123456789", "123456789z123456789".SetCase(CaseOption.CapitalizeAll));
+            Assert.AreEqual("123", "123".SetCase(CaseOption.CapitalizeAll));
+
+            Assert.AreEqual("Don't Capitalize Letter After Apostrophe", "don't capitalize letter after apostrophe".SetCase(CaseOption.CapitalizeAll));
+            Assert.AreEqual("Abc Def Ghi J Klm", "abc def ghi j klm".SetCase(CaseOption.CapitalizeAll));
+            Assert.AreEqual("Abc-Def.Ghi", "abc-def.ghi".SetCase(CaseOption.CapitalizeAll));
+        }
+
+        [TestMethod]
         public void TestSentence()
         {
             Assert.AreEqual("", ((string)null!).SetCase(CaseOption.Sentence));

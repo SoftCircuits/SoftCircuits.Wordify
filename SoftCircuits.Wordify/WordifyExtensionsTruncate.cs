@@ -42,6 +42,7 @@ namespace SoftCircuits.Wordify
 
             if (options.HasFlag(TruncateOption.TrimPartialWords))
             {
+                // Find start of current word
                 while (length > 0 && editor.IsWordCharacter(length))
                     length--;
                 while (length > 0 && char.IsWhiteSpace(editor[length - 1]))

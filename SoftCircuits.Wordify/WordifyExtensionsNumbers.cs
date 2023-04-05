@@ -4,6 +4,7 @@
 
 using SoftCircuits.Wordify.Helpers;
 using System.Diagnostics;
+using System.Runtime.CompilerServices;
 using System.Text;
 
 namespace SoftCircuits.Wordify
@@ -15,34 +16,39 @@ namespace SoftCircuits.Wordify
         /// </summary>
         /// <param name="value">The value to convert.</param>
         /// <returns>The converted string.</returns>
-        public static string Wordify(this int value) => FormatNumber(value.ToString());
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static string Wordify(this int value) => BuildNumberString(value);
 
         /// <summary>
         /// Converts the given value to words.
         /// </summary>
         /// <param name="value">The value to convert.</param>
         /// <returns>The converted string.</returns>
-        public static string Wordify(this long value) => FormatNumber(value.ToString());
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static string Wordify(this uint value) => BuildNumberString(value);
 
         /// <summary>
         /// Converts the given value to words.
         /// </summary>
         /// <param name="value">The value to convert.</param>
         /// <returns>The converted string.</returns>
-        public static string Wordify(this uint value) => FormatNumber(value.ToString());
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static string Wordify(this long value) => BuildNumberString(value);
 
         /// <summary>
         /// Converts the given value to words.
         /// </summary>
         /// <param name="value">The value to convert.</param>
         /// <returns>The converted string.</returns>
-        public static string Wordify(this ulong value) => FormatNumber(value.ToString());
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static string Wordify(this ulong value) => BuildNumberString(value);
 
         /// <summary>
         /// Converts the given value to words.
         /// </summary>
         /// <param name="value">The value to convert.</param>
         /// <returns>The converted string.</returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static string Wordify(this double value, FractionOption format = FractionOption.Fraction) => Wordify((decimal)value, format);
 
         /// <summary>
@@ -52,10 +58,10 @@ namespace SoftCircuits.Wordify
         /// <returns>The converted string.</returns>
         public static string Wordify(this decimal value, FractionOption format = FractionOption.Fraction)
         {
-            string? decimalPart = FormatFraction(ref value, format);
+            string? decimalPart = BuildNumberString(ref value, format);
             decimal wholePart = Math.Floor(value);
 
-            StringBuilder builder = new(FormatNumber(wholePart.ToString()));
+            StringBuilder builder = new(BuildNumberString(wholePart));
             if (format == FractionOption.UsCurrency)
             {
                 builder.Append(' ');
@@ -152,33 +158,15 @@ namespace SoftCircuits.Wordify
         /// Converts a number string to words. Input string must not include a decimal point, spaces or
         /// exponential notation.
         /// </summary>
-        private static string FormatNumber(string number)
+        private static string BuildNumberString<T>(T value) where T : struct
         {
-            Debug.Assert(number != null);
-            Debug.Assert(number.All(c => char.IsDigit(c) || c == '-'));
-
             StringBuilder builder = new();
             ColumnState columnState = ColumnState.SetHundreds | ColumnState.SetTens;
-            int[] values;
-            int length;
+            int[] values = GetDigitValues(value, out bool isNegative);
+            int length = values.Length;
 
-            // Create array with value for each digit
-            if (number[0] == '-')
-            {
-                // Negative number
+            if (isNegative)
                 builder.Append("negative");
-                length = number.Length - 1;
-                values = new int[length];
-                for (int i = 0; i < length; i++)
-                    values[i] = number[i + 1] - '0';
-            }
-            else
-            {
-                length = number.Length;
-                values = new int[length];
-                for (int i = 0; i < length; i++)
-                    values[i] = number[i] - '0';
-            }
 
             // Iterate through each digit
             for (int i = 0; i < length; i++)
@@ -268,7 +256,7 @@ namespace SoftCircuits.Wordify
         /// <param name="format">The type of format to use.</param>
         /// <returns>The formatted fractional part of <paramref name="value"/>, or <c>null</c> if it
         /// has no fractional part after possible modification.</returns>
-        private static string? FormatFraction(ref decimal value, FractionOption format)
+        private static string? BuildNumberString(ref decimal value, FractionOption format)
         {
             // Note: Math.Floor rounds down, Math.Ceiling rounds up, and Math.Truncate rounds towards zero.
             decimal integralPart = Math.Truncate(value);
@@ -305,7 +293,7 @@ namespace SoftCircuits.Wordify
                         {
                             if (f.Denominator == 1)
                             {
-                                fraction = FormatNumber(f.Numerator.ToString());
+                                fraction = BuildNumberString(f.Numerator);
                             }
                             else if (f.Numerator == 1 && f.Denominator == 2)
                             {
@@ -314,7 +302,7 @@ namespace SoftCircuits.Wordify
                             else
                             {
                                 fraction = MakeOrdinal(f.Denominator);
-                                fraction = $"{FormatNumber(f.Numerator.ToString())} {fraction.Pluralize(f.Numerator)}";
+                                fraction = $"{BuildNumberString(f.Numerator)} {fraction.Pluralize(f.Numerator)}";
                             }
                         }
                     }
@@ -343,12 +331,37 @@ namespace SoftCircuits.Wordify
                         if (cents == 0)
                             fraction = "no cents";
                         else
-                            fraction = $"{FormatNumber(cents.ToString())} {Pluralize("cent", cents)}";
+                            fraction = $"{BuildNumberString(cents)} {Pluralize("cent", cents)}";
                     }
                     break;
             }
 
             return fraction;
+        }
+
+        /// <summary>
+        /// Builds an array of digit values from the given value.
+        /// </summary>
+        private static int[] GetDigitValues<T>(T value, out bool isNegative) where T : struct
+        {
+            string? digits = value.ToString();
+            Debug.Assert(digits != null);
+            Debug.Assert(digits.Length > 0);
+            Debug.Assert(digits.All(c => char.IsNumber(c) || c == '-'));
+
+            int start = 0;
+            isNegative = false;
+            if (digits[0] == '-')
+            {
+                start++;
+                isNegative = true;
+            }
+
+            int[] values = new int[digits.Length - start];
+            for (int i = 0; start < digits.Length; i++, start++)
+                values[i] = digits[start] - '0';
+
+            return values;
         }
 
         #endregion

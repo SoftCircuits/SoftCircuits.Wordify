@@ -1,14 +1,15 @@
 ﻿// Copyright (c) 2023 Jonathan Wood (www.softcircuits.com)
 // Licensed under the MIT license.
 //
-// This code was derived from Stackoverflow at https://stackoverflow.com/questions/5124743/algorithm-for-simplifying-decimal-to-fractions
-//
 
 namespace SoftCircuits.Wordify.Helpers
 {
     /// <summary>
     /// Class to hold a fraction. Includes code to convert a floating point value to a fraction.
     /// </summary>
+    /// <remarks>
+    /// This code was derived from https://stackoverflow.com/questions/5124743/algorithm-for-simplifying-decimal-to-fractions
+    /// </remarks>
     internal class Fraction
     {
         public int Numerator { get; set; }
