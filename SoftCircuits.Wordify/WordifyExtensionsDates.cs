@@ -2,6 +2,8 @@
 // Licensed under the MIT license.
 //
 
+using System.Runtime.CompilerServices;
+
 namespace SoftCircuits.Wordify
 {
     public static partial class WordifyExtensions
@@ -13,6 +15,7 @@ namespace SoftCircuits.Wordify
         /// <param name="useUtc">If true, <paramref name="dateTime"/> is assumed to be in UTC.</param>
         /// <param name="options">Optional formatting options.</param>
         /// <returns>The generated description.</returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static string Wordify(this DateTime dateTime, bool useUtc = false, DateTimeOption options = DateTimeOption.None) =>
             Wordify(dateTime, useUtc ? DateTime.UtcNow : DateTime.Now, options);
 
@@ -56,13 +59,8 @@ namespace SoftCircuits.Wordify
         }
 
         // TODO: Support DateTimeOffset
-
-#if NET6_0_OR_GREATER
-
-        // TODO: Support DateOnly
-        // TODO: Support TimeOnly
-
-#endif
+        // TODO: Support DateOnly (.NET 6.0 and later)
+        // TODO: Support TimeOnly (.NET 6.0 and later)
 
         /// <summary>
         /// Creates a description of the specified <see cref="TimeSpan"/>

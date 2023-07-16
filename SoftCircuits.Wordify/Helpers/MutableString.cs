@@ -10,7 +10,6 @@ using System.Runtime.CompilerServices;
 
 namespace SoftCircuits.Wordify.Helpers
 {
-
     /// <summary>
     /// Class for editing strings.
     /// </summary>
@@ -69,7 +68,9 @@ namespace SoftCircuits.Wordify.Helpers
         /// </summary>
         public char this[int index]
         {
+            [MethodImpl(MethodImplOptions.AggressiveInlining)]
             get => CharArray[index];
+            [MethodImpl(MethodImplOptions.AggressiveInlining)]
             set => CharArray[index] = value;
         }
 
@@ -78,7 +79,9 @@ namespace SoftCircuits.Wordify.Helpers
         /// </summary>
         public char this[Index index]
         {
+            [MethodImpl(MethodImplOptions.AggressiveInlining)]
             get => CharArray[index.GetOffset(Length)];
+            [MethodImpl(MethodImplOptions.AggressiveInlining)]
             set => CharArray[index.GetOffset(Length)] = value;
         }
 
@@ -87,6 +90,7 @@ namespace SoftCircuits.Wordify.Helpers
         /// </summary>
         public string this[Range range]
         {
+            [MethodImpl(MethodImplOptions.AggressiveInlining)]
             get
             {
                 (int offset, int length) = range.GetOffsetAndLength(Length);
@@ -276,7 +280,10 @@ namespace SoftCircuits.Wordify.Helpers
 
         #region Operators
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static implicit operator string(MutableString se) => se.ToString();
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static explicit operator MutableString(string s) => new(s);
 
         #endregion

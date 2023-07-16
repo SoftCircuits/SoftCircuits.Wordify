@@ -12,7 +12,7 @@
     <Company>SoftCircuits</Company>
     <Description>Class library that contains extension methods to create and modify text. It includes methods to convert numbers and dates to text, insert spaces into camel-case strings, pluralize strings, truncate strings, convert Roman numerals, create memory-size strings and much more.</Description>
     <RepositoryUrl>https://github.com/SoftCircuits/SoftCircuits.Wordify</RepositoryUrl>
-    <PackageReleaseNotes>Added CapitalizeAll() method; Miscellaneous tweaks and optimizations.</PackageReleaseNotes>
+    <PackageReleaseNotes>Performance optimizations and other minor changes.</PackageReleaseNotes>
     <PackageLicenseFile>D:\Users\jwood\source\repos\SoftCircuits.Wordify\LICENSE.txt</PackageLicenseFile>
     <PackageRequireLicenseAcceptance>True</PackageRequireLicenseAcceptance>
     <PackageIcon>Logo_64x64.png</PackageIcon>
@@ -21,7 +21,8 @@
     <NeutralLanguage>en-US</NeutralLanguage>
     <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
     <PackageProjectUrl>https://github.com/SoftCircuits/SoftCircuits.Wordify</PackageProjectUrl>
-    <Version>1.1.4</Version>
+    <Version>1.1.5</Version>
+    <Title>SoftCircuits.Wordify</Title>
   </PropertyGroup>
 
   <ItemGroup>

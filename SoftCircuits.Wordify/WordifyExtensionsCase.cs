@@ -4,6 +4,7 @@
 
 using SoftCircuits.Wordify.Extensions;
 using SoftCircuits.Wordify.Helpers;
+using System.Runtime.CompilerServices;
 
 namespace SoftCircuits.Wordify
 {
@@ -37,6 +38,7 @@ namespace SoftCircuits.Wordify
         /// </summary>
         /// <param name="s">The string to convert.</param>
         /// <returns>The converted string.</returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static string SetUpperCase(this string? s) => (s != null) ? s.ToUpper() : string.Empty;
 
         /// <summary>
@@ -44,6 +46,7 @@ namespace SoftCircuits.Wordify
         /// </summary>
         /// <param name="s">The string to convert.</param>
         /// <returns>The converted string.</returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static string SetLowerCase(this string? s) => (s != null) ? s.ToLower() : string.Empty;
 
         /// <summary>

@@ -3,6 +3,7 @@
 //
 
 using SoftCircuits.Wordify.Helpers;
+using System.Runtime.CompilerServices;
 
 namespace SoftCircuits.Wordify
 {
@@ -13,6 +14,7 @@ namespace SoftCircuits.Wordify
         /// </summary>
         /// <param name="value">The value to convert.</param>
         /// <returns>The resulting ordinal string.</returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static string MakeOrdinal(this int value) => MakeOrdinal(Wordify(value));
 
         /// <summary>
@@ -20,6 +22,7 @@ namespace SoftCircuits.Wordify
         /// </summary>
         /// <param name="value">The value to convert.</param>
         /// <returns>The resulting ordinal string.</returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static string MakeOrdinal(this long value) => MakeOrdinal(Wordify(value));
 
         /// <summary>
@@ -27,6 +30,7 @@ namespace SoftCircuits.Wordify
         /// </summary>
         /// <param name="value">The value to convert.</param>
         /// <returns>The resulting ordinal string.</returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static string MakeOrdinal(this uint value) => MakeOrdinal(Wordify(value));
 
         /// <summary>
@@ -34,6 +38,7 @@ namespace SoftCircuits.Wordify
         /// </summary>
         /// <param name="value">The value to convert.</param>
         /// <returns>The resulting ordinal string.</returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static string MakeOrdinal(this ulong value) => MakeOrdinal(Wordify(value));
 
         /// <summary>
@@ -42,6 +47,7 @@ namespace SoftCircuits.Wordify
         /// <param name="value">The value to convert.</param>
         /// <param name="format">Format string used to create the digits.</param>
         /// <returns>The ordinal string.</returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static string MakeOrdinalDigits(this int value, string format = "#,0") => MakeOrdinalDigits(value.ToString(format));
 
         /// <summary>
@@ -50,6 +56,7 @@ namespace SoftCircuits.Wordify
         /// <param name="value">The value to convert.</param>
         /// <param name="format">Format string used to create the digits.</param>
         /// <returns>The ordinal string.</returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static string MakeOrdinalDigits(this long value, string format = "#,0") => MakeOrdinalDigits(value.ToString(format));
 
         /// <summary>
@@ -58,6 +65,7 @@ namespace SoftCircuits.Wordify
         /// <param name="value">The value to convert.</param>
         /// <param name="format">Format string used to create the digits.</param>
         /// <returns>The ordinal string.</returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static string MakeOrdinalDigits(this uint value, string format = "#,0") => MakeOrdinalDigits(value.ToString(format));
 
         /// <summary>
@@ -66,6 +74,7 @@ namespace SoftCircuits.Wordify
         /// <param name="value">The value to convert.</param>
         /// <param name="format">Format string used to create the digits.</param>
         /// <returns>The ordinal string.</returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static string MakeOrdinalDigits(this ulong value, string format = "#,0") => MakeOrdinalDigits(value.ToString(format));
 
         /// <summary>

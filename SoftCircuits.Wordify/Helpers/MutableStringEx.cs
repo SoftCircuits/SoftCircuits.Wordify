@@ -3,6 +3,7 @@
 //
 
 using System.Diagnostics;
+using System.Runtime.CompilerServices;
 
 namespace SoftCircuits.Wordify.Helpers
 {
@@ -225,6 +226,7 @@ namespace SoftCircuits.Wordify.Helpers
         /// <param name="s">The string compare to.</param>
         /// <param name="ignoreCase">True if characters should be matched using case-insensitive comparison.</param>
         /// <returns>True if the characters match, false otherwise.</returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public bool MatchesAt(string s, int index, bool ignoreCase = false) => MatchesAt(s, index, CharComparer.GetComparer(ignoreCase));
 
         /// <summary>
@@ -266,11 +268,13 @@ namespace SoftCircuits.Wordify.Helpers
         /// <summary>
         /// Returns true if this string contains the specified character.
         /// </summary>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public bool Contains(char c) => IndexOf(c) >= 0;
 
         /// <summary>
         /// Returns true if this string contains the specified string.
         /// </summary>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public bool Contains(string s) => IndexOf(s) >= 0;
 
         /// <summary>
@@ -278,6 +282,7 @@ namespace SoftCircuits.Wordify.Helpers
         /// </summary>
         /// <param name="predicate"></param>
         /// <returns></returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public bool Contains(Func<char, bool> predicate) => IndexOf(predicate) >= 0;
     }
 }

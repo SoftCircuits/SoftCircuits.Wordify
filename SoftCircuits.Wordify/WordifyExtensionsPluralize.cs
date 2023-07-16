@@ -4,6 +4,7 @@
 
 using SoftCircuits.Wordify.Extensions;
 using SoftCircuits.Wordify.Helpers;
+using System.Runtime.CompilerServices;
 
 namespace SoftCircuits.Wordify
 {
@@ -308,31 +309,37 @@ namespace SoftCircuits.Wordify
         /// <summary>
         /// Converts the given string to the plural form only if <paramref name="value"/> is not equal to 1.
         /// </summary>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static string Pluralize(this string? s, int value) => (value == 1) ? s ?? string.Empty : Pluralize(s);
 
         /// <summary>
         /// Converts the given string to the plural form only if <paramref name="value"/> is not equal to 1.
         /// </summary>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static string Pluralize(this string? s, long value) => (value == 1) ? s ?? string.Empty : Pluralize(s);
 
         /// <summary>
         /// Converts the given string to the plural form only if <paramref name="value"/> is not equal to 1.
         /// </summary>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static string Pluralize(this string? s, uint value) => (value == 1) ? s ?? string.Empty : Pluralize(s);
 
         /// <summary>
         /// Converts the given string to the plural form only if <paramref name="value"/> is not equal to 1.
         /// </summary>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static string Pluralize(this string? s, ulong value) => (value == 1) ? s ?? string.Empty : Pluralize(s);
 
         /// <summary>
         /// Converts the given string to the plural form only if <paramref name="value"/> is not equal to 1.0.
         /// </summary>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static string Pluralize(this string? s, double value) => (value == 1.0) ? s ?? string.Empty : Pluralize(s);
 
         /// <summary>
         /// Converts the given string to the plural form only if <paramref name="value"/> is not equal to 1.0.
         /// </summary>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static string Pluralize(this string? s, decimal value) => (value == 1.0M) ? s ?? string.Empty : Pluralize(s);
     }
 }

@@ -3,6 +3,7 @@
 //
 
 using SoftCircuits.Wordify.Enums;
+using System.Runtime.CompilerServices;
 
 namespace SoftCircuits.Wordify
 {
@@ -32,6 +33,7 @@ namespace SoftCircuits.Wordify
         /// <param name="numberFormat">Optional format specifier used to format the numeric portion
         /// of the resulting string.</param>
         /// <returns>The resulting memory size string.</returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static string ToMemorySize(this int sizeInBytes, MemorySizeOption options = MemorySizeOption.Decimal, string numberFormat = "#,0.##") =>
             ToMemorySize((ulong)sizeInBytes, options, numberFormat);
 
@@ -43,6 +45,7 @@ namespace SoftCircuits.Wordify
         /// <param name="numberFormat">Optional format specifier used to format the numeric portion
         /// of the resulting string.</param>
         /// <returns>The resulting memory size string.</returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static string ToMemorySize(this long sizeInBytes, MemorySizeOption options = MemorySizeOption.Decimal, string numberFormat = "#,0.##") =>
             ToMemorySize((ulong)sizeInBytes, options, numberFormat);
 

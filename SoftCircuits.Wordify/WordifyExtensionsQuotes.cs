@@ -2,6 +2,8 @@
 // Licensed under the MIT license.
 //
 
+using System.Runtime.CompilerServices;
+
 namespace SoftCircuits.Wordify
 {
     public static partial class WordifyExtensions
@@ -11,6 +13,7 @@ namespace SoftCircuits.Wordify
         /// </summary>
         /// <param name="s">The string to be enclosed in quotes.</param>
         /// <returns>The transformed string.</returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static string WrapInQuotes(this string? s) => $"\"{s}\"";
 
         /// <summary>
@@ -18,6 +21,7 @@ namespace SoftCircuits.Wordify
         /// </summary>
         /// <param name="c">The character to be enclosed in quotes.</param>
         /// <returns>The transformed string.</returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static string WrapInQuotes(this char c) => $"\"{c}\"";
 
         /// <summary>
@@ -25,6 +29,7 @@ namespace SoftCircuits.Wordify
         /// </summary>
         /// <param name="s">The string to be enclosed in quotes.</param>
         /// <returns>The transformed string.</returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static string WrapInSingleQuotes(this string? s) => $"'{s}'";
 
         /// <summary>
@@ -32,6 +37,7 @@ namespace SoftCircuits.Wordify
         /// </summary>
         /// <param name="c">The character to be enclosed in quotes.</param>
         /// <returns>The transformed string.</returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static string WrapInSingleQuotes(this char c) => $"'{c}'";
     }
 }
