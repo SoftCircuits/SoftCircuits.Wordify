@@ -1,4 +1,4 @@
-﻿// Copyright (c) 2023 Jonathan Wood (www.softcircuits.com)
+﻿// Copyright (c) 2023-2024 Jonathan Wood (www.softcircuits.com)
 // Licensed under the MIT license.
 //
 
@@ -47,6 +47,7 @@ namespace SoftCircuits.Wordify
         /// Converts the given value to words.
         /// </summary>
         /// <param name="value">The value to convert.</param>
+        /// <param name="format">Optional formatting options.</param>
         /// <returns>The converted string.</returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static string Wordify(this double value, FractionOption format = FractionOption.Fraction) => Wordify((decimal)value, format);
@@ -55,6 +56,7 @@ namespace SoftCircuits.Wordify
         /// Converts the given value to words.
         /// </summary>
         /// <param name="value">The value to convert.</param>
+        /// <param name="format">Optional formatting options.</param>
         /// <returns>The converted string.</returns>
         public static string Wordify(this decimal value, FractionOption format = FractionOption.Fraction)
         {

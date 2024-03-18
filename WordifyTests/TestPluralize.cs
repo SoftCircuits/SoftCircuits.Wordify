@@ -1,4 +1,4 @@
-﻿// Copyright (c) 2023 Jonathan Wood (www.softcircuits.com)
+﻿// Copyright (c) 2023-2024 Jonathan Wood (www.softcircuits.com)
 // Licensed under the MIT license.
 //
 
@@ -9,8 +9,8 @@ namespace WordifyTests
     [TestClass]
     public class TestPluralize
     {
-        private static readonly List<(string, string)> Data = new()
-        {
+        private static readonly List<(string, string)> Data =
+        [
             ("cat", "cats"),
             ("dog", "dogs"),
             ("door", "doors"),
@@ -54,7 +54,7 @@ namespace WordifyTests
             (" ", " "),
             ("    t    ", "    ts    "),
             (" This is a test! ", " This is a tests! "),
-        };
+        ];
 
         [TestMethod]
         public void Test()

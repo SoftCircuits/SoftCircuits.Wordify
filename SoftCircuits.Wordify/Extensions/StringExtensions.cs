@@ -1,4 +1,4 @@
-﻿// Copyright (c) 2023 Jonathan Wood (www.softcircuits.com)
+﻿// Copyright (c) 2023-2024 Jonathan Wood (www.softcircuits.com)
 // Licensed under the MIT license.
 //
 
@@ -55,6 +55,7 @@ namespace SoftCircuits.Wordify.Extensions
         /// <summary>
         /// Finds the index of the first character for which <paramref name="predicate"/> returns true.
         /// </summary>
+        /// <param name="s">This string.</param>
         /// <param name="predicate">Predicate that returns true for the character being sought.</param>
         /// <param name="startIndex">The starting index. Use -1 to start at the start of the string.</param>
         /// <returns>The index of the first match, or -1 if no match was found.</returns>

@@ -1,4 +1,4 @@
-﻿// Copyright (c) 2023 Jonathan Wood (www.softcircuits.com)
+﻿// Copyright (c) 2023-2024 Jonathan Wood (www.softcircuits.com)
 // Licensed under the MIT license.
 //
 
@@ -12,8 +12,8 @@ namespace WordifyTests
         [TestMethod]
         public void TestOrdinal()
         {
-            List<(int, string)> data = new()
-            {
+            List<(int, string)> data =
+            [
                 (0, "zeroth"),
                 (1, "first"),
                 (2, "second"),
@@ -82,7 +82,7 @@ namespace WordifyTests
                 (-11, "negative eleventh"),
                 (-12, "negative twelfth"),
                 (-13, "negative thirteenth"),
-            };
+            ];
 
             foreach ((int input, string output) in data)
                 Assert.AreEqual(output, input.MakeOrdinal());
@@ -91,8 +91,8 @@ namespace WordifyTests
         [TestMethod]
         public void TestOrdinalDigits()
         {
-            List<(int, string)> data = new()
-            {
+            List<(int, string)> data =
+            [
                 (0, "0th"),
                 (1, "1st"),
                 (2, "2nd"),
@@ -160,7 +160,7 @@ namespace WordifyTests
                 (-102, "-102nd"),
                 (-103, "-103rd"),
                 (-104, "-104th"),
-            };
+            ];
 
             foreach ((int input, string output) in data)
                 Assert.AreEqual(output, input.MakeOrdinalDigits());
@@ -169,8 +169,8 @@ namespace WordifyTests
         [TestMethod]
         public void TestOrdinalDigitsStrings()
         {
-            List<(string?, string)> data = new()
-            {
+            List<(string?, string)> data =
+            [
                 ("0", "0th"),
                 ("1", "1st"),
                 ("2", "2nd"),
@@ -239,7 +239,7 @@ namespace WordifyTests
                 ("2!", "2nd!"),
                 ("f(3)", "f(3rd)"),
                 ("...100...", "...100th..."),
-            };
+            ];
 
             foreach ((string? input, string output) in data)
                 Assert.AreEqual(output, input.MakeOrdinalDigits());

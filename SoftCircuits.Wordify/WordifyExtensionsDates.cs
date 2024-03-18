@@ -1,4 +1,4 @@
-﻿// Copyright (c) 2023 Jonathan Wood (www.softcircuits.com)
+﻿// Copyright (c) 2023-2024 Jonathan Wood (www.softcircuits.com)
 // Licensed under the MIT license.
 //
 
@@ -68,6 +68,7 @@ namespace SoftCircuits.Wordify
         /// <param name="timeSpan">The <see cref="TimeSpan"/> to describe.</param>
         /// <param name="precision">By default the precision is 1 and only one part of the difference
         /// is included in the description. Use a larger number to show more differences.</param>
+        /// <param name="options">Specifies any options for how the output is generated (optional).</param>
         /// <returns>The generated description.</returns>
         public static string Wordify(this TimeSpan timeSpan, int precision = 1, DateTimeOption options = DateTimeOption.None)
         {

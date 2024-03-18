@@ -1,4 +1,4 @@
-﻿// Copyright (c) 2023 Jonathan Wood (www.softcircuits.com)
+﻿// Copyright (c) 2023-2024 Jonathan Wood (www.softcircuits.com)
 // Licensed under the MIT license.
 //
 
@@ -103,7 +103,7 @@ namespace WordifyTests
             Assert.AreEqual("2 weeks and 4 days", (now.Offset(days: 18) - now).Wordify(10));
             Assert.AreEqual("2 weeks, 4 days and 4 hours", (now.Offset(days: 18, hours: 4) - now).Wordify(10));
             //Assert.AreEqual("4 weeks and 2 days", (now.Offset(months: 1) - now).Wordify(10)); // Depends on length of month
-            Assert.AreEqual("104 weeks and 3 days", (now.Offset(years: 2) - now).Wordify(10));
+            //Assert.AreEqual("104 weeks and 3 days", (now.Offset(years: 2) - now).Wordify(10));  // Depends on if leap year
 
             Assert.AreEqual("twenty seconds", (now.Offset(seconds: 20) - now).Wordify(10, DateTimeOption.UseWords));
             Assert.AreEqual("twenty-three minutes and twenty seconds", (now.Offset(minutes: 23, seconds: 20) - now).Wordify(10, DateTimeOption.UseWords));

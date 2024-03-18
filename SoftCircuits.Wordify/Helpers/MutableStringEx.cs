@@ -1,4 +1,4 @@
-﻿// Copyright (c) 2023 Jonathan Wood (www.softcircuits.com)
+﻿// Copyright (c) 2023-2024 Jonathan Wood (www.softcircuits.com)
 // Licensed under the MIT license.
 //
 
@@ -203,7 +203,7 @@ namespace SoftCircuits.Wordify.Helpers
         /// </summary>
         /// <param name="index">The index to test at.</param>
         /// <param name="s">The string compare to.</param>
-        /// <param name="comparer">The <see cref="IComparer{char}"/> to compare characters.</param>
+        /// <param name="comparer">The <see cref="IComparer{T}"/> to compare characters.</param>
         /// <returns>True if the characters match, false otherwise.</returns>
         public bool MatchesAt(string s, int index, IComparer<char> comparer)
         {
@@ -234,7 +234,7 @@ namespace SoftCircuits.Wordify.Helpers
         /// </summary>
         /// <param name="s">The string to compare to.</param>
         /// <param name="index">The ending index of the characters to compare.</param>
-        /// <param name="comparer">The <see cref="IComparer{char}"/> to compare characters.</param>
+        /// <param name="comparer">The <see cref="IComparer{T}"/> to compare characters.</param>
         /// <returns>True if the characters match, false otherwise.</returns>
         public bool MatchesEndingAt(string s, int index, IComparer<char> comparer)
         {
