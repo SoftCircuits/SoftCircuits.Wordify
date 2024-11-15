@@ -42,7 +42,7 @@ namespace SoftCircuits.Wordify
         /// <param name="state">Optional state.</param>
         /// <param name="zip">Optional zip code.</param>
         /// <param name="country">Optional country.</param>
-        /// <param name="delimiter">Optional delimiter used to separate main address components. Default is a new line.</param>
+        /// <param name="delimiter">Optional delimiter used to separate main address components. Default is <c>&quot;\r\n&quot;</c>.</param>
         /// <returns>The formatted string.</returns>
         public static string FormatAddress(string? street = null, string? street2 = null, string? city = null, string? state = null, string? zip = null, string? country = null, string delimiter = "\r\n")
         {

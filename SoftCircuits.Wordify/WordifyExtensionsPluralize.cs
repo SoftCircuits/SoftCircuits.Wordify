@@ -62,6 +62,9 @@ namespace SoftCircuits.Wordify
 
         #region Private Data
 
+        /// <summary>
+        /// Words that use a different word for the plural version.
+        /// </summary>
         internal static readonly Dictionary<string, string> IrregularNounsLookup = new(StringComparer.OrdinalIgnoreCase)
         {
             ["addendum"] = "addenda",

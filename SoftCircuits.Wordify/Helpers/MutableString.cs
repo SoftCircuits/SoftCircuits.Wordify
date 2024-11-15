@@ -152,6 +152,7 @@ namespace SoftCircuits.Wordify.Helpers
 
         /// <summary>
         /// Inserts the specified string at the specified index, replacing the specified number of characters.
+        /// <paramref name="replaceCount"/> can be less than or greater than the length of <paramref name="s"/>.
         /// </summary>
         /// <param name="index">The index where the string should be inserted.</param>
         /// <param name="s">The string to insert.</param>
@@ -281,7 +282,7 @@ namespace SoftCircuits.Wordify.Helpers
         #region Operators
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static implicit operator string(MutableString se) => se.ToString();
+        public static implicit operator string(MutableString ms) => ms.ToString();
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static explicit operator MutableString(string s) => new(s);
