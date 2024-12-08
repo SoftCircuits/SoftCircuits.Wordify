@@ -2,15 +2,19 @@
 // Licensed under the MIT license.
 //
 
+using SoftCircuits.Wordify.Helpers;
+
 namespace SoftCircuits.Wordify.Extensions
 {
     internal static class CharExtensions
     {
-        private static readonly HashSet<char> Vowels = new("aeiou");
-        private static readonly HashSet<char> Consonants = new("bcdfghjklmnpqrstvwxyz");
+        private static readonly HashSet<char> Vowels = new("aeiou",
+            CharEqualityComparer.CaseInsensitive);
+        private static readonly HashSet<char> Consonants = new("bcdfghjklmnpqrstvwxyz",
+            CharEqualityComparer.CaseInsensitive);
 
-        public static bool IsVowel(this char c) => Vowels.Contains(char.ToLower(c));
+        public static bool IsVowel(this char c) => Vowels.Contains(c);
 
-        public static bool IsConsonant(this char c) => Consonants.Contains(char.ToLower(c));
+        public static bool IsConsonant(this char c) => Consonants.Contains(c);
     }
 }

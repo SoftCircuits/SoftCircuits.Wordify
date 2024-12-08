@@ -141,32 +141,24 @@ namespace WordifyTests
             }
         }
 
-        class TestInfo
+        class TestInfo(string term, string text, int[] matches, int[]? ignoreCaseMatches = null)
         {
-            public string Term { get; set; }
-            public string Text { get; set; }
-            public int[] Matches { get; set; }
-            public int[] IgnoreCaseMatches { get; set; }
-
-            public TestInfo(string term, string text, int[] matches, int[]? ignoreCaseMatches = null)
-            {
-                Term = term;
-                Text = text;
-                Matches = matches;
-                IgnoreCaseMatches = ignoreCaseMatches ?? matches;
-            }
+            public string Term { get; set; } = term;
+            public string Text { get; set; } = text;
+            public int[] Matches { get; set; } = matches;
+            public int[] IgnoreCaseMatches { get; set; } = ignoreCaseMatches ?? matches;
         }
 
         [TestMethod]
         public void TestMatchesAt()
         {
             TestInfo[] tests =
-            {
-                new("is", " This is a test! ", new[] { 3, 6 }, new[] { 3, 6 }),
-                new("IS", " This is a test! ", Array.Empty<int>(), new[] { 3, 6 }),
-                new("test", " This is a test! ", new[] { 11 }, new[] { 11 }),
-                new("TEST", " This is a test! ", Array.Empty<int>(), new[] { 11 }),
-            };
+            [
+                new("is", " This is a test! ", [3, 6], [3, 6]),
+                new("IS", " This is a test! ", [], [3, 6]),
+                new("test", " This is a test! ", [11], [11]),
+                new("TEST", " This is a test! ", [], [11]),
+            ];
 
             MutableString editor = new(null);
             foreach (TestInfo test in tests)

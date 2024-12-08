@@ -28,6 +28,14 @@ namespace SoftCircuits.Wordify.Helpers
         /// <summary>
         /// Constructs a new <see cref="MutableString"/> instance.
         /// </summary>
+        public MutableString()
+        {
+            Resize(0);
+        }
+
+        /// <summary>
+        /// Constructs a new <see cref="MutableString"/> instance.
+        /// </summary>
         /// <param name="s">Initial string value.</param>
         public MutableString(string? s)
         {

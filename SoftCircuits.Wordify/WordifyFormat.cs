@@ -21,7 +21,7 @@ namespace SoftCircuits.Wordify
         {
             StringBuilder builder = new();
 
-            foreach (string? part in new[] { title, first, middle, last, suffix})
+            foreach (string? part in new[] { title, first, middle, last, suffix })
             {
                 if (!string.IsNullOrWhiteSpace(part))
                 {
@@ -46,7 +46,7 @@ namespace SoftCircuits.Wordify
         /// <returns>The formatted string.</returns>
         public static string FormatAddress(string? street = null, string? street2 = null, string? city = null, string? state = null, string? zip = null, string? country = null, string delimiter = "\r\n")
         {
-            List<string> parts = new();
+            List<string> parts = [];
 
             if (!string.IsNullOrWhiteSpace(street))
                 parts.Add(street);

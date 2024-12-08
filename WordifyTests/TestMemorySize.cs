@@ -3,7 +3,6 @@
 //
 
 using SoftCircuits.Wordify;
-using SoftCircuits.Wordify.Enums;
 
 namespace WordifyTests
 {

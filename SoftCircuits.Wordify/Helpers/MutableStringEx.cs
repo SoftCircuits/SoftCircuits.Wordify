@@ -12,6 +12,11 @@ namespace SoftCircuits.Wordify.Helpers
     /// </summary>
     internal partial class MutableString
     {
+        /// <summary>
+        /// Determines if the character at the specified position appears to be part of a word.
+        /// </summary>
+        /// <param name="pos">The position of the character to test.</param>
+        /// <returns>True if the character at the specified position appears to be part of a word.</returns>
         public bool IsWordCharacter(int pos)
         {
             Debug.Assert(pos < Length);
@@ -19,6 +24,11 @@ namespace SoftCircuits.Wordify.Helpers
             return char.IsLetterOrDigit(c) || c == '\'' || (c == '.' && pos < Length - 1 && char.IsDigit(CharArray[pos + 1]));
         }
 
+        /// <summary>
+        /// Determines if the character at the specified position appears to be the end of a sentence.
+        /// </summary>
+        /// <param name="pos">The position of the character to test.</param>
+        /// <returns>True if the character at the specified position appears to be the end of a sentence.</returns>
         public bool IsEndOfSentenceCharacter(int pos)
         {
             Debug.Assert(pos < Length);

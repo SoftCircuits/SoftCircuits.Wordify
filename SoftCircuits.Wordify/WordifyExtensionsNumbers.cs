@@ -83,7 +83,7 @@ namespace SoftCircuits.Wordify
         /// Words for digits 0 through 9.
         /// </summary>
         private static readonly string[] Ones =
-        {
+        [
             "zero",
             "one",
             "two",
@@ -94,13 +94,13 @@ namespace SoftCircuits.Wordify
             "seven",
             "eight",
             "nine"
-        };
+        ];
 
         /// <summary>
         /// Words for numbers 10 through 19.
         /// </summary>
         private static readonly string[] Teens =
-        {
+        [
             "ten",
             "eleven",
             "twelve",
@@ -111,13 +111,13 @@ namespace SoftCircuits.Wordify
             "seventeen",
             "eighteen",
             "nineteen"
-        };
+        ];
 
         /// <summary>
         /// Words for "tens" 10 through 90.
         /// </summary>
         private static readonly string[] Tens =
-        {
+        [
             "",
             "ten",
             "twenty",
@@ -128,13 +128,13 @@ namespace SoftCircuits.Wordify
             "seventy",
             "eighty",
             "ninety"
-        };
+        ];
 
         /// <summary>
         /// US Numbering
         /// </summary>
         private static readonly string[] Thousands =
-        {
+        [
             "",
             "thousand",
             "million",
@@ -145,7 +145,7 @@ namespace SoftCircuits.Wordify
             "sextillion",
             "septillion",
             "octillion",
-        };
+        ];
 
         [Flags]
         private enum ColumnState

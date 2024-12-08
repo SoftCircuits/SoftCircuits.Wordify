@@ -2,7 +2,9 @@
 // Licensed under the MIT license.
 //
 
-namespace SoftCircuits.Wordify.Enums
+#pragma warning disable IDE0130 // Namespace does not match folder structure
+namespace SoftCircuits.Wordify
+#pragma warning restore IDE0130 // Namespace does not match folder structure
 {
     /// <summary>
     /// Specifies options for the memory size methods.

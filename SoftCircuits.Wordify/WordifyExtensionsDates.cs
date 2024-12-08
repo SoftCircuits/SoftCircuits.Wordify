@@ -77,7 +77,7 @@ namespace SoftCircuits.Wordify
             if (!enumerator.MoveNext())
                 return "0 milliseconds";
 
-            List<string> parts = new();
+            List<string> parts = [];
 
             do
             {
@@ -115,16 +115,10 @@ namespace SoftCircuits.Wordify
             Year,
         };
 
-        private class Difference
+        private class Difference(WordifyExtensions.DifferenceKind partType, int value)
         {
-            public DifferenceKind Type { get; set; }
-            public int Value { get; set; }
-
-            public Difference(DifferenceKind partType, int value)
-            {
-                Type = partType;
-                Value = value;
-            }
+            public DifferenceKind Type { get; set; } = partType;
+            public int Value { get; set; } = value;
         }
 
         private const int DaysPerWeek = 7;

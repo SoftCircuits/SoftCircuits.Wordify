@@ -2,7 +2,6 @@
 // Licensed under the MIT license.
 //
 
-using SoftCircuits.Wordify.Enums;
 using System.Runtime.CompilerServices;
 
 namespace SoftCircuits.Wordify
@@ -13,7 +12,7 @@ namespace SoftCircuits.Wordify
         private const ulong Kibibyte = 1024;
 
         private static readonly (string Decimal, string Binary)[] Suffixes =
-        {
+        [
             ("B", "B"),
             ("KB", "KiB"),
             ("MB", "MiB"),
@@ -23,7 +22,7 @@ namespace SoftCircuits.Wordify
             ("EB", "EiB"),
             ("ZB", "ZiB"),
             ("YB", "YiB")
-        };
+        ];
 
         /// <summary>
         /// Converts an integer value to a memory size in the form "850 bytes", "1.67 MB", etc.
@@ -74,7 +73,8 @@ namespace SoftCircuits.Wordify
         }
 
         /// <summary>
-        /// Converts a memory size string (e.g., "1.5 MB" or "5 GiB") to the corresponding integer value.
+        /// Converts a memory size string (e.g., &quot;1.5 MB&quot; or &quot;5 GiB&quot;)
+        /// to the corresponding integer value.
         /// </summary>
         /// <param name="s">The memory size string to convert.</param>
         /// <returns>The integer value of the memory size string.</returns>
@@ -82,7 +82,8 @@ namespace SoftCircuits.Wordify
         public static ulong FromMemorySize(this string? s) => ParseMemorySize(s);
 
         /// <summary>
-        /// Converts a memory size string (e.g., "1.5 MB" or "5 GiB") to the corresponding integer value.
+        /// Converts a memory size string (e.g., &quot;1.5 MB&quot; or &quot;5 GiB&quot;)
+        /// to the corresponding integer value.
         /// </summary>
         /// <param name="s">The memory size string to convert.</param>
         /// <returns>The integer value of the memory size string.</returns>

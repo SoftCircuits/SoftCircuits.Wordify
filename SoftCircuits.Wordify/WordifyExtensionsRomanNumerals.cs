@@ -8,20 +8,14 @@ namespace SoftCircuits.Wordify
 {
     public static partial class WordifyExtensions
     {
-        private class RomanInfo
+        private class RomanInfo(int value, string numerals)
         {
-            public int Value { get; set; }
-            public string Numerals { get; set; }
-
-            public RomanInfo(int value, string numerals)
-            {
-                Value = value;
-                Numerals = numerals;
-            }
+            public int Value { get; set; } = value;
+            public string Numerals { get; set; } = numerals;
         }
 
-        private static readonly List<RomanInfo> RomanNumerals = new()
-        {
+        private static readonly List<RomanInfo> RomanNumerals =
+        [
             new RomanInfo(1000, "M"),
             new RomanInfo(900, "CM"),
             new RomanInfo(500, "D"),
@@ -35,7 +29,7 @@ namespace SoftCircuits.Wordify
             new RomanInfo(5, "V"),
             new RomanInfo(4, "IV"),
             new RomanInfo(1, "I"),
-        };
+        ];
 
         /// <summary>
         /// Converts an integer value to Roman numerals.

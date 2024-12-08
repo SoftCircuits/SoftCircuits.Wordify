@@ -10,16 +10,10 @@ namespace SoftCircuits.Wordify.Helpers
     /// <remarks>
     /// This code was derived from https://stackoverflow.com/questions/5124743/algorithm-for-simplifying-decimal-to-fractions
     /// </remarks>
-    internal class Fraction
+    internal class Fraction(int numerator, int denominator)
     {
-        public int Numerator { get; set; }
-        public int Denominator { get; set; }
-
-        public Fraction(int numerator, int denominator)
-        {
-            Numerator = numerator;
-            Denominator = denominator;
-        }
+        public int Numerator { get; set; } = numerator;
+        public int Denominator { get; set; } = denominator;
 
         /// <summary>
         /// Returns true if either the <see cref="Numerator"/> is equal to the <see cref="Denominator"/>,
