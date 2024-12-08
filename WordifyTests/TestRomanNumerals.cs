@@ -9,8 +9,8 @@ namespace WordifyTests
     [TestClass]
     public class TestRomanNumerals
     {
-        private static readonly List<(int, string)> TestData = new()
-        {
+        private static readonly List<(int, string)> TestData =
+        [
             (0, "N"),
             (1, "I"),
             (2, "II"),
@@ -56,7 +56,7 @@ namespace WordifyTests
             (1912, "MCMXII"),
             (2000, "MM"),
             (2022, "MMXXII"),
-        };
+        ];
 
         [TestMethod]
         public void Test()

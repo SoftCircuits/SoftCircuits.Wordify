@@ -9,38 +9,25 @@ namespace WordifyTests
     [TestClass]
     public class TestTruncate
     {
-        private class TruncateTest
+        private class TruncateTest(string input, TruncateOption options)
         {
-            public string Input { get; set; }
-            public TruncateOption Options { get; set; }
-            public List<TruncateResult> Results { get; set; }
-
-            public TruncateTest(string input, TruncateOption options)
-            {
-                Input = input;
-                Options = options;
-                Results = new();
-            }
+            public string Input { get; set; } = input;
+            public TruncateOption Options { get; set; } = options;
+            public List<TruncateResult> Results { get; set; } = [];
         }
 
-        private class TruncateResult
+        private class TruncateResult(int maxLength, string result)
         {
-            public int MaxLength { get; set; }
-            public string Result { get; set; }
-
-            public TruncateResult(int maxLength, string result)
-            {
-                MaxLength = maxLength;
-                Result = result;
-            }
+            public int MaxLength { get; set; } = maxLength;
+            public string Result { get; set; } = result;
         }
 
-        private readonly List<TruncateTest> TruncateTestData = new()
-        {
+        private readonly List<TruncateTest> TruncateTestData =
+        [
             new("This is a test.", TruncateOption.TrimPartialWords | TruncateOption.AppendEllipsis)
             {
-                Results = new()
-                {
+                Results =
+                [
                     new(15, "This is a test."),
                     new(14, "This is a..."),
                     new(13, "This is a..."),
@@ -57,12 +44,12 @@ namespace WordifyTests
                     new(2, "Th"),
                     new(1, "T"),
                     new(0, string.Empty),
-                }
+                ]
             },
             new("This is a test.", TruncateOption.AppendEllipsis)
             {
-                Results = new()
-                {
+                Results =
+                [
                     new(15, "This is a test."),
                     new(14, "This is a t..."),
                     new(13, "This is a ..."),
@@ -79,12 +66,12 @@ namespace WordifyTests
                     new(2, "Th"),
                     new(1, "T"),
                     new(0, string.Empty),
-                }
+                ]
             },
             new("This is a test.", TruncateOption.TrimPartialWords)
             {
-                Results = new()
-                {
+                Results =
+                [
                     new(15, "This is a test."),
                     new(14, "This is a test"),
                     new(13, "This is a"),
@@ -101,12 +88,12 @@ namespace WordifyTests
                     new(2, "Th"),
                     new(1, "T"),
                     new(0, string.Empty),
-                }
+                ]
             },
             new("This is a test.", TruncateOption.None)
             {
-                Results = new()
-                {
+                Results =
+                [
                     new(15, "This is a test."),
                     new(14, "This is a test"),
                     new(13, "This is a tes"),
@@ -123,9 +110,9 @@ namespace WordifyTests
                     new(2, "Th"),
                     new(1, "T"),
                     new(0, string.Empty),
-                }
+                ]
             }
-        };
+        ];
 
         [TestMethod]
         public void Test()

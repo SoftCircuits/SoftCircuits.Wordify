@@ -3,15 +3,14 @@
 //
 
 using SoftCircuits.Wordify;
-using System.Threading;
 
 namespace WordifyTests
 {
     [TestClass]
     public class TestNumbers
     {
-        private static readonly List<(long, string)> IntegerData = new()
-        {
+        private static readonly List<(long, string)> IntegerData =
+        [
             (0, "zero"),
             (1, "one"),
             (10, "ten"),
@@ -64,7 +63,7 @@ namespace WordifyTests
             (-1234567890123456789, "negative one quintillion two hundred thirty-four quadrillion five hundred sixty-seven trillion eight hundred ninety billion one hundred twenty-three million four hundred fifty-six thousand seven hundred eighty-nine"),
             (long.MinValue, "negative nine quintillion two hundred twenty-three quadrillion three hundred seventy-two trillion thirty-six billion eight hundred fifty-four million seven hundred seventy-five thousand eight hundred eight"),
             (long.MaxValue, "nine quintillion two hundred twenty-three quadrillion three hundred seventy-two trillion thirty-six billion eight hundred fifty-four million seven hundred seventy-five thousand eight hundred seven"),
-        };
+        ];
 
         [TestMethod]
         public void TestIntegers()
@@ -73,8 +72,8 @@ namespace WordifyTests
                 Assert.AreEqual(output, input.Wordify());
         }
 
-        private static readonly List<(decimal, string)> FloatingPointData = new()
-        {
+        private static readonly List<(decimal, string)> FloatingPointData =
+        [
             (0m, "zero and 00/100"),
             (1m, "one and 00/100"),
             (10m, "ten and 00/100"),
@@ -174,7 +173,7 @@ namespace WordifyTests
 
             (decimal.MaxValue, "seventy-nine octillion two hundred twenty-eight septillion one hundred sixty-two sextillion five hundred fourteen quintillion two hundred sixty-four quadrillion three hundred thirty-seven trillion five hundred ninety-three billion five hundred forty-three million nine hundred fifty thousand three hundred thirty-five and 00/100"),
             (decimal.MinValue, "negative seventy-nine octillion two hundred twenty-eight septillion one hundred sixty-two sextillion five hundred fourteen quintillion two hundred sixty-four quadrillion three hundred thirty-seven trillion five hundred ninety-three billion five hundred forty-three million nine hundred fifty thousand three hundred thirty-five and 00/100"),
-        };
+        ];
 
         [TestMethod]
         public void TestFloatingPoints()
@@ -183,34 +182,22 @@ namespace WordifyTests
                 Assert.AreEqual(output, input.Wordify(FractionOption.Check));
         }
 
-        private class FractionResult
+        private class FractionResult(decimal value, string result)
         {
-            public decimal Value { get; set; }
-            public string Result { get; set; }
-
-            public FractionResult(decimal value, string result)
-            {
-                Value = value;
-                Result = result;
-            }
+            public decimal Value { get; set; } = value;
+            public string Result { get; set; } = result;
         }
 
-        private class FractionTest
+        private class FractionTest(FractionOption format, List<TestNumbers.FractionResult> results)
         {
-            public FractionOption Format { get; set; }
-            public List<FractionResult> Results { get; set; }
-
-            public FractionTest(FractionOption format, List<FractionResult> results)
-            {
-                Format = format;
-                Results = results;
-            }
+            public FractionOption Format { get; set; } = format;
+            public List<FractionResult> Results { get; set; } = results;
         }
 
-        private static readonly FractionTest[] FractionTests = new FractionTest[]
-        {
-            new(FractionOption.Round, new()
-            {
+        private static readonly FractionTest[] FractionTests =
+        [
+            new(FractionOption.Round,
+            [
                 new(0.0m, "zero"),
                 new(0.0001m, "zero"),
                 new(0.25m, "zero"),
@@ -218,18 +205,18 @@ namespace WordifyTests
                 new(0.5001m, "one"),
                 new(0.75m, "one"),
                 new(0.9999m, "one"),
-            }),
-            new(FractionOption.Truncate, new()
-            {
+            ]),
+            new(FractionOption.Truncate,
+            [
                 new(0.0m, "zero"),
                 new(0.0001m, "zero"),
                 new(0.25m, "zero"),
                 new(0.5m, "zero"),
                 new(0.75m, "zero"),
                 new(0.9999m, "zero"),
-            }),
-            new(FractionOption.Fraction, new()
-            {
+            ]),
+            new(FractionOption.Fraction,
+            [
                 new(0.0m, "zero"),
                 new(0.001m, "zero and 1/1000"),
                 new(0.01m, "zero and 1/100"),
@@ -239,18 +226,18 @@ namespace WordifyTests
                 new(0.75m, "zero and 3/4"),
                 new(0.33m, "zero and 33/100"),
                 new(0.66m, "zero and 33/50"),
-            }),
-            new(FractionOption.Words, new()
-            {
+            ]),
+            new(FractionOption.Words,
+            [
                 new(0.0m, "zero"),
                 new(0.5m, "zero and one half"),
                 new(0.25m, "zero and one fourth"),
                 new(0.75m, "zero and three fourths"),
                 new(0.33m, "zero and thirty-three one hundredths"),
                 new(0.66m, "zero and thirty-three fiftieths"),
-            }),
-            new(FractionOption.Check, new()
-            {
+            ]),
+            new(FractionOption.Check,
+            [
                 new(0.0m, "zero and 00/100"),
                 new(0.001m, "zero and 00/100"),
                 new(0.01m, "zero and 01/100"),
@@ -262,9 +249,9 @@ namespace WordifyTests
                 new(0.66m, "zero and 66/100"),
                 new(0.0001m, "zero and 00/100"),
                 new(0.9999m, "one and 00/100"),
-            }),
-            new(FractionOption.UsCurrency, new()
-            {
+            ]),
+            new(FractionOption.UsCurrency,
+            [
                 new(0.0m, "zero dollars and no cents"),
                 new(0.001m, "zero dollars and no cents"),
                 new(0.01m, "zero dollars and one cent"),
@@ -275,8 +262,8 @@ namespace WordifyTests
                 new(0.66m, "zero dollars and sixty-six cents"),
                 new(0.0001m, "zero dollars and no cents"),
                 new(0.9999m, "one dollar and no cents"),
-            })
-        };
+            ])
+        ];
 
         [TestMethod]
         public void TestFractions()

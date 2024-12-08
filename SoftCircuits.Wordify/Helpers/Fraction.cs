@@ -8,7 +8,8 @@ namespace SoftCircuits.Wordify.Helpers
     /// Class to hold a fraction. Includes code to convert a floating point value to a fraction.
     /// </summary>
     /// <remarks>
-    /// This code was derived from https://stackoverflow.com/questions/5124743/algorithm-for-simplifying-decimal-to-fractions
+    /// This code was derived from
+    /// <see href="https://stackoverflow.com/questions/5124743/algorithm-for-simplifying-decimal-to-fractions"/>.
     /// </remarks>
     internal class Fraction(int numerator, int denominator)
     {

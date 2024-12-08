@@ -29,7 +29,7 @@ namespace WordifyTests
             Assert.AreEqual('-', editor[^2]);
         }
 
-        public void TestAppend()
+        public static void TestAppend()
         {
             MutableString editor = new("abc");
 
