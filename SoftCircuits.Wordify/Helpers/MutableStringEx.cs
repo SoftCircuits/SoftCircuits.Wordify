@@ -1,4 +1,4 @@
-﻿// Copyright (c) 2023-2024 Jonathan Wood (www.softcircuits.com)
+﻿// Copyright (c) 2023-2025 Jonathan Wood (www.softcircuits.com)
 // Licensed under the MIT license.
 //
 
@@ -39,6 +39,8 @@ namespace SoftCircuits.Wordify.Helpers
         /// <summary>
         /// Gets the start and end index of the first contiguous sequence of letters.
         /// </summary>
+        /// <returns><see langword="true"/> if the first word was found.
+        /// <see langword="false"/> if no word characters were found.</returns>
         public bool FindFirstWord(out int startIndex, out int endIndex)
         {
             startIndex = IndexOf(char.IsLetter);
@@ -56,6 +58,8 @@ namespace SoftCircuits.Wordify.Helpers
         /// <summary>
         /// Gets the start and end index of the last contiguous sequence of letters.
         /// </summary>
+        /// <returns><see langword="true"/> if the last word was found.
+        /// <see langword="false"/> if no word characters were found.</returns>
         public bool FindLastWord(out int startIndex, out int endIndex)
         {
             endIndex = LastIndexOf(char.IsLetter);
@@ -236,7 +240,6 @@ namespace SoftCircuits.Wordify.Helpers
         /// <param name="s">The string compare to.</param>
         /// <param name="ignoreCase">True if characters should be matched using case-insensitive comparison.</param>
         /// <returns>True if the characters match, false otherwise.</returns>
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public bool MatchesAt(string s, int index, bool ignoreCase = false) => MatchesAt(s, index, CharComparer.GetComparer(ignoreCase));
 
         /// <summary>
@@ -278,13 +281,11 @@ namespace SoftCircuits.Wordify.Helpers
         /// <summary>
         /// Returns true if this string contains the specified character.
         /// </summary>
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public bool Contains(char c) => IndexOf(c) >= 0;
 
         /// <summary>
         /// Returns true if this string contains the specified string.
         /// </summary>
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public bool Contains(string s) => IndexOf(s) >= 0;
 
         /// <summary>
@@ -292,7 +293,6 @@ namespace SoftCircuits.Wordify.Helpers
         /// </summary>
         /// <param name="predicate"></param>
         /// <returns></returns>
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public bool Contains(Func<char, bool> predicate) => IndexOf(predicate) >= 0;
     }
 }

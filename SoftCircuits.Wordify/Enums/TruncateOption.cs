@@ -1,4 +1,4 @@
-﻿// Copyright (c) 2023-2024 Jonathan Wood (www.softcircuits.com)
+﻿// Copyright (c) 2023-2025 Jonathan Wood (www.softcircuits.com)
 // Licensed under the MIT license.
 //
 
@@ -13,12 +13,12 @@ namespace SoftCircuits.Wordify
     public enum TruncateOption
     {
         /// <summary>
-        /// Specify no options.
+        /// Specifies no options.
         /// </summary>
         None,
 
         /// <summary>
-        /// Add an ellipsis (...) to the end of the truncated string, if there's room.
+        /// Add an ellipsis (<c>...</c>) to the end of the truncated string if there's room.
         /// </summary>
         AppendEllipsis,
 

@@ -1,4 +1,4 @@
-﻿// Copyright (c) 2023-2024 Jonathan Wood (www.softcircuits.com)
+﻿// Copyright (c) 2023-2025 Jonathan Wood (www.softcircuits.com)
 // Licensed under the MIT license.
 //
 
@@ -25,7 +25,7 @@ namespace SoftCircuits.Wordify
             if (options == WordifyOption.AutoDetect)
             {
                 if (s.HasEmbeddedWhiteSpace())
-                    return s;
+                    return s;   // Is already text
                 if (s.Contains('_'))
                     options = WordifyOption.ReplaceUnderscores;
                 else if (s.Contains('-'))

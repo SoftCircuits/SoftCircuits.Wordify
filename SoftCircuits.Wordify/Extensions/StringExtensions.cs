@@ -1,4 +1,4 @@
-﻿// Copyright (c) 2023-2024 Jonathan Wood (www.softcircuits.com)
+﻿// Copyright (c) 2023-2025 Jonathan Wood (www.softcircuits.com)
 // Licensed under the MIT license.
 //
 
@@ -53,7 +53,7 @@ namespace SoftCircuits.Wordify.Extensions
         }
 
         /// <summary>
-        /// Finds the index of the first character for which <paramref name="predicate"/> returns true.
+        /// Gets the index of the first character for which <paramref name="predicate"/> returns true.
         /// </summary>
         /// <param name="s">This string.</param>
         /// <param name="predicate">Predicate that returns true for the character being sought.</param>
@@ -70,9 +70,9 @@ namespace SoftCircuits.Wordify.Extensions
         }
 
         /// <summary>
-        /// Returns the index of the last character that causes <paramref name="predicate"/> to return true,
-        /// or -1 if no match not found.
+        /// Gets the index of the last character for which <paramref name="predicate"/> returns true.
         /// </summary>
+        /// <returns>The index of the last match, or -1 if no match was found.</returns>
         public static int LastIndexOf(this string s, Func<char, bool> predicate, int startIndex = -1)
         {
             if (startIndex < 0)

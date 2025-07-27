@@ -6,14 +6,14 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
     <LangVersion>latest</LangVersion>
-    <Copyright>Copyright © 2023-2024 Jonathan Wood</Copyright>
+    <Copyright>Copyright © 2023-2025 Jonathan Wood</Copyright>
     <RepositoryType>git</RepositoryType>
     <PackageTags>stringify; wordify; to string; strings; convert; format; text; numbers; format numbers; format dates; memory size; file size; pluralize; singularize</PackageTags>
     <Authors>Jonathan Wood</Authors>
     <Company>SoftCircuits</Company>
     <Description>Class library that contains extension methods to create and modify text. It includes methods to convert numbers and dates to text, insert spaces into camel-case strings, pluralize strings, truncate strings, convert Roman numerals, create memory-size strings and much more.</Description>
     <RepositoryUrl>https://github.com/SoftCircuits/SoftCircuits.Wordify</RepositoryUrl>
-    <PackageReleaseNotes>Added direct support for .NET 9; Minor tweaks and fixes.</PackageReleaseNotes>
+    <PackageReleaseNotes>Made performance improvements; Minor tweaks and fixes.</PackageReleaseNotes>
     <PackageLicenseFile>D:\Users\jwood\source\repos\SoftCircuits.Wordify\LICENSE.txt</PackageLicenseFile>
     <PackageRequireLicenseAcceptance>True</PackageRequireLicenseAcceptance>
     <PackageIcon>Logo_64x64.png</PackageIcon>
@@ -22,7 +22,7 @@
     <NeutralLanguage>en-US</NeutralLanguage>
     <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
     <PackageProjectUrl>https://github.com/SoftCircuits/SoftCircuits.Wordify</PackageProjectUrl>
-    <Version>1.3.0</Version>
+    <Version>1.3.1</Version>
     <Title>SoftCircuits.Wordify</Title>
   </PropertyGroup>
 

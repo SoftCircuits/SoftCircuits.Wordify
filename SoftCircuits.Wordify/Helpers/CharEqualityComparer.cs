@@ -1,4 +1,4 @@
-﻿// Copyright (c) 2023-2024 Jonathan Wood (www.softcircuits.com)
+﻿// Copyright (c) 2023-2025 Jonathan Wood (www.softcircuits.com)
 // Licensed under the MIT license.
 //
 
@@ -10,30 +10,18 @@ namespace SoftCircuits.Wordify.Helpers
     {
         public static readonly CaseSensitiveEqualityComparer Instance = new();
 
-        public bool Equals(char c1, char c2)
-        {
-            return c1.Equals(c2);
-        }
+        public bool Equals(char c1, char c2) => c1.Equals(c2);
 
-        public int GetHashCode([DisallowNull] char obj)
-        {
-            return obj.GetHashCode();
-        }
+        public int GetHashCode([DisallowNull] char obj) => obj.GetHashCode();
     }
 
     internal class CaseInsensitiveEqualityComparer : IEqualityComparer<char>
     {
         public static readonly CaseInsensitiveEqualityComparer Instance = new();
 
-        public bool Equals(char c1, char c2)
-        {
-            return char.ToUpper(c1).Equals(char.ToUpper(c2));
-        }
+        public bool Equals(char c1, char c2) => char.ToUpper(c1).Equals(char.ToUpper(c2));
 
-        public int GetHashCode([DisallowNull] char obj)
-        {
-            return char.ToUpper(obj).GetHashCode();
-        }
+        public int GetHashCode([DisallowNull] char obj) => char.ToUpper(obj).GetHashCode();
     }
 
     internal static class CharEqualityComparer

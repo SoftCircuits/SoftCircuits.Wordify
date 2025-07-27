@@ -1,4 +1,4 @@
-﻿// Copyright (c) 2023-2024 Jonathan Wood (www.softcircuits.com)
+﻿// Copyright (c) 2023-2025 Jonathan Wood (www.softcircuits.com)
 // Licensed under the MIT license.
 //
 
@@ -15,17 +15,17 @@ namespace SoftCircuits.Wordify
         /// <summary>
         /// Use &quot;and&quot; as the final conjunction. This is the default behavior.
         /// </summary>
-        AndConjunction = 0x00,
+        AndConjunction = 0x0000,
 
         /// <summary>
         /// Use &quot;or&quot; as the final conjunction.
         /// </summary>
-        OrConjunction = 0x01,
+        OrConjunction = 0x0001,
 
         /// <summary>
         /// Specifies that a comma should also be included with the final conjunction. For example,
         /// &quot;One, two, and three.&quot;
         /// </summary>
-        OxfordComma = 0x02,
+        OxfordComma = 0x0002,
     }
 }

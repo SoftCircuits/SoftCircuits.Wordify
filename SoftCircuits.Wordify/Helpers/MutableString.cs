@@ -1,4 +1,4 @@
-﻿// Copyright (c) 2023-2024 Jonathan Wood (www.softcircuits.com)
+﻿// Copyright (c) 2023-2025 Jonathan Wood (www.softcircuits.com)
 // Licensed under the MIT license.
 //
 
@@ -63,10 +63,13 @@ namespace SoftCircuits.Wordify.Helpers
         [MemberNotNull(nameof(CharArray))]
         public void Resize(int length)
         {
+            if (length < 0)
+                length = 0;
+
             if (CharArray == null || CharArray.Length < length)
             {
                 // To minimize the number of reallocations, double requested size
-                Array.Resize(ref CharArray, Math.Max(length * 2, 64));
+                Array.Resize(ref CharArray, Math.Max(length * 2, 32));
             }
             Length = length;
         }
@@ -76,9 +79,7 @@ namespace SoftCircuits.Wordify.Helpers
         /// </summary>
         public char this[int index]
         {
-            [MethodImpl(MethodImplOptions.AggressiveInlining)]
             get => CharArray[index];
-            [MethodImpl(MethodImplOptions.AggressiveInlining)]
             set => CharArray[index] = value;
         }
 
@@ -87,9 +88,7 @@ namespace SoftCircuits.Wordify.Helpers
         /// </summary>
         public char this[Index index]
         {
-            [MethodImpl(MethodImplOptions.AggressiveInlining)]
             get => CharArray[index.GetOffset(Length)];
-            [MethodImpl(MethodImplOptions.AggressiveInlining)]
             set => CharArray[index.GetOffset(Length)] = value;
         }
 
@@ -98,7 +97,6 @@ namespace SoftCircuits.Wordify.Helpers
         /// </summary>
         public string this[Range range]
         {
-            [MethodImpl(MethodImplOptions.AggressiveInlining)]
             get
             {
                 (int offset, int length) = range.GetOffsetAndLength(Length);
@@ -251,16 +249,7 @@ namespace SoftCircuits.Wordify.Helpers
                 return;
 
             // Copy characters
-            if (sourceIndex > targetIndex)
-            {
-                for (int i = 0; i < count; i++)
-                    CharArray[targetIndex + i] = CharArray[sourceIndex + i];
-            }
-            else if (sourceIndex < targetIndex)
-            {
-                for (int i = count - 1; i >= 0; i--)
-                    CharArray[targetIndex + i] = CharArray[sourceIndex + i];
-            }
+            Array.Copy(CharArray, sourceIndex, CharArray, targetIndex, count);
         }
 
         /// <summary>
@@ -281,18 +270,15 @@ namespace SoftCircuits.Wordify.Helpers
             Debug.Assert(targetIndex + count <= Length);
 
             // Copy characters
-            for (int i = 0; i < count; i++)
-                CharArray[targetIndex + i] = s[i];
+            s.CopyTo(0, CharArray, targetIndex, count);
         }
 
         #endregion
 
         #region Operators
 
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static implicit operator string(MutableString ms) => ms.ToString();
 
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static explicit operator MutableString(string s) => new(s);
 
         #endregion

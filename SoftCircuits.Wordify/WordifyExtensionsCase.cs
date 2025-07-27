@@ -1,4 +1,4 @@
-﻿// Copyright (c) 2023-2024 Jonathan Wood (www.softcircuits.com)
+﻿// Copyright (c) 2023-2025 Jonathan Wood (www.softcircuits.com)
 // Licensed under the MIT license.
 //
 
@@ -90,7 +90,6 @@ namespace SoftCircuits.Wordify
                 {
                     if (inWord)
                     {
-                        //if (char.IsWhiteSpace(s[i]))
                         if (!char.IsLetter(s[i]) && s[i] != '\'')
                             inWord = false;
                     }

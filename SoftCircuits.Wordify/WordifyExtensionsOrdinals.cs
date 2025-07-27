@@ -1,4 +1,4 @@
-﻿// Copyright (c) 2023-2024 Jonathan Wood (www.softcircuits.com)
+﻿// Copyright (c) 2023-2025 Jonathan Wood (www.softcircuits.com)
 // Licensed under the MIT license.
 //
 
@@ -130,7 +130,7 @@ namespace SoftCircuits.Wordify
         /// </summary>
         /// <remarks>
         /// We might want to make this public but it will ignore strings with just digits.
-        /// Also, it doesnt test for non-number words (e.g. would convert boy to boieth).
+        /// Also, it doesn't test for non-number words (e.g. would convert boy to boieth).
         /// </remarks>
         /// <param name="s"></param>
         /// <returns></returns>
