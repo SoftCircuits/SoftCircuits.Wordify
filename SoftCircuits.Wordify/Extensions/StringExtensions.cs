@@ -1,4 +1,4 @@
-﻿// Copyright (c) 2023-2025 Jonathan Wood (www.softcircuits.com)
+﻿// Copyright (c) 2023-2026 Jonathan Wood (www.softcircuits.com)
 // Licensed under the MIT license.
 //
 
@@ -11,13 +11,13 @@ namespace SoftCircuits.Wordify.Extensions
         /// </summary>
         public static bool HasWhiteSpace(this string? s)
         {
-            if (s != null)
+            if (s is null)
+                return false;
+
+            for (int i = 0; i < s.Length; i++)
             {
-                for (int i = 0; i < s.Length; i++)
-                {
-                    if (char.IsWhiteSpace(s[i]))
-                        return true;
-                }
+                if (char.IsWhiteSpace(s[i]))
+                    return true;
             }
             return false;
         }
@@ -27,26 +27,26 @@ namespace SoftCircuits.Wordify.Extensions
         /// </summary>
         public static bool HasEmbeddedWhiteSpace(this string? s)
         {
-            if (s != null)
-            {
-                // Skip leading whitespace
-                int i = 0;
-                while (i < s.Length && char.IsWhiteSpace(s[i]))
-                    i++;
+            if (s is null)
+                return false;
 
-                // Look for embedded whitespace
-                for (; i < s.Length; i++)
+            // Skip leading whitespace
+            int i = 0;
+            while (i < s.Length && char.IsWhiteSpace(s[i]))
+                i++;
+
+            // Look for embedded whitespace
+            for (; i < s.Length; i++)
+            {
+                if (char.IsWhiteSpace(s[i]))
                 {
-                    if (char.IsWhiteSpace(s[i]))
+                    // Found whitespace, is it followed by non-whitespace?
+                    for (i++; i < s.Length; i++)
                     {
-                        // Found whitespace, is it followed by non-whitespace?
-                        for (i++; i < s.Length; i++)
-                        {
-                            if (!char.IsWhiteSpace(s[i]))
-                                return true;
-                        }
-                        break;
+                        if (!char.IsWhiteSpace(s[i]))
+                            return true;
                     }
+                    break;
                 }
             }
             return false;

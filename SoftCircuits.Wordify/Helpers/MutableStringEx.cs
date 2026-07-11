@@ -1,9 +1,8 @@
-﻿// Copyright (c) 2023-2025 Jonathan Wood (www.softcircuits.com)
+﻿// Copyright (c) 2023-2026 Jonathan Wood (www.softcircuits.com)
 // Licensed under the MIT license.
 //
 
 using System.Diagnostics;
-using System.Runtime.CompilerServices;
 
 namespace SoftCircuits.Wordify.Helpers
 {
